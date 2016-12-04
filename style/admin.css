@@ -1,0 +1,14 @@
+#royal_dati_annuncio .smaller {
+    font-size: 80%;
+}
+
+#royal_dati_annuncio td {
+    position: relative;
+}
+
+#royal_dati_annuncio .appended {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    text-align: right;
+}
