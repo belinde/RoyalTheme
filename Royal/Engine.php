@@ -175,12 +175,35 @@ class Engine {
 		echo '</tbody></table>';
 	}
 
+	private function searchRowTaxonomy($taxonomy, $label) {
+		/** @var \WP_Term[] $terms */
+		$terms = get_terms( [
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+		] );
+		$fields = [];
+		foreach ( $terms as $term ) {
+			$fields[] = sprintf(
+				'<label><input type="checkbox" name="royalsearch[taxonomy][%s][]" value="%d">&nbsp;%s</label>',
+				$taxonomy,
+				$term->term_id,
+				$term->name
+			);
+		}
+
+		printf( '<tr><th>%s</th><td>%s</td></tr>', $label, implode('<br>', $fields) );
+	}
+
 	/**
 	 * @param string $action
 	 */
 	public function theSearchForm( $action ) {
 		echo '<form method="POST" action="' . esc_attr( $action ) . '">';
+
 		echo '<table><tbody>';
+		$this->searchRowTaxonomy('contratto', "Tipo di contratto");
+		$this->searchRowTaxonomy('tipologia', "Tipologia di immobile");
+		$this->searchRowTaxonomy('comune', "Comune");
 		foreach ( $this->fields as $field ) {
 			$field->searchRow();
 		}

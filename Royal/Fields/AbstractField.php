@@ -63,7 +63,7 @@ abstract class AbstractField {
 		}
 		$string .= '>';
 		if ( ! is_null( $content ) ) {
-			$string .= esc_html( $content ) . "</$tag>";
+			$string .= $content . "</$tag>";
 		}
 
 		return $string;
@@ -167,7 +167,6 @@ abstract class AbstractField {
 	 *
 	 */
 	function searchRow() {
-		var_dump( $this->slug . ' ' . $this->search );
 		switch ( $this->search ) {
 			case self::SEARCH_EXACT:
 				$field = $this->searchFieldExact();

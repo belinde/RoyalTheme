@@ -6,8 +6,8 @@ use Royal\Fields\AbstractField as _;
 return [
 	( new Integer( 'prezzo' ) )
 		->setAppend( '€' )
+		->setEmpty( 'trattativa riservata' )
 		->setSearch( _::SEARCH_RANGE )
-		->setHelp( 'Mettere anche in caso di trattativa privata' )
 	,
 	( new Integer( 'vani' ) )
 		->setSearch( _::SEARCH_RANGE )
@@ -30,8 +30,13 @@ return [
 		->setEmpty( 'nessuno' )
 		->setSearch( _::SEARCH_RANGE )
 	,
-	( new Text( 'riscaldamento' ) )
-		->setSearch( _::SEARCH_DISABLED )
+	( new Select( 'riscaldamento' ) )
+		->setValues( [
+			'assente'      => 'Assente',
+			'condominio'   => 'Condominiale',
+			'indipendente' => 'Termoautonomo'
+		] )
+		->setSearch( _::SEARCH_RANGE )
 	,
 	( new Text( 'condizionatore', "Aria condizionata" ) )
 		->setSearch( _::SEARCH_DISABLED )

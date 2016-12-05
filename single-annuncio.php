@@ -5,6 +5,7 @@ get_header();
 $royal = Engine::getInstance();
 echo '<h1>La ricerca</h1>';
 $royal->theSearchForm('/');
+
 while ( have_posts() ) {
 	the_post();
 	?>
