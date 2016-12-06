@@ -4,7 +4,7 @@ use Royal\Engine;
 get_header();
 $royal = Engine::getInstance();
 echo '<h1>La ricerca</h1>';
-$royal->theSearchForm('/');
+$royal->theSearchForm('/ricerca/risultati');
 
 while ( have_posts() ) {
 	the_post();

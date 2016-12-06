@@ -31,8 +31,50 @@ class Engine {
 		$this->fields = require __DIR__ . '/fields.php';
 		register_activation_hook( __FILE__, [ $this, 'activationHook' ] );
 		add_action( 'init', [ $this, 'actionInit' ] );
+		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
 		add_action( 'save_post_annuncio', [ $this, 'actionSavePostAnnuncio' ], 10, 2 );
 		add_action( 'admin_print_styles-post.php', [ $this, 'actionAdminPrintStylesPostPhp' ] );
+	}
+
+	/**
+	 * @param $data
+	 *
+	 * @return \WP_Query
+	 */
+	public function queryRicerca( $data ) {
+		$args = [
+			'post_type'      => 'annuncio',
+			'post_status'    => 'publish',
+			'posts_per_page' => 20
+		];
+		if ( isset( $data['taxonomy'] ) ) {
+			foreach ( $data['taxonomy'] as $taxonomy => $ids ) {
+				$args['tax_query'][] = [
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $ids
+				];
+			}
+		}
+		pr( $data );
+
+		return new \WP_Query( $args );
+	}
+
+	/**
+	 * @param string $template
+	 *
+	 * @return string
+	 */
+	public function filterTemplateInclude( $template ) {
+		if ( is_home() ) {
+			$ricerca = get_query_var( 'ricerca' );
+			if ( in_array( $ricerca, [ 'risultati' ] ) ) {
+				return get_query_template( 'ricerca-risultati' );
+			}
+		}
+
+		return $template;
 	}
 
 	public function actionAdminPrintStylesPostPhp() {
@@ -45,6 +87,7 @@ class Engine {
 	}
 
 	public function actionInit() {
+		add_rewrite_endpoint( 'ricerca', \EP_ROOT );
 		register_post_type( 'annuncio', [
 			'label'                => 'Annunci',
 			'labels'               => [
@@ -140,6 +183,9 @@ class Engine {
 		register_taxonomy_for_object_type( 'contratto', 'annuncio' );
 		register_taxonomy_for_object_type( 'tipologia', 'annuncio' );
 		register_taxonomy_for_object_type( 'comune', 'annuncio' );
+
+
+//		flush_rewrite_rules();
 	}
 
 	/**
@@ -175,13 +221,20 @@ class Engine {
 		echo '</tbody></table>';
 	}
 
-	private function searchRowTaxonomy($taxonomy, $label) {
+	/**
+	 * @param $taxonomy
+	 * @param $label
+	 */
+	private function searchRowTaxonomy( $taxonomy, $label, \WP_Query $query = null ) {
 		/** @var \WP_Term[] $terms */
-		$terms = get_terms( [
+		$terms  = get_terms( [
 			'taxonomy'   => $taxonomy,
 			'hide_empty' => false,
 		] );
-		$fields = [];
+		$fields = [ ];
+		if ( $query ) {
+//			$query-
+		}
 		foreach ( $terms as $term ) {
 			$fields[] = sprintf(
 				'<label><input type="checkbox" name="royalsearch[taxonomy][%s][]" value="%d">&nbsp;%s</label>',
@@ -191,22 +244,23 @@ class Engine {
 			);
 		}
 
-		printf( '<tr><th>%s</th><td>%s</td></tr>', $label, implode('<br>', $fields) );
+		printf( '<tr><th>%s</th><td>%s</td></tr>', $label, implode( '<br>', $fields ) );
 	}
 
 	/**
 	 * @param string $action
+	 * @param \WP_Query $query
 	 */
-	public function theSearchForm( $action ) {
+	public function theSearchForm( $action, \WP_Query $query = null ) {
 		echo '<form method="POST" action="' . esc_attr( $action ) . '">';
 
 		echo '<table><tbody>';
-		$this->searchRowTaxonomy('contratto', "Tipo di contratto");
-		$this->searchRowTaxonomy('tipologia', "Tipologia di immobile");
-		$this->searchRowTaxonomy('comune', "Comune");
-		foreach ( $this->fields as $field ) {
-			$field->searchRow();
-		}
+		$this->searchRowTaxonomy( 'contratto', "Tipo di contratto", $query );
+		$this->searchRowTaxonomy( 'tipologia', "Tipologia di immobile", $query );
+		$this->searchRowTaxonomy( 'comune', "Comune", $query );
+//		foreach ( $this->fields as $field ) {
+//			$field->searchRow();
+//		}
 		echo '</tbody><tfoot>';
 		echo '<tr><td colspan="2"><input type="submit" value="Cerca immobile"></td></tr>';
 		echo '</tfoot></table>';
