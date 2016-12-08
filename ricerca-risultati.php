@@ -1,13 +1,13 @@
 <?php
 use Royal\Engine;
+use Royal\SearchForm;
 
 get_header();
 $royal = Engine::getInstance();
 echo '<h1>Risultati ricerca</h1>';
 $resQuery = $royal->queryRicerca( $_POST['royalsearch'] );
-$royal->theSearchForm( '/ricerca/risultati', $resQuery );
+echo new SearchForm( '/ricerca/risultati', $_POST['royalsearch'] );
 
-var_dump($resQuery);
 if ( $resQuery->have_posts()) {
 	echo '<ol>';
 	while ( $resQuery->have_posts() ) {
@@ -18,4 +18,7 @@ if ( $resQuery->have_posts()) {
 } else {
 	echo "Nessun risultato!";
 }
+
+pr( $_POST['royalsearch'] );
+//pr($resQuery->query_vars);
 get_footer(); ?>

@@ -42,23 +42,20 @@ class Engine {
 	 * @return \WP_Query
 	 */
 	public function queryRicerca( $data ) {
-		$args = [
-			'post_type'      => 'annuncio',
-			'post_status'    => 'publish',
-			'posts_per_page' => 20
-		];
-		if ( isset( $data['taxonomy'] ) ) {
-			foreach ( $data['taxonomy'] as $taxonomy => $ids ) {
-				$args['tax_query'][] = [
-					'taxonomy' => $taxonomy,
-					'field'    => 'term_id',
-					'terms'    => $ids
-				];
+		$data['post_type']      = 'annuncio';
+		$data['post_status']    = 'publish';
+		$data['posts_per_page'] = 20;
+
+		if ( isset( $data['tax_query'] ) ) {
+			$orig = $data['tax_query'];
+			foreach ( $orig as $cur => $query ) {
+				if ( ! isset( $query['terms'] ) or ! is_array( $query['terms'] ) ) {
+					unset( $data['tax_query'][ $cur ] );
+				}
 			}
 		}
-		pr( $data );
 
-		return new \WP_Query( $args );
+		return new \WP_Query( $data );
 	}
 
 	/**
@@ -222,49 +219,10 @@ class Engine {
 	}
 
 	/**
-	 * @param $taxonomy
-	 * @param $label
+	 * @return Fields\AbstractField[]
 	 */
-	private function searchRowTaxonomy( $taxonomy, $label, \WP_Query $query = null ) {
-		/** @var \WP_Term[] $terms */
-		$terms  = get_terms( [
-			'taxonomy'   => $taxonomy,
-			'hide_empty' => false,
-		] );
-		$fields = [ ];
-		if ( $query ) {
-//			$query-
-		}
-		foreach ( $terms as $term ) {
-			$fields[] = sprintf(
-				'<label><input type="checkbox" name="royalsearch[taxonomy][%s][]" value="%d">&nbsp;%s</label>',
-				$taxonomy,
-				$term->term_id,
-				$term->name
-			);
-		}
-
-		printf( '<tr><th>%s</th><td>%s</td></tr>', $label, implode( '<br>', $fields ) );
-	}
-
-	/**
-	 * @param string $action
-	 * @param \WP_Query $query
-	 */
-	public function theSearchForm( $action, \WP_Query $query = null ) {
-		echo '<form method="POST" action="' . esc_attr( $action ) . '">';
-
-		echo '<table><tbody>';
-		$this->searchRowTaxonomy( 'contratto', "Tipo di contratto", $query );
-		$this->searchRowTaxonomy( 'tipologia', "Tipologia di immobile", $query );
-		$this->searchRowTaxonomy( 'comune', "Comune", $query );
-//		foreach ( $this->fields as $field ) {
-//			$field->searchRow();
-//		}
-		echo '</tbody><tfoot>';
-		echo '<tr><td colspan="2"><input type="submit" value="Cerca immobile"></td></tr>';
-		echo '</tfoot></table>';
-		echo '</form>';
+	public function getFields() {
+		return $this->fields;
 	}
 
 	public function theInformations() {

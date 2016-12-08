@@ -8,6 +8,8 @@
 
 namespace Royal\Fields;
 
+use Royal\Tools;
+
 /**
  * Class AbstractField
  * @package Royal
@@ -17,6 +19,9 @@ abstract class AbstractField {
 	const SEARCH_EXACT = 'exact';
 	const SEARCH_RANGE = 'range';
 	const SEARCH_TEXT = 'text';
+
+	use Tools;
+
 	/**
 	 * @var string
 	 */
@@ -47,26 +52,6 @@ abstract class AbstractField {
 	 */
 	protected function fieldName() {
 		return 'royalmeta[' . $this->slug . ']';
-	}
-
-	/**
-	 * @param string $tag
-	 * @param array $attrs
-	 * @param string|null $content
-	 *
-	 * @return string
-	 */
-	protected function htmlTag( $tag, $attrs, $content = null ) {
-		$string = "<$tag";
-		foreach ( $attrs as $key => $val ) {
-			$string .= ' ' . $key . '="' . esc_attr( $val ) . '"';
-		}
-		$string .= '>';
-		if ( ! is_null( $content ) ) {
-			$string .= $content . "</$tag>";
-		}
-
-		return $string;
 	}
 
 	/**
@@ -164,26 +149,29 @@ abstract class AbstractField {
 	}
 
 	/**
-	 *
+	 * @return string
 	 */
-	function searchRow() {
+	public function getLabel() {
+		return $this->label;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getSearchField() {
 		switch ( $this->search ) {
 			case self::SEARCH_EXACT:
-				$field = $this->searchFieldExact();
+				return $this->searchFieldExact();
 				break;
 			case self::SEARCH_TEXT:
-				$field = $this->searchFieldText();
+				return $this->searchFieldText();
 				break;
 			case self::SEARCH_RANGE:
-				$field = $this->searchFieldRange();
+				return $this->searchFieldRange();
 				break;
-			case self::SEARCH_DISABLED:
-			default:
-				return;
 		}
-		if ( $field ) {
-			printf( '<tr><th>%s</th><td>%s</td></tr>', $this->label, $field );
-		}
+
+		return null;
 	}
 
 	/**
