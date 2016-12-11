@@ -20,6 +20,10 @@ class SearchForm {
 	 */
 	private $tax = 0;
 	/**
+	 * @var int
+	 */
+	private $meta = 0;
+	/**
 	 * @var array
 	 */
 	private $query = [ ];
@@ -42,12 +46,16 @@ class SearchForm {
 	public function __toString() {
 		$str = '<form method="POST" action="' . esc_attr( $this->action ) . '">';
 		$str .= '<table><tbody>';
-		$str .= $this->rowTaxonomy( 'contratto', "Tipo di contratto" );
-		$str .= $this->rowTaxonomy( 'tipologia', "Tipologia di immobile" );
-		$str .= $this->rowTaxonomy( 'comune', "Comune" );
-//		foreach ( $this->engine->getFields() as $field ) {
-//			$str .= $this->row( $field->getLabel(), $field->getSearchField() );
-//		}
+		$str .= $this->rowTaxonomy( 'contratto' );
+		$str .= $this->rowTaxonomy( 'tipologia' );
+		$str .= $this->rowTaxonomy( 'comune' );
+		$metaQuery = isset($this->query['meta_query']) ? $this->query['meta_query'] : [];
+		foreach ( $this->engine->getFields() as $field ) {
+			if ( $field->isSearcheable() ) {
+				$str .= $this->row( $field->getLabel(), $field->getSearchField( $this->meta, $metaQuery ) );
+				$this->meta++;
+			}
+		}
 		$str .= '</tbody><tfoot>';
 		$str .= $this->row( '&nbsp;', '<input type="submit" value="Cerca immobile">' );
 		$str .= '</tfoot></table>';
@@ -69,11 +77,14 @@ class SearchForm {
 
 	/**
 	 * @param string $taxonomy
-	 * @param string $label
 	 *
 	 * @return string
 	 */
-	private function rowTaxonomy( $taxonomy, $label ) {
+	private function rowTaxonomy( $taxonomy ) {
+		$tax = get_taxonomy( $taxonomy );
+		if ( ! $tax ) {
+			return '';
+		}
 		/** @var \WP_Term[] $terms */
 		$terms  = get_terms( [
 			'taxonomy'   => $taxonomy,
@@ -84,7 +95,7 @@ class SearchForm {
 		if ( isset( $this->query['tax_query'] ) ) {
 			foreach ( $this->query['tax_query'] as $query ) {
 				if ( $query['taxonomy'] == $taxonomy ) {
-					$values = isset( $query['terms'] ) ? $query['terms'] : [];
+					$values = isset( $query['terms'] ) ? $query['terms'] : [ ];
 				}
 			}
 		}
@@ -112,7 +123,7 @@ class SearchForm {
 
 		$this->tax ++;
 
-		return $this->row( $label, $composite );
+		return $this->row( $tax->labels->menu_name, $composite );
 	}
 
 }

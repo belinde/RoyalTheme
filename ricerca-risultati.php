@@ -19,6 +19,16 @@ if ( $resQuery->have_posts()) {
 	echo "Nessun risultato!";
 }
 
-pr( $_POST['royalsearch'] );
+?>
+<table>
+	<tr>
+		<td valign="top"><?php pr( $_POST['royalsearch'] ); ?></td>
+		<td valign="top"><?php pr( $resQuery->query ); ?></td>
+		<td valign="top"><?php pr( $resQuery->query_vars ); ?></td>
+	</tr>
+</table>
+<?php
+
+print( $resQuery->request);
 //pr($resQuery->query_vars);
 get_footer(); ?>

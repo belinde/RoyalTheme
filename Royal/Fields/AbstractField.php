@@ -70,7 +70,7 @@ abstract class AbstractField {
 	/**
 	 * @return string
 	 */
-	private function metaSlug() {
+	public function metaSlug() {
 		return 'royal_meta_' . $this->slug;
 	}
 
@@ -127,25 +127,76 @@ abstract class AbstractField {
 	}
 
 	/**
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 *
 	 * @return string
 	 */
-	function searchFieldExact() {
-		return sprintf( 'esattamente <input type="text" name="royalsearch[exact][%s]">', $this->slug );
+	protected function searchFieldExact( &$fieldNum, $metaQuery ) {
+		return $this->htmlMetaTag( $fieldNum ,$metaQuery, '=' );
 	}
 
 	/**
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 *
 	 * @return string
 	 */
-	function searchFieldText() {
-		return sprintf( 'grossomodo <input type="text" name="royalsearch[text][%s]">', $this->slug );
+	protected function searchFieldText( &$fieldNum, $metaQuery ) {
+		return $this->htmlMetaTag( $fieldNum ,$metaQuery, 'LIKE' );
 	}
 
 	/**
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 *
 	 * @return string
 	 */
-	function searchFieldRange() {
-		return sprintf( 'tra <input type="text" name="royalsearch[range][%s][min]"> e <input type="text" name="royalsearch[range][%s][max]">',
-			$this->slug, $this->slug );
+	protected function searchFieldRange( &$fieldNum, $metaQuery ) {
+		$min = $this->htmlMetaTag( $fieldNum ,$metaQuery, '>=' );
+		$fieldNum ++;
+		$max = $this->htmlMetaTag( $fieldNum ,$metaQuery, '<=' );
+
+		return "tra $min e $max";
+	}
+
+	/**
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 * @param string $comparation
+	 *
+	 * @return string
+	 */
+	protected function htmlMetaTag($fieldNum, $metaQuery, $comparation) {
+		return $this->htmlTag( 'input', [
+				'type'  => 'text',
+				'name'  => 'royalsearch[meta_query][' . $fieldNum . '][value]',
+				'value' => $this->findValue( $metaQuery, $comparation )
+			] ) . $this->htmlTag( 'input', [
+				'type'  => 'hidden',
+				'name'  => 'royalsearch[meta_query][' . $fieldNum . '][key]',
+				'value' => $this->metaSlug()
+			] ) . $this->htmlTag( 'input', [
+				'type'  => 'hidden',
+				'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
+				'value' => $comparation
+			] );
+	}
+
+	/**
+	 * @param $metaQuery
+	 * @param $comparation
+	 *
+	 * @return null
+	 */
+	protected function findValue( $metaQuery, $comparation ) {
+		foreach ( $metaQuery as $meta ) {
+			if ( $meta['compare'] == $comparation and $meta['key'] == $this->metaSlug() ) {
+				return $meta['value'];
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -156,18 +207,28 @@ abstract class AbstractField {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isSearcheable() {
+		return ( $this->search != self::SEARCH_DISABLED );
+	}
+
+	/**
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 *
 	 * @return null|string
 	 */
-	public function getSearchField() {
+	public function getSearchField( &$fieldNum, $metaQuery ) {
 		switch ( $this->search ) {
 			case self::SEARCH_EXACT:
-				return $this->searchFieldExact();
+				return $this->searchFieldExact( $fieldNum, $metaQuery );
 				break;
 			case self::SEARCH_TEXT:
-				return $this->searchFieldText();
+				return $this->searchFieldText( $fieldNum, $metaQuery );
 				break;
 			case self::SEARCH_RANGE:
-				return $this->searchFieldRange();
+				return $this->searchFieldRange( $fieldNum, $metaQuery );
 				break;
 		}
 
@@ -216,6 +277,13 @@ abstract class AbstractField {
 		$this->slug = $slug;
 
 		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSlug() {
+		return $this->slug;
 	}
 
 	/**

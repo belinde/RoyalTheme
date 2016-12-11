@@ -35,14 +35,12 @@ class Select extends AbstractField {
 	 * @return string
 	 */
 	private function asOptions( $selected = null ) {
-		$content = '<option value="">&nbsp;</option>';
+		$content = $this->htmlTag( 'option', [ 'value' => '' ], '&nbsp;' );
 		foreach ( $this->values as $val => $label ) {
-			$content .= sprintf(
-				'<option%s value="%s">%s</option>',
-				( $val == $selected ) ? ' selected="selected"' : '',
-				esc_attr( $val ),
-				esc_html( $label )
-			);
+			$content .= $this->htmlTag( 'option', [
+				'value'    => $val,
+				'selected' => ( $val == $selected ) ? 'selected' : null
+			], $label );
 		}
 
 		return $content;
@@ -62,12 +60,23 @@ class Select extends AbstractField {
 	}
 
 	/**
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 *
 	 * @return string
 	 */
-	function searchFieldExact() {
+	protected function searchFieldExact( &$fieldNum, $metaQuery ) {
 		return $this->htmlTag( 'select', [
-			'name' => 'royalsearch[exact][' . $this->slug . ']',
-		], $this->asOptions() );
+			'name' => 'royalsearch[meta_query][' . $fieldNum . '][value]'
+		], $this->asOptions( $this->findValue( $metaQuery, '=' ) ) ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][key]',
+			'value' => $this->metaSlug()
+		] ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
+			'value' => '='
+		] );
 	}
 
 	/**
@@ -80,21 +89,34 @@ class Select extends AbstractField {
 	/**
 	 * @return string
 	 */
-	function searchFieldRange() {
+	function searchFieldRange( &$fieldNum, $metaQuery ) {
 		$options = [ ];
+		$value   = $this->findValue( $metaQuery, 'IN' );
+		if ( ! $value ) {
+			$value = [ ];
+		}
 		foreach ( $this->values as $key => $label ) {
 			$options[] = sprintf(
 				'<label>%s&nbsp;%s</label>',
 				$this->htmlTag( 'input', [
-					'type'  => 'checkbox',
-					'name'  => 'royalsearch[range][' . $this->slug . '][]',
-					'value' => $key
+					'type'    => 'checkbox',
+					'name'    => 'royalsearch[meta_query][' . $fieldNum . '][value][]',
+					'value'   => $key,
+					'checked' => in_array( $key, $value ) ? 'checked' : null
 				] ),
 				$label
 			);
 		}
 
-		return implode( '<br>', $options );
+		return implode( '<br>', $options ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][key]',
+			'value' => $this->metaSlug()
+		] ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
+			'value' => 'IN'
+		] );
 	}
 
 	/**

@@ -28,7 +28,11 @@ class Engine {
 	 * Plugin constructor.
 	 */
 	private function __construct() {
-		$this->fields = require __DIR__ . '/fields.php';
+		/** @var AbstractField[] $fields */
+		$fields = require __DIR__ . '/fields.php';
+		foreach ( $fields as $field ) {
+			$this->fields[ $field->getSlug() ] = $field;
+		}
 		register_activation_hook( __FILE__, [ $this, 'activationHook' ] );
 		add_action( 'init', [ $this, 'actionInit' ] );
 		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
@@ -42,20 +46,49 @@ class Engine {
 	 * @return \WP_Query
 	 */
 	public function queryRicerca( $data ) {
-		$data['post_type']      = 'annuncio';
-		$data['post_status']    = 'publish';
-		$data['posts_per_page'] = 20;
+		$query = [
+			'post_type'      => 'annuncio',
+			'post_status'    => 'publish',
+			'posts_per_page' => 20,
+			'meta_query' => [
+				[ 'key' => $this->fields['status']->metaSlug(), 'value' => 'disponibile' ]
+			]
+		];
+		$this->decorateQuery($query, $data, 'tax_query', 'terms');
+		$this->decorateQuery($query, $data, 'meta_query', 'value');
 
-		if ( isset( $data['tax_query'] ) ) {
-			$orig = $data['tax_query'];
-			foreach ( $orig as $cur => $query ) {
-				if ( ! isset( $query['terms'] ) or ! is_array( $query['terms'] ) ) {
-					unset( $data['tax_query'][ $cur ] );
+		return new \WP_Query( $query );
+	}
+
+	/**
+	 * @param array $query
+	 * @param array $data
+	 * @param string $section
+	 * @param string $check
+	 */
+	private function decorateQuery(&$query, $data, $section, $check) {
+		if ( isset( $data[$section] ) ) {
+			foreach ( $data[$section] as $metaQuery ) {
+				if ( isset( $metaQuery[$check] ) and $this->isValue($metaQuery[$check]) ) {
+					$query[$section][] = $metaQuery;
 				}
 			}
 		}
+	}
 
-		return new \WP_Query( $data );
+	/**
+	 * @param mixed $val
+	 *
+	 * @return bool
+	 */
+	private function isValue($val) {
+		if ( is_numeric($val)) {
+			return (bool)intval($val);
+		}
+		if ( is_array($val) or is_object($val)) {
+			return (bool)$val;
+		}
+		return (bool)trim($val);
 	}
 
 	/**
@@ -109,7 +142,7 @@ class Engine {
 			'description'          => "Annunci di vendita o affitto immobili",
 			'public'               => true,
 			'menu_icon'            => 'dashicons-admin-multisite',
-			'supports'             => [ 'title', 'editor', 'thumbnail', 'excerpt', 'revisions' ],
+			'supports'             => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
 			'register_meta_box_cb' => [ $this, 'metaboxCallback' ],
 			'taxonomies'           => [ 'contratto', 'tipologia' ],
 			'has_archive'          => true

@@ -52,25 +52,34 @@ class Boolean extends AbstractField {
 	/**
 	 * @return string
 	 */
-	function searchFieldExact() {
+	protected function searchFieldExact( &$fieldNum, $metaQuery ) {
 		return $this->htmlTag( 'input', [
-			'name'  => 'royalsearch[exact]['.$this->slug.']',
-			'type'  => 'checkbox',
-			'value' => '1'
-		]);
+			'type'    => 'checkbox',
+			'name'    => 'royalsearch[meta_query][' . $fieldNum . '][value]',
+			'value'   => '1',
+			'checked' => $this->findValue( $metaQuery, '=' ) ? 'checked' : null
+		] ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][key]',
+			'value' => $this->metaSlug()
+		] ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
+			'value' => '='
+		] );
 	}
 
 	/**
 	 * @return null
 	 */
-	function searchFieldText() {
+	protected function searchFieldText() {
 		return null;
 	}
 
 	/**
 	 * @return null
 	 */
-	function searchFieldRange() {
+	protected function searchFieldRange() {
 		return null;
 	}
 

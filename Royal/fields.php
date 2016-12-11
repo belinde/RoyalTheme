@@ -9,6 +9,15 @@ return [
 		->setEmpty( 'trattativa riservata' )
 		->setSearch( _::SEARCH_RANGE )
 	,
+	( new Select( 'status' ) )
+		->setValues( [
+			'disponibile' => 'Disponibile sul mercato',
+			'trattativa'  => 'In trattativa',
+			'terminato'   => 'Venduto o piazzato'
+		] )
+		->setSearch( _::SEARCH_DISABLED )
+		->setHelp( "Determina se l'annuncio è visibile o meno sul sito" )
+	,
 	( new Integer( 'vani' ) )
 		->setSearch( _::SEARCH_RANGE )
 	,
@@ -16,7 +25,7 @@ return [
 		->setAppend( 'm&sup2;' )
 		->setSearch( _::SEARCH_RANGE )
 	,
-	( new Text( 'stato' ) )
+	( new Text( 'condizione' ) )
 		->setSearch( _::SEARCH_DISABLED )
 	,
 	( new Integer( 'bagni', "Numero bagni" ) )
@@ -38,8 +47,13 @@ return [
 		] )
 		->setSearch( _::SEARCH_RANGE )
 	,
-	( new Text( 'condizionatore', "Aria condizionata" ) )
-		->setSearch( _::SEARCH_DISABLED )
+	( new Select( 'condizionatore', "Aria condizionata" ) )
+		->setValues( [
+			'assente'     => 'Assente',
+			'predisposto' => 'Con predisposizione',
+			'presente'    => 'Presente'
+		] )
+		->setSearch( _::SEARCH_EXACT )
 	,
 	( new Boolean( 'ascensore' ) )
 		->setSearch( _::SEARCH_EXACT )
