@@ -44,22 +44,28 @@ class SearchForm {
 	 * @return string
 	 */
 	public function __toString() {
-		$str = '<form method="POST" action="' . esc_attr( $this->action ) . '">';
+		$str = $this->action
+			? '<form method="POST" action="' . esc_attr( $this->action ) . '">'
+			: '';
 		$str .= '<table><tbody>';
 		$str .= $this->rowTaxonomy( 'contratto' );
 		$str .= $this->rowTaxonomy( 'tipologia' );
 		$str .= $this->rowTaxonomy( 'comune' );
-		$metaQuery = isset($this->query['meta_query']) ? $this->query['meta_query'] : [];
+		$metaQuery = isset( $this->query['meta_query'] ) ? $this->query['meta_query'] : [ ];
 		foreach ( $this->engine->getFields() as $field ) {
 			if ( $field->isSearcheable() ) {
 				$str .= $this->row( $field->getLabel(), $field->getSearchField( $this->meta, $metaQuery ) );
-				$this->meta++;
+				$this->meta ++;
 			}
 		}
 		$str .= '</tbody><tfoot>';
-		$str .= $this->row( '&nbsp;', '<input type="submit" value="Cerca immobile">' );
+		if ( $this->action ) {
+			$str .= $this->row( '&nbsp;', '<input type="submit" value="Cerca immobile">' );
+		}
 		$str .= '</tfoot></table>';
-		$str .= '</form>';
+		if ( $this->action ) {
+			$str .= '</form>';
+		}
 
 		return $str;
 	}

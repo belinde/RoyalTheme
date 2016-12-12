@@ -15,6 +15,7 @@ use Royal\Fields\AbstractField;
  * @package Royal
  */
 class Engine {
+	use Tools;
 	/**
 	 * @var Engine
 	 */
@@ -37,7 +38,13 @@ class Engine {
 		add_action( 'init', [ $this, 'actionInit' ] );
 		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
 		add_action( 'save_post_annuncio', [ $this, 'actionSavePostAnnuncio' ], 10, 2 );
+		add_action( 'save_post_ricerca', [ $this, 'actionSavePostRicerca' ], 10, 2 );
 		add_action( 'admin_print_styles-post.php', [ $this, 'actionAdminPrintStylesPostPhp' ] );
+		add_action( 'after_setup_theme', [ $this, 'actionAfterSetupTheme' ] );
+	}
+
+	public function actionAfterSetupTheme() {
+		add_theme_support( 'post-thumbnails', [ 'annuncio' ] );
 	}
 
 	/**
@@ -50,12 +57,12 @@ class Engine {
 			'post_type'      => 'annuncio',
 			'post_status'    => 'publish',
 			'posts_per_page' => 20,
-			'meta_query' => [
+			'meta_query'     => [
 				[ 'key' => $this->fields['status']->metaSlug(), 'value' => 'disponibile' ]
 			]
 		];
-		$this->decorateQuery($query, $data, 'tax_query', 'terms');
-		$this->decorateQuery($query, $data, 'meta_query', 'value');
+		$this->decorateQuery( $query, $data, 'tax_query', 'terms' );
+		$this->decorateQuery( $query, $data, 'meta_query', 'value' );
 
 		return new \WP_Query( $query );
 	}
@@ -66,29 +73,14 @@ class Engine {
 	 * @param string $section
 	 * @param string $check
 	 */
-	private function decorateQuery(&$query, $data, $section, $check) {
-		if ( isset( $data[$section] ) ) {
-			foreach ( $data[$section] as $metaQuery ) {
-				if ( isset( $metaQuery[$check] ) and $this->isValue($metaQuery[$check]) ) {
-					$query[$section][] = $metaQuery;
+	private function decorateQuery( &$query, $data, $section, $check ) {
+		if ( isset( $data[ $section ] ) ) {
+			foreach ( $data[ $section ] as $metaQuery ) {
+				if ( isset( $metaQuery[ $check ] ) and $this->isTrue( $metaQuery[ $check ] ) ) {
+					$query[ $section ][] = $metaQuery;
 				}
 			}
 		}
-	}
-
-	/**
-	 * @param mixed $val
-	 *
-	 * @return bool
-	 */
-	private function isValue($val) {
-		if ( is_numeric($val)) {
-			return (bool)intval($val);
-		}
-		if ( is_array($val) or is_object($val)) {
-			return (bool)$val;
-		}
-		return (bool)trim($val);
 	}
 
 	/**
@@ -143,8 +135,8 @@ class Engine {
 			'public'               => true,
 			'menu_icon'            => 'dashicons-admin-multisite',
 			'supports'             => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
-			'register_meta_box_cb' => [ $this, 'metaboxCallback' ],
-			'taxonomies'           => [ 'contratto', 'tipologia' ],
+			'register_meta_box_cb' => [ $this, 'metaboxCallbackAnnuncio' ],
+			'taxonomies'           => [ 'contratto', 'tipologia', 'comune' ],
 			'has_archive'          => true
 		] );
 		register_taxonomy( 'contratto', 'annuncio', [
@@ -214,13 +206,53 @@ class Engine {
 		register_taxonomy_for_object_type( 'tipologia', 'annuncio' );
 		register_taxonomy_for_object_type( 'comune', 'annuncio' );
 
+		register_post_type( 'ricerca', [
+			'label'                => 'Ricerche',
+			'labels'               => [
+				'name'                  => 'Ricerche',
+				'singular_name'         => 'Ricerca',
+				'menu_name'             => 'Ricerche salvate',
+				'name_admin_bar'        => 'Ricerca',
+				'add_new'               => 'Aggiungi',
+				'add_new_item'          => 'Aggiungi ricerca',
+				'new_item'              => 'Nuova ricerca',
+				'edit_item'             => 'Modifica ricerca',
+				'view_item'             => 'Visualizza ricerca',
+				'all_items'             => 'Tutte le ricerche',
+				'search_items'          => 'Cerca tra le ricerche',
+				'parent_item_colon'     => 'Ricerca genitore',
+				'not_found'             => 'Nessuna ricerca trovata',
+				'not_found_in_trash'    => 'Nessuna ricerca trovata nel cestino',
+				'archives'              => 'Archivio ricerche',
+				'insert_into_item'      => "Inserisci nella ricerca",
+				'uploaded_to_this_item' => "Carica in questa ricerca"
+			],
+			'description'          => "Ricerche salvate da utenti e amministratori",
+			'public'               => true,
+			'menu_icon'            => 'dashicons-search',
+			'supports'             => [ 'title' ],
+			'register_meta_box_cb' => [ $this, 'metaboxCallbackRicerca' ],
+			'has_archive'          => false,
+			'exclude_from_search'  => true,
+			'publicly_queryable'   => false,
+			'show_in_nav_menus'    => false
+		] );
 
-//		flush_rewrite_rules();
+		flush_rewrite_rules();
 	}
 
-	/**
-	 */
-	public function metaboxCallback() {
+	public function metaboxCallbackRicerca() {
+		add_meta_box(
+			'royal_ricerca_form',
+			"Ricerca",
+			[ $this, 'metaboxRicercaCallback' ],
+			'ricerca',
+			'advanced',
+			'high'
+		);
+	}
+
+	public function metaboxCallbackAnnuncio() {
 		add_meta_box(
 			'royal_gallery_annuncio',
 			"Galleria fotografica",
@@ -237,6 +269,18 @@ class Engine {
 			'advanced',
 			'high'
 		);
+	}
+
+	/**
+	 * @param \WP_Post $post
+	 */
+	public function metaboxRicercaCallback( \WP_Post $post ) {
+		wp_nonce_field( __FUNCTION__, 'royal_ricerca_nonce' );
+		$query = get_post_meta( $post->ID, 'royal_ricerca', true );
+		if ( ! is_array( $query ) ) {
+			$query = [ ];
+		}
+		echo new SearchForm( null, $query );
 	}
 
 	/**
@@ -262,7 +306,7 @@ class Engine {
 		$post = get_post();
 		echo '<dl class="royal_informations">';
 		foreach ( $this->fields as $field ) {
-			if ( $field->hasValue( $post ) ) {
+			if ( $field->isPublic() and $field->hasValue( $post ) ) {
 				$field->show( $post );
 			}
 		}
@@ -315,6 +359,25 @@ class Engine {
 		remove_filter( 'teeny_mce_buttons', $nobuttons );
 	}
 
+	/**
+	 * @param integer $postId
+	 * @param \WP_Post $post
+	 */
+	public function actionSavePostRicerca( $postId, \WP_Post $post ) {
+		$postType = get_post_type_object( $post->post_type );
+		if ( ! current_user_can( $postType->cap->edit_post, $postId ) ) {
+			return;
+		}
+		if ( isset( $_POST['royal_ricerca_nonce'] )
+		     and wp_verify_nonce( $_POST['royal_ricerca_nonce'], 'metaboxRicercaCallback' )
+		) {
+			update_post_meta(
+				$postId,
+				'royal_ricerca',
+				isset( $_POST['royalsearch'] ) ? $_POST['royalsearch'] : [ ]
+			);
+		}
+	}
 
 	/**
 	 * @param integer $postId

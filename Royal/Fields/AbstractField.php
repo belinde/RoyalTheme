@@ -46,6 +46,10 @@ abstract class AbstractField {
 	 * @var string
 	 */
 	protected $search;
+	/**
+	 * @var bool
+	 */
+	protected $internal;
 
 	/**
 	 * @return string
@@ -65,6 +69,7 @@ abstract class AbstractField {
 			$label = ucfirst( $slug );
 		}
 		$this->setSlug( $slug )->setLabel( $label );
+		$this->setSearch( self::SEARCH_DISABLED );
 	}
 
 	/**
@@ -133,7 +138,7 @@ abstract class AbstractField {
 	 * @return string
 	 */
 	protected function searchFieldExact( &$fieldNum, $metaQuery ) {
-		return $this->htmlMetaTag( $fieldNum ,$metaQuery, '=' );
+		return $this->htmlMetaTag( $fieldNum, $metaQuery, '=' );
 	}
 
 	/**
@@ -143,7 +148,7 @@ abstract class AbstractField {
 	 * @return string
 	 */
 	protected function searchFieldText( &$fieldNum, $metaQuery ) {
-		return $this->htmlMetaTag( $fieldNum ,$metaQuery, 'LIKE' );
+		return $this->htmlMetaTag( $fieldNum, $metaQuery, 'LIKE' );
 	}
 
 	/**
@@ -153,9 +158,9 @@ abstract class AbstractField {
 	 * @return string
 	 */
 	protected function searchFieldRange( &$fieldNum, $metaQuery ) {
-		$min = $this->htmlMetaTag( $fieldNum ,$metaQuery, '>=' );
+		$min = $this->htmlMetaTag( $fieldNum, $metaQuery, '>=' );
 		$fieldNum ++;
-		$max = $this->htmlMetaTag( $fieldNum ,$metaQuery, '<=' );
+		$max = $this->htmlMetaTag( $fieldNum, $metaQuery, '<=' );
 
 		return "tra $min e $max";
 	}
@@ -167,20 +172,20 @@ abstract class AbstractField {
 	 *
 	 * @return string
 	 */
-	protected function htmlMetaTag($fieldNum, $metaQuery, $comparation) {
+	protected function htmlMetaTag( $fieldNum, $metaQuery, $comparation ) {
 		return $this->htmlTag( 'input', [
-				'type'  => 'text',
-				'name'  => 'royalsearch[meta_query][' . $fieldNum . '][value]',
-				'value' => $this->findValue( $metaQuery, $comparation )
-			] ) . $this->htmlTag( 'input', [
-				'type'  => 'hidden',
-				'name'  => 'royalsearch[meta_query][' . $fieldNum . '][key]',
-				'value' => $this->metaSlug()
-			] ) . $this->htmlTag( 'input', [
-				'type'  => 'hidden',
-				'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
-				'value' => $comparation
-			] );
+			'type'  => 'text',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][value]',
+			'value' => $this->findValue( $metaQuery, $comparation )
+		] ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][key]',
+			'value' => $this->metaSlug()
+		] ) . $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
+			'value' => $comparation
+		] );
 	}
 
 	/**
@@ -243,7 +248,7 @@ abstract class AbstractField {
 	public function hasValue( \WP_Post $post ) {
 		$raw = get_post_meta( $post->ID, $this->metaSlug(), true );
 
-		return ( $raw or $this->empty );
+		return ( $this->isTrue( $raw ) or $this->empty );
 	}
 
 	/**
@@ -251,20 +256,21 @@ abstract class AbstractField {
 	 */
 	public function show( \WP_Post $post ) {
 		$raw = get_post_meta( $post->ID, $this->metaSlug(), true );
-		if ( $raw ) {
-			$value = $this->format( $raw );
+		if ( $this->isTrue( $raw ) ) {
+			$value    = $this->format( $raw );
+			$hasValue = true;
 		} else {
-			if ( $this->empty ) {
-				$value = $this->empty;
-			} else {
+			if ( ! $this->empty ) {
 				return;
 			}
+			$value    = $this->empty;
+			$hasValue = false;
 		}
 		printf(
 			'<dt>%s</dt><dd>%s%s</dd>',
 			$this->label,
 			$value,
-			$this->append ? '&thinsp;' . $this->append : ''
+			( $this->append and $hasValue ) ? '&thinsp;' . $this->append : ''
 		);
 	}
 
@@ -339,6 +345,22 @@ abstract class AbstractField {
 		$this->search = $type;
 
 		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function setInternal() {
+		$this->internal = true;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isPublic() {
+		return ! $this->internal;
 	}
 
 }

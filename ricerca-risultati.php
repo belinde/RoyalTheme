@@ -8,11 +8,12 @@ echo '<h1>Risultati ricerca</h1>';
 $resQuery = $royal->queryRicerca( $_POST['royalsearch'] );
 echo new SearchForm( '/ricerca/risultati', $_POST['royalsearch'] );
 
-if ( $resQuery->have_posts()) {
+if ( $resQuery->have_posts() ) {
 	echo '<ol>';
 	while ( $resQuery->have_posts() ) {
 		$resQuery->the_post();
-		the_title( '<li>', '</li>' );
+		the_title( '<h2><a href="' . esc_url( get_permalink() ) . '">', '</a></h2>' );
+		the_post_thumbnail('thumbnail');
 	}
 	echo '</ol>';
 } else {
@@ -29,6 +30,6 @@ if ( $resQuery->have_posts()) {
 </table>
 <?php
 
-print( $resQuery->request);
+print( $resQuery->request );
 //pr($resQuery->query_vars);
 get_footer(); ?>

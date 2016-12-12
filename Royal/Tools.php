@@ -13,6 +13,20 @@ namespace Royal;
  * @package Royal
  */
 trait Tools {
+	/**
+	 * @param mixed $val
+	 *
+	 * @return bool
+	 */
+	protected function isTrue($val) {
+		if ( is_numeric($val)) {
+			return (bool)intval($val);
+		}
+		if ( is_array($val) or is_object($val)) {
+			return (bool)$val;
+		}
+		return (bool)trim($val);
+	}
 
 	/**
 	 * @param string $tag
