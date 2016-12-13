@@ -30,6 +30,13 @@ class Integer extends Text {
 	}
 
 	/**
+	 * @return string
+	 */
+	protected function metaQueryType() {
+		return 'UNSIGNED';
+	}
+
+	/**
 	 * @param mixed $value
 	 *
 	 * @return string

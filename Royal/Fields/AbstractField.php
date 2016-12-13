@@ -185,8 +185,20 @@ abstract class AbstractField {
 			'type'  => 'hidden',
 			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
 			'value' => $comparation
+		] ). $this->htmlTag( 'input', [
+			'type'  => 'hidden',
+			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][type]',
+			'value' => $this->metaQueryType()
 		] );
 	}
+
+    /**
+     * @return string
+     */
+    protected function metaQueryType()
+    {
+        return 'CHAR';
+    }
 
 	/**
 	 * @param $metaQuery
