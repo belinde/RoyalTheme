@@ -54,7 +54,7 @@ class Engine {
 			'before_title'  => '<h2 class="widgettitle">',
 			'after_title'   => '</h2>',
 		] );
-		register_widget( Widgets\MenuAnnunci::class );
+		register_widget( '\\Royal\\Widgets\\MenuAnnunci' );
 	}
 
 	public function actionAfterSetupTheme() {
