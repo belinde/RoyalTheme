@@ -36,11 +36,25 @@ class Engine {
 		}
 		register_activation_hook( __FILE__, [ $this, 'activationHook' ] );
 		add_action( 'init', [ $this, 'actionInit' ] );
-		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
+		add_action( 'widgets_init', [ $this, 'actionWidgetsInit' ] );
 		add_action( 'save_post_annuncio', [ $this, 'actionSavePostAnnuncio' ], 10, 2 );
 		add_action( 'save_post_ricerca', [ $this, 'actionSavePostRicerca' ], 10, 2 );
 		add_action( 'admin_print_styles-post.php', [ $this, 'actionAdminPrintStylesPostPhp' ] );
 		add_action( 'after_setup_theme', [ $this, 'actionAfterSetupTheme' ] );
+
+		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
+	}
+
+	public function actionWidgetsInit() {
+		register_sidebar( [
+			'name'          => "Barra laterale",
+			'id'            => 'barralaterale',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</div>',
+			'before_title'  => '<h2 class="widgettitle">',
+			'after_title'   => '</h2>',
+		] );
+		register_widget( Widgets\MenuAnnunci::class );
 	}
 
 	public function actionAfterSetupTheme() {
