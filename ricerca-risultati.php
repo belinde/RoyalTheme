@@ -5,8 +5,9 @@ use Royal\SearchForm;
 get_header();
 $royal = Engine::getInstance();
 echo '<h1>Risultati ricerca</h1>';
-$resQuery = $royal->queryRicerca( $_POST['royalsearch'] );
-echo new SearchForm( '/ricerca/risultati', $_POST['royalsearch'] );
+$ricerca = isset($_POST['royalsearch']) ? $_POST['royalsearch'] : [];
+$resQuery = $royal->queryRicerca( $ricerca );
+echo new SearchForm( Engine::URL_RISULTATI, $ricerca );
 
 if ( $resQuery->have_posts() ) {
 	echo '<ol>';
@@ -23,7 +24,7 @@ if ( $resQuery->have_posts() ) {
 ?>
 <table>
 	<tr>
-		<td valign="top"><?php pr( $_POST['royalsearch'] ); ?></td>
+		<td valign="top"><?php pr( $ricerca ); ?></td>
 		<td valign="top"><?php pr( $resQuery->query ); ?></td>
 		<td valign="top"><?php pr( $resQuery->query_vars ); ?></td>
 	</tr>

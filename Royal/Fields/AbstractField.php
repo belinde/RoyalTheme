@@ -185,20 +185,19 @@ abstract class AbstractField {
 			'type'  => 'hidden',
 			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][compare]',
 			'value' => $comparation
-		] ). $this->htmlTag( 'input', [
+		] ) . $this->htmlTag( 'input', [
 			'type'  => 'hidden',
 			'name'  => 'royalsearch[meta_query][' . $fieldNum . '][type]',
 			'value' => $this->metaQueryType()
 		] );
 	}
 
-    /**
-     * @return string
-     */
-    protected function metaQueryType()
-    {
-        return 'CHAR';
-    }
+	/**
+	 * @return string
+	 */
+	protected function metaQueryType() {
+		return 'CHAR';
+	}
 
 	/**
 	 * @param $metaQuery
@@ -264,10 +263,20 @@ abstract class AbstractField {
 	}
 
 	/**
-	 * @param \WP_Post $post
+	 * @param $post
 	 */
-	public function show( \WP_Post $post ) {
-		$raw = get_post_meta( $post->ID, $this->metaSlug(), true );
+	public function show( $post ) {
+		echo '<dt>' . $this->label . '</dt><dd>';
+		$this->printer( $post );
+		echo '</dd>';
+	}
+
+	/**
+	 * @param mixed $post
+	 */
+	public function printer( $post ) {
+		$postId = ( $post instanceof \WP_Post ) ? $post->ID : intval( $post );
+		$raw    = get_post_meta( $postId, $this->metaSlug(), true );
 		if ( $this->isTrue( $raw ) ) {
 			$value    = $this->format( $raw );
 			$hasValue = true;
@@ -278,12 +287,10 @@ abstract class AbstractField {
 			$value    = $this->empty;
 			$hasValue = false;
 		}
-		printf(
-			'<dt>%s</dt><dd>%s%s</dd>',
-			$this->label,
-			$value,
-			( $this->append and $hasValue ) ? '&thinsp;' . $this->append : ''
-		);
+		echo $value;
+		if ( $this->append and $hasValue ) {
+			echo '&thinsp;' . $this->append;
+		}
 	}
 
 	/**

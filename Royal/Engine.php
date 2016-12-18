@@ -15,6 +15,7 @@ use Royal\Fields\AbstractField;
  * @package Royal
  */
 class Engine {
+	const URL_RISULTATI = '/ricerca/risultati/';
 	use Tools;
 	/**
 	 * @var Engine
@@ -41,8 +42,35 @@ class Engine {
 		add_action( 'save_post_ricerca', [ $this, 'actionSavePostRicerca' ], 10, 2 );
 		add_action( 'admin_print_styles-post.php', [ $this, 'actionAdminPrintStylesPostPhp' ] );
 		add_action( 'after_setup_theme', [ $this, 'actionAfterSetupTheme' ] );
+		add_action( 'manage_posts_custom_column', [ $this, 'actionManagePostsCustomColumn' ], 10, 2 );
 
 		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
+		add_filter( 'manage_annuncio_posts_columns', [ $this, 'filterManageAnnuncioPostsColumns' ] );
+
+		error_reporting( E_ALL );
+	}
+
+	/**
+	 * @param $column
+	 * @param $post_id
+	 */
+	public function actionManagePostsCustomColumn( $column, $post_id ) {
+		if ( isset( $this->fields[ $column ] ) ) {
+			$this->fields[ $column ]->printer( $post_id );
+		}
+	}
+
+	/**
+	 * @param array $columns
+	 *
+	 * @return array
+	 */
+	public function filterManageAnnuncioPostsColumns( $columns ) {
+		unset( $columns['date'] );
+		$columns['prezzo'] = $this->fields['prezzo']->getLabel();
+		$columns['status'] = $this->fields['status']->getLabel();
+
+		return $columns;
 	}
 
 	public function actionWidgetsInit() {
@@ -70,11 +98,15 @@ class Engine {
 		$query = [
 			'post_type'      => 'annuncio',
 			'post_status'    => 'publish',
-			'posts_per_page' => 20,
+			'posts_per_page' => isset( $data['posts_per_page'] ) ? $data['posts_per_page'] : 20,
 			'meta_query'     => [
 				[ 'key' => $this->fields['status']->metaSlug(), 'value' => 'disponibile' ]
 			]
 		];
+		royalQueryOverrider( $query, 'rs_com', 'comune' );
+		royalQueryOverrider( $query, 'rs_con', 'contratto' );
+		royalQueryOverrider( $query, 'rs_tip', 'tipologia' );
+
 		$this->decorateQuery( $query, $data, 'tax_query', 'terms' );
 		$this->decorateQuery( $query, $data, 'meta_query', 'value' );
 
@@ -105,6 +137,7 @@ class Engine {
 	public function filterTemplateInclude( $template ) {
 		if ( is_home() ) {
 			$ricerca = get_query_var( 'ricerca' );
+			vd( $ricerca );
 			if ( in_array( $ricerca, [ 'risultati' ] ) ) {
 				return get_query_template( 'ricerca-risultati' );
 			}
@@ -252,7 +285,7 @@ class Engine {
 			'show_in_nav_menus'    => false
 		] );
 
-		flush_rewrite_rules();
+//		flush_rewrite_rules();
 	}
 
 	public function metaboxCallbackRicerca() {
@@ -325,6 +358,43 @@ class Engine {
 			}
 		}
 		echo '</dl>';
+	}
+
+	public function theRelateds() {
+		$dataContr = wp_get_post_terms( get_the_ID(), 'contratto' );
+		$dataTipo  = wp_get_post_terms( get_the_ID(), 'tipologia' );
+		if ( $dataTipo and $dataContr ) {
+			/** @var \WP_Term $contratto */
+			$contratto = array_shift( $dataContr );
+			/** @var \WP_Term $tipologia */
+			$tipologia = array_shift( $dataTipo );
+			printf( '<h3>%s in %s</h3>', $tipologia->name, $contratto->name );
+			$query = $this->queryRicerca( [
+				'posts_per_page' => 4,
+				'tax_query'      => [
+					[
+						'terms'    => [ $contratto->term_id ],
+						'field'    => 'term_id',
+						'taxonomy' => 'contratto'
+					],
+					[
+						'terms'    => [ $tipologia->term_id ],
+						'field'    => 'term_id',
+						'taxonomy' => 'tipologia'
+					]
+				]
+			] );
+			echo '<div style="border:1px solid darkgreen">';
+			while ( $query->have_posts() ) {
+				$post = $query->next_post();
+				echo '<a href="' . esc_url( get_permalink($post) ) . '" style="float:left;display:block;">';
+				echo get_the_post_thumbnail( $post, 'thumbnail' );
+				echo '<br>';
+				echo implode( ', ', wp_get_post_terms( $post->ID, 'comune', [ "fields" => "names" ] ) );
+				echo '</a>';
+			}
+			echo '<br style="clear:both;"></div>';
+		}
 	}
 
 	public function theGallery() {

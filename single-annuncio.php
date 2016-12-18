@@ -5,14 +5,7 @@ get_header();
 $royal = Engine::getInstance();
 
 the_post();
-?>
-<h1>Annunciaziò, annunciaziò</h1>
-<article>
-	<?php the_title( '<h2 class="entry-title">', '</h2>' ); ?>
-	<div class="entry-content"><?php the_content(); ?></div>
-	<?php $royal->theInformations(); ?>
-	<?php $royal->theGallery(); ?>
-</article>
-<?php
+
+get_template_part('single-annuncio', get_post_meta(get_the_ID(), 'royal_meta_status', true));
 
 get_footer(); ?>

@@ -8,6 +8,8 @@
 
 namespace Royal\Widgets;
 
+use Royal\Engine;
+
 /**
  * Class MenuAnnunci
  * @package Royal\Widgets
@@ -109,15 +111,15 @@ class MenuAnnunci extends \WP_Widget {
 		echo '<ul>';
 		foreach ( $structured as $contratto => $listaContratto ) {
 			echo '<li>';
-			$this->linker( $this->contratti[ $contratto ] );
+			$this->linker( $contratto );
 			echo '<ul>';
 			foreach ( $listaContratto as $tipologia => $listaTipologia ) {
 				echo '<li>';
-				$this->linker( $this->tipologie[ $tipologia ] );
+				$this->linker( $contratto, $tipologia );
 				echo '<ul>';
 				foreach ( $listaTipologia as $comune => $listaPosts ) {
 					echo '<li>';
-					$this->linker( $this->comuni[ $comune ] );
+					$this->linker( $contratto, $tipologia, $comune );
 					echo ' (' . count( $listaPosts ) . ')';
 					echo '</li>';
 				}
@@ -131,13 +133,25 @@ class MenuAnnunci extends \WP_Widget {
 		echo $args['after_widget'];
 	}
 
-	private function linker( \WP_Term $term ) {
-		$term_link = get_term_link( $term );
-
-		if ( is_wp_error( $term_link ) ) {
-			return;
+	/**
+	 * @param $contratto
+	 * @param null $tipologia
+	 * @param null $comune
+	 */
+	private function linker( $contratto, $tipologia = null, $comune = null ) {
+		$url   = add_query_arg( [
+			'rs_con' => $contratto,
+			'rs_tip' => $tipologia,
+			'rs_com' => $comune
+		], Engine::URL_RISULTATI );
+		$label = $this->contratti[ $contratto ]->name;
+		if ( $tipologia ) {
+			$label = $this->tipologie[ $tipologia ]->name;
+		}
+		if ( $comune ) {
+			$label = $this->comuni[ $comune ]->name;
 		}
 
-		echo '<a href="' . esc_url( $term_link ) . '">' . $term->name . '</a>';
+		echo '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
 	}
 }

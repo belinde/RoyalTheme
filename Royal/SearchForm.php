@@ -37,6 +37,10 @@ class SearchForm {
 	public function __construct( $action, $query ) {
 		$this->action = $action;
 		$this->query  = $query;
+		royalQueryOverrider( $this->query, 'rs_com', 'comune' );
+		royalQueryOverrider( $this->query, 'rs_con', 'contratto' );
+		royalQueryOverrider( $this->query, 'rs_tip', 'tipologia' );
+
 		$this->engine = Engine::getInstance();
 	}
 
@@ -102,6 +106,7 @@ class SearchForm {
 			foreach ( $this->query['tax_query'] as $query ) {
 				if ( $query['taxonomy'] == $taxonomy ) {
 					$values = isset( $query['terms'] ) ? $query['terms'] : [ ];
+					break;
 				}
 			}
 		}
