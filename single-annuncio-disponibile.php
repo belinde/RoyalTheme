@@ -6,4 +6,5 @@
 	<div class="entry-content"><?php the_content(); ?></div>
 	<?php Engine::getInstance()->theInformations(); ?>
 	<?php Engine::getInstance()->theGallery(); ?>
+	<?php Engine::getInstance()->theMap(); ?>
 </article>

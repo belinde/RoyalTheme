@@ -16,6 +16,7 @@ use Royal\Fields\AbstractField;
  */
 class Engine {
 	const URL_RISULTATI = '/ricerca/risultati/';
+	const GOOGLE_APIKEY = 'AIzaSyDJSI3JyE0TU8DiXQAHHfHUXVt-qo3OZWE';
 	use Tools;
 	/**
 	 * @var Engine
@@ -43,11 +44,29 @@ class Engine {
 		add_action( 'admin_print_styles-post.php', [ $this, 'actionAdminPrintStylesPostPhp' ] );
 		add_action( 'after_setup_theme', [ $this, 'actionAfterSetupTheme' ] );
 		add_action( 'manage_posts_custom_column', [ $this, 'actionManagePostsCustomColumn' ], 10, 2 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'actionWpEnqueueScripts' ] );
 
 		add_filter( 'template_include', [ $this, 'filterTemplateInclude' ] );
 		add_filter( 'manage_annuncio_posts_columns', [ $this, 'filterManageAnnuncioPostsColumns' ] );
 
 		error_reporting( E_ALL );
+	}
+
+	public function actionWpEnqueueScripts() {
+		wp_enqueue_script(
+			'royalScripts',
+			get_template_directory_uri() . '/js/general.js',
+			[ 'jquery' ],
+			null,
+			true
+		);
+		wp_enqueue_script(
+			'royalGoogleMaps',
+			'https://maps.googleapis.com/maps/api/js?callback=royalInitMap&key=' . self::GOOGLE_APIKEY ,
+			[ 'royalScripts' ],
+			null,
+			true
+		);
 	}
 
 	/**
@@ -137,7 +156,6 @@ class Engine {
 	public function filterTemplateInclude( $template ) {
 		if ( is_home() ) {
 			$ricerca = get_query_var( 'ricerca' );
-			vd( $ricerca );
 			if ( in_array( $ricerca, [ 'risultati' ] ) ) {
 				return get_query_template( 'ricerca-risultati' );
 			}
@@ -332,6 +350,25 @@ class Engine {
 
 	/**
 	 * @param \WP_Post $post
+	 *
+	 * @return string
+	 */
+	private function mapUrl( \WP_Post $post ) {
+		$indirizzo = get_post_meta( $post->ID, $this->fields['indirizzo']->metaSlug(), true );
+		$params    = [
+			'size'     => '500x350',
+			'maptype'  => 'terrain', // roadmap, satellite, hybrid, terrain
+			'language' => 'it',
+			'markers'  => $indirizzo,
+			'zoom'     => 14,
+			'key'      => self::GOOGLE_APIKEY
+		];
+
+		return 'https://maps.googleapis.com/maps/api/staticmap?' . http_build_query( $params );
+	}
+
+	/**
+	 * @param \WP_Post $post
 	 */
 	public function metaboxDatiCallback( \WP_Post $post ) {
 		wp_nonce_field( __FUNCTION__, 'royal_dati_nonce' );
@@ -340,6 +377,7 @@ class Engine {
 			$field->formTableRow( $post );
 		}
 		echo '</tbody></table>';
+		echo '<img src="' . $this->mapUrl( $post ) . '">';
 	}
 
 	/**
@@ -387,7 +425,7 @@ class Engine {
 			echo '<div style="border:1px solid darkgreen">';
 			while ( $query->have_posts() ) {
 				$post = $query->next_post();
-				echo '<a href="' . esc_url( get_permalink($post) ) . '" style="float:left;display:block;">';
+				echo '<a href="' . esc_url( get_permalink( $post ) ) . '" style="float:left;display:block;">';
 				echo get_the_post_thumbnail( $post, 'thumbnail' );
 				echo '<br>';
 				echo implode( ', ', wp_get_post_terms( $post->ID, 'comune', [ "fields" => "names" ] ) );
@@ -395,6 +433,14 @@ class Engine {
 			}
 			echo '<br style="clear:both;"></div>';
 		}
+	}
+
+	public function theMap() {
+		echo $this->htmlTag( 'div', [
+			'id'             => 'royalMap',
+			'style'          => 'height:400px;width:500px;',
+			'data-indirizzo' => get_post_meta( get_the_ID(), $this->fields['indirizzo']->metaSlug(), true )
+		], '' );
 	}
 
 	public function theGallery() {
