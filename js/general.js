@@ -23,7 +23,6 @@ function royalInitMap() {
     } else {
         container = document.getElementById('royalMapSearch');
         if (container) {
-            var markers = [];
             var data = jQuery.parseJSON(jQuery('#royalMapSearch').text());
             geocoder = new google.maps.Geocoder();
             var map = new google.maps.Map(container, {
@@ -31,23 +30,27 @@ function royalInitMap() {
                 zoom: 10
             });
             for (var i = data.length - 1; i >= 0; i--) {
-                var info = data[i];
-                geocoder.geocode({'address': data[i].address}, function (results, status) {
-                    if (status === 'OK') {
-                        var contentString = '<a href="' + info.permalink + '"><img style="float: left; margin:5px;" src="' + info.thumbnail + '"></a><h3>' + info.title + '</h3><p>' + info.address + '</p>';
-                        var infowindow = new google.maps.InfoWindow({
-                            content: contentString
-                        });
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location,
-                            title: info.title
-                        });
-                        marker.addListener('click', function () {
-                            infowindow.open(map, marker);
-                        });
-                    }
-                });
+                geocoder.geocode(
+                    {'address': data[i].address},
+                    (function (info) {
+                        return function (results, status) {
+                            if (status === 'OK') {
+                                var contentString = '<a href="' + info.permalink + '"><img style="float: left; margin:5px;" src="' + info.thumbnail + '"></a><h3>' + info.title + '</h3><p>' + info.address + '</p>';
+                                var infowindow = new google.maps.InfoWindow({
+                                    content: contentString
+                                });
+                                var marker = new google.maps.Marker({
+                                    map: map,
+                                    position: results[0].geometry.location,
+                                    title: info.title
+                                });
+                                marker.addListener('click', function () {
+                                    infowindow.open(map, marker);
+                                });
+                            }
+                        }
+                    })(data[i])
+                );
             }
         }
     }
