@@ -79,10 +79,14 @@ class Select extends AbstractField {
 		] );
 	}
 
+
 	/**
-	 * @return null
+	 * @param integer $fieldNum
+	 * @param array $metaQuery
+	 *
+	 * @return string
 	 */
-	function searchFieldText() {
+	protected function searchFieldText( &$fieldNum, $metaQuery ) {
 		return null;
 	}
 

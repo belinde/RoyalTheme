@@ -9,15 +9,17 @@ $json = [];
 if ($resQuery->have_posts()) {
     while ($resQuery->have_posts()) {
         $resQuery->the_post();
+
         $json[] = [
             'permalink' => get_permalink(),
-            'thumbnail' => get_the_post_thumbnail(null, 'thumbnail'),
-            'title'     => get_the_title(),
-            'address'   => get_post_meta(get_the_ID(), Engine::getInstance()->getFields()['address']->metaSlug(), true)
+            'thumbnail' => get_the_post_thumbnail_url(null, 'thumbnail'),
+            'title'     => descrizioneAnnuncio(get_the_ID()),
+            'address'   => get_post_meta(get_the_ID(), Engine::getInstance()->getFields()['indirizzo']->metaSlug(),
+                true)
         ];
     }
 }
 
-echo '<div id="royalMapSearch">' . json_encode($json) . '</div>';
+echo '<div id="royalMapSearch" style="width: 900px;height: 600px;">' . json_encode($json) . '</div>';
 
 get_footer();
