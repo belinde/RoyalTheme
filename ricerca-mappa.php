@@ -1,9 +1,8 @@
 <?php
 use Royal\Engine;
 
-get_header();
 $royal = Engine::getInstance();
-echo '<h1>Mappa</h1>';
+
 $resQuery = $royal->queryRicerca([]);
 $json = [];
 if ($resQuery->have_posts()) {
@@ -20,6 +19,11 @@ if ($resQuery->have_posts()) {
     }
 }
 
-echo '<div id="royalMapSearch" style="width: 900px;height: 600px;">' . json_encode($json) . '</div>';
-
-get_footer();
+get_header();
+?>
+    <div id="content">
+        <div id="content-inner">
+            <div id="royalMapSearch" style="width: 100%;height: 800px;"><?php echo json_encode($json); ?></div>
+        </div>
+    </div>
+<?php get_footer();

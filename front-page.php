@@ -14,8 +14,7 @@ get_header();
                     get_template_part('annuncio', 'tile');
                 }
                 ?>
-                <!-- TILES ANNUNCI -->
             </div>
-        </div><!-- end content-inner-->
-    </div><!--end content-->
+        </div>
+    </div>
 <?php get_footer(); ?>

@@ -75,8 +75,8 @@ class Engine
             null,
             true
         );
-        wp_enqueue_style('royalFont', 'https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700');
-        wp_enqueue_style('royalStyle', get_template_directory_uri() . '/style/style.css');
+        wp_enqueue_style('royalRobotoFont', 'https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700');
+        wp_enqueue_style('royalStyle', get_template_directory_uri() . '/style.css');
     }
 
     /**
@@ -188,7 +188,7 @@ class Engine
 
     public function actionAdminPrintStylesPostPhp()
     {
-        wp_enqueue_style('royal-admin', get_template_directory_uri() . '/style/admin.css');
+        wp_enqueue_style('royal-admin', get_template_directory_uri() . '/admin.css');
     }
 
     public function activationHook()
@@ -428,8 +428,8 @@ class Engine
         if (isset($this->fields[ $slug ])) {
             $field = $this->fields[ $slug ];
             $post = get_post();
-            if ($field->isPublic() and $field->hasValue($post)) {
-                $field->show($post);
+            if ($field->hasValue($post)) {
+                $field->printer($post);
             }
         }
     }
@@ -444,7 +444,10 @@ class Engine
         }
     }
 
-    public function theRelateds()
+    /**
+     * @return null|\WP_Query
+     */
+    public function queryRelateds()
     {
         $dataContr = wp_get_post_terms(get_the_ID(), 'contratto');
         $dataTipo = wp_get_post_terms(get_the_ID(), 'tipologia');
@@ -454,7 +457,8 @@ class Engine
             /** @var \WP_Term $tipologia */
             $tipologia = array_shift($dataTipo);
             printf('<h3>%s in %s</h3>', $tipologia->name, $contratto->name);
-            $query = $this->queryRicerca([
+
+            return $this->queryRicerca([
                 'posts_per_page' => 4,
                 'tax_query'      => [
                     [
@@ -469,17 +473,9 @@ class Engine
                     ]
                 ]
             ]);
-            echo '<div style="border:1px solid darkgreen">';
-            while ($query->have_posts()) {
-                $post = $query->next_post();
-                echo '<a href="' . esc_url(get_permalink($post)) . '" style="float:left;display:block;">';
-                echo get_the_post_thumbnail($post, 'thumbnail');
-                echo '<br>';
-                echo implode(', ', wp_get_post_terms($post->ID, 'comune', ["fields" => "names"]));
-                echo '</a>';
-            }
-            echo '<br style="clear:both;"></div>';
         }
+
+        return null;
     }
 
     public function theMap()

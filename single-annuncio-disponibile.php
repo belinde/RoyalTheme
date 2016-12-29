@@ -25,13 +25,7 @@ $post = get_post();
                     the_terms($post->ID, 'tipologia', 'Tipologia:&nbsp;', ', ', '<br>');
                     the_terms($post->ID, 'contratto', 'Contratto:&nbsp;', ', ', '<br>');
                     $royal->theInformations();
-                    foreach ($royal->getFields() as $field) {
-                        if ($field->isPublic() and $field->hasValue($post)) {
-                            echo $field->getLabel() . ':&nbsp;';
-                            $field->printer($post);
-                            echo '<br>';
-                        }
-                    }
+
                     ?>
                 </p>
             </div>
