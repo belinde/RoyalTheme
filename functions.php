@@ -1,4 +1,6 @@
 <?php
+use Royal\Engine;
+
 /**
  * @param $obj
  */
@@ -49,6 +51,14 @@ function descrizioneAnnuncio($postId)
         isset($contratti[0]->name) ? $contratti[0]->name : 'disponibilità',
         isset($comuni[0]->name) ? $comuni[0]->name : 'disposizione'
     );
+}
+
+/**
+ * @param string $slug
+ */
+function the_single_info($slug)
+{
+    Engine::getInstance()->theSingleInfo($slug);
 }
 
 /**

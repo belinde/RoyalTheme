@@ -50,8 +50,6 @@ class Engine
 
         add_filter('template_include', [$this, 'filterTemplateInclude']);
         add_filter('manage_annuncio_posts_columns', [$this, 'filterManageAnnuncioPostsColumns']);
-
-        error_reporting(E_ALL);
     }
 
     public function actionWpEnqueueScripts()
@@ -64,12 +62,21 @@ class Engine
             true
         );
         wp_enqueue_script(
+            'royalScripts',
+            get_template_directory_uri() . '/js/royal.js',
+            ['jquery'],
+            null,
+            true
+        );
+        wp_enqueue_script(
             'royalGoogleMaps',
             'https://maps.googleapis.com/maps/api/js?callback=royalInitMap&key=' . self::GOOGLE_APIKEY,
             ['royalScripts'],
             null,
             true
         );
+        wp_enqueue_style('royalFont', 'https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700');
+        wp_enqueue_style('royalStyle', get_template_directory_uri() . '/style/style.css');
     }
 
     /**
@@ -404,6 +411,20 @@ class Engine
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @param $slug
+     */
+    public function theSingleInfo($slug)
+    {
+        if (isset($this->fields[ $slug ])) {
+            $field = $this->fields[ $slug ];
+            $post = get_post();
+            if ($field->isPublic() and $field->hasValue($post)) {
+                $field->show($post);
+            }
+        }
     }
 
     public function theInformations()
