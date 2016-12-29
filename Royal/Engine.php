@@ -56,7 +56,7 @@ class Engine
     {
         wp_enqueue_script(
             'royalScripts',
-            get_template_directory_uri() . '/js/general.js',
+            get_template_directory_uri() . '/js/royal.js',
             ['jquery'],
             null,
             true
@@ -120,6 +120,7 @@ class Engine
     public function actionAfterSetupTheme()
     {
         add_theme_support('post-thumbnails', ['annuncio']);
+        add_theme_support('title-tag');
     }
 
     /**
@@ -171,9 +172,13 @@ class Engine
      */
     public function filterTemplateInclude($template)
     {
+        /** @var \WP_Query $wp_query */
+        global $wp_query;
         if (is_home()) {
             $ricerca = get_query_var('ricerca');
             if (in_array($ricerca, ['risultati', 'mappa'])) {
+                $wp_query->is_home = false;
+
                 return get_query_template('ricerca-' . $ricerca);
             }
         }
@@ -194,7 +199,9 @@ class Engine
 
     public function actionInit()
     {
+        register_nav_menu('menuprincipale', 'Menù principale');
         add_rewrite_endpoint('ricerca', \EP_ROOT);
+
         register_post_type('annuncio', [
             'label'                => 'Annunci',
             'labels'               => [
@@ -430,13 +437,11 @@ class Engine
     public function theInformations()
     {
         $post = get_post();
-        echo '<dl class="royal_informations">';
         foreach ($this->fields as $field) {
             if ($field->isPublic() and $field->hasValue($post)) {
                 $field->show($post);
             }
         }
-        echo '</dl>';
     }
 
     public function theRelateds()
@@ -490,17 +495,25 @@ class Engine
     {
         $postId = get_the_ID();
         $shortcode = strip_tags(get_post_meta($postId, 'royal_gallery_annuncio', true));
-        add_shortcode('gallery', function ($attr) {
-            $attr['orderby'] = 'menu_order';
-            $attr['order'] = 'ASC';
-            $attr['columns'] = 2;
-            $attr['size'] = 'medium';
-            $attr['itemtag'] = 'div';
-            $attr['icontag'] = 'div';
-            $attr['captiontag'] = 'span';
-            $attr['link'] = 'file';
+        add_shortcode('gallery', function ($atts) {
+            $_attachments = get_posts([
+                'include'        => $atts['ids'],
+                'post_status'    => 'inherit',
+                'post_type'      => 'attachment',
+                'post_mime_type' => 'image',
+                'order'          => 'ASC',
+                'orderby'        => 'menu_order'
+            ]);
 
-            return gallery_shortcode($attr);
+            $output = '';
+            foreach ($_attachments as $val) {
+                $url = wp_get_attachment_image_src($val->ID, 'large');
+                if ($url) {
+                    $output .= '<div style="background-image:url(\'' . $url[0] . '\')"></div>';
+                }
+            }
+
+            return $output;
         });
         add_filter('use_default_gallery_style', '__return_false');
         echo do_shortcode($shortcode);

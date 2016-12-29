@@ -61,6 +61,19 @@ function the_single_info($slug)
     Engine::getInstance()->theSingleInfo($slug);
 }
 
+function the_slideshow_gallery()
+{
+    ?>
+    <div class="annuncio-slideshow">
+        <span class="controls slide-prev"><span class="ico ico-keyboard_arrow_left"></span></span>
+        <span class="controls slide-next"><span class="ico ico-keyboard_arrow_right"></span></span>
+        <div class="annuncio-slideshow-inner">
+            <?php Engine::getInstance()->theGallery(); ?>
+        </div>
+    </div>
+    <?php
+}
+
 /**
  * @param array $query
  * @param string $queryPar

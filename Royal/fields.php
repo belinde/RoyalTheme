@@ -8,6 +8,7 @@ return [
 		->setAppend( '€' )
 		->setEmpty( 'trattativa riservata' )
 		->setSearch( _::SEARCH_RANGE )
+		->setInternal()
 	,
 	( new Select( 'status' ) )
 		->setValues( [

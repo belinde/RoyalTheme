@@ -1,36 +1,37 @@
 <?php
 use Royal\Engine;
-use Royal\SearchForm;
+use Royal\Widgets\MenuAnnunci;
 
 get_header();
 $royal = Engine::getInstance();
-echo '<h1>Risultati ricerca</h1>';
 $ricerca = isset($_POST['royalsearch']) ? $_POST['royalsearch'] : [];
-$resQuery = $royal->queryRicerca( $ricerca );
-echo new SearchForm( Engine::URL_RISULTATI, $ricerca );
-
-if ( $resQuery->have_posts() ) {
-	echo '<ol>';
-	while ( $resQuery->have_posts() ) {
-		$resQuery->the_post();
-		the_title( '<h2><a href="' . esc_url( get_permalink() ) . '">', '</a></h2>' );
-		the_post_thumbnail('thumbnail');
-	}
-	echo '</ol>';
-} else {
-	echo "Nessun risultato!";
-}
+$resQuery = $royal->queryRicerca($ricerca);
 
 ?>
-<table>
-	<tr>
-		<td valign="top"><?php pr( $ricerca ); ?></td>
-		<td valign="top"><?php pr( $resQuery->query ); ?></td>
-		<td valign="top"><?php pr( $resQuery->query_vars ); ?></td>
-	</tr>
-</table>
+    <div id="content">
+        <div id="content-inner">
+            <div class="grid">
+                <div class="col lg-3">
+                    <?php (new MenuAnnunci())->printer(); ?>
+                </div>
+                <div class="col lg-9">
+                    <div class="grid">
+                        <?php
+                        if ($resQuery->have_posts()) {
+                            while ($resQuery->have_posts()) {
+                                $resQuery->the_post();
+                                get_template_part('annuncio', 'tile');
+                            }
+                        } else {
+                            echo 'nessun risultato';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <?php
 
-print( $resQuery->request );
-//pr($resQuery->query_vars);
-get_footer(); ?>
+//echo new SearchForm(Engine::URL_RISULTATI, $ricerca);
+get_footer();

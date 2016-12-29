@@ -9,7 +9,7 @@ $tipo = isset($tipologie[0]) ? $tipologie[0]->slug : "undefined";
 ?>
 <div class="item col lg-3 md-3 sm-4 xs-6">
     <a href="<?php echo esc_url(get_the_permalink()) ?>">
-        <div class="item-cover-image" style="background-image: url('css/images/flat/05.jpg')">
+        <div class="item-cover-image" style="background-image: url('<?php the_post_thumbnail_url('thumbnail') ?>')">
             <span class="item-price"><?php the_single_info("prezzo"); ?></span>
         </div>
         <div class="item-info">

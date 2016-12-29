@@ -631,7 +631,7 @@ body {
     transition: 180ms linear; }
     #menu li a, #menu li a:visited {
       color: #999; }
-    #menu li a.active {
+    #menu li.current-menu-item a {
       border-color: #f90a4f;
       color: #f90a4f !important; }
     #menu li a:hover {
@@ -684,10 +684,10 @@ body {
       text-decoration: none;
       font-size: 18px;
       color: #333; }
-      #menu-mobile .menu-mobile-inner li a.active, #menu-mobile .menu-mobile-inner li a:hover {
+      #menu-mobile .menu-mobile-inner li.current-menu-item a, #menu-mobile .menu-mobile-inner li a:hover {
         background-color: #f1f1f1;
         color: #f90a4f; }
-      #menu-mobile .menu-mobile-inner li a.active {
+      #menu-mobile .menu-mobile-inner li.current-menu-item a {
         box-shadow: inset -3px 0 0 0 #f90a4f; }
 
 .grid {
