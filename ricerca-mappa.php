@@ -8,12 +8,15 @@ $json = [];
 if ($resQuery->have_posts()) {
     while ($resQuery->have_posts()) {
         $resQuery->the_post();
-
+        $pid = get_the_ID();
         $json[] = [
             'permalink' => get_permalink(),
             'thumbnail' => get_the_post_thumbnail_url(null, 'thumbnail'),
-            'title'     => descrizioneAnnuncio(get_the_ID()),
-            'address'   => get_post_meta(get_the_ID(), Engine::getInstance()->getFields()['indirizzo']->metaSlug(),
+            'title'     => descrizioneAnnuncio($pid),
+            'comune'    => get_the_terms($pid, 'comune'),
+            'tipologia' => get_the_terms($pid, 'tipologia'),
+            'contratto' => get_the_terms($pid, 'contratto'),
+            'address'   => get_post_meta($pid, Engine::getInstance()->getFields()['indirizzo']->metaSlug(),
                 true)
         ];
     }
@@ -23,7 +26,27 @@ get_header();
 ?>
     <div id="content">
         <div id="content-inner">
-            <div id="royalMapSearch" style="width: 100%;height: 800px;"><?php echo json_encode($json); ?></div>
+            <div id="royalMapSearchData" style="display: none;"><?php echo json_encode($json); ?></div>
+            <div id="royalMapSearch" style="width: 100%;height: 800px;"></div>
+
+            <div id="royalMapSearchForm" class="row">
+                <h3>Ricerca</h3>
+                <div class="grid">
+                    <div class="col lg-4">
+                        <h4>Comune</h4>
+                        <ul id="royalMapSearchComune"></ul>
+                    </div>
+                    <div class="col lg-4">
+                        <h4>Tipologia</h4>
+                        <ul id="royalMapSearchTipologia"></ul>
+                    </div>
+                    <div class="col lg-4">
+                        <h4>Contratto</h4>
+                        <ul id="royalMapSearchContratto"></ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 <?php get_footer();
