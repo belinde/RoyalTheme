@@ -59,7 +59,7 @@ class Engine {
 		$testo    = filter_input( INPUT_POST, 'testo', FILTER_SANITIZE_STRING );
 		$mail     = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_EMAIL );
 		$annuncio = filter_input( INPUT_POST, 'annuncio', FILTER_SANITIZE_STRING );
-		$errors = [ ];
+		$errors   = [ ];
 
 		if ( ! $nome ) {
 			$errors[] = "Il nome immesso non valido";
@@ -154,10 +154,11 @@ class Engine {
 
 	/**
 	 * @param $data
+	 * @param null|integer $singlePostId
 	 *
 	 * @return \WP_Query
 	 */
-	public function queryRicerca( $data ) {
+	public function queryRicerca( $data, $singlePostId = null ) {
 		$query = [
 			'post_type'      => 'annuncio',
 			'post_status'    => 'publish',
@@ -172,6 +173,9 @@ class Engine {
 
 		$this->decorateQuery( $query, $data, 'tax_query', 'terms' );
 		$this->decorateQuery( $query, $data, 'meta_query', 'value' );
+		if ( $singlePostId ) {
+			$query['p'] = $singlePostId;
+		}
 
 		return new \WP_Query( $query );
 	}
@@ -365,6 +369,14 @@ class Engine {
 			'advanced',
 			'high'
 		);
+		add_meta_box(
+			'royal_ricerca_form_persona',
+			"Persona interessata",
+			[ $this, 'metaboxRicercaPersonaCallback' ],
+			'ricerca',
+			'advanced',
+			'high'
+		);
 	}
 
 	public function metaboxCallbackAnnuncio() {
@@ -384,6 +396,14 @@ class Engine {
 			'advanced',
 			'high'
 		);
+		add_meta_box(
+			'royal_dati_ricerche',
+			"Contatti interessati",
+			[ $this, 'metaboxPersoneCallback' ],
+			'annuncio',
+			'side',
+			'high'
+		);
 	}
 
 	/**
@@ -396,6 +416,33 @@ class Engine {
 			$query = [ ];
 		}
 		echo new SearchForm( null, $query );
+	}
+
+	/**
+	 * @param \WP_Post $post
+	 */
+	public function metaboxRicercaPersonaCallback( \WP_Post $post ) {
+		wp_nonce_field( __FUNCTION__, 'royal_ricercapersona_nonce' );
+		$persona = get_post_meta( $post->ID, 'royal_interesse', true );
+		if ( $persona instanceof Interesse ) {
+			echo '<p><strong>Inserimento:</strong> ' . $persona->getSince()->format( 'j/n/Y, H:i' ) . '</p>';
+		} else {
+			$persona = new Interesse();
+		}
+		echo '<table class="form-table"><tbody>';
+		echo '<tr>';
+		echo '<th scope="row"><label for="royalNome">Nome:</label></th>';
+		echo '<td><input type="text" name="interesse[nome]" id="royalNome" value="' . esc_attr( $persona->getName() ) . '"></td>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<th scope="row"><label for="royalMail">E-mail:</label></th>';
+		echo '<td><input type="text" name="interesse[mail]" id="royalMail" value="' . esc_attr( $persona->getMail() ) . '"></td>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<th scope="row"><label for="royalPhone">Telefono:</label></th>';
+		echo '<td><input type="text" name="interesse[telefono]" id="royalPhone" value="' . esc_attr( $persona->getPhone() ) . '"></td>';
+		echo '</tr>';
+		echo '</tbody></table>';
 	}
 
 	/**
@@ -415,6 +462,48 @@ class Engine {
 		];
 
 		return 'https://maps.googleapis.com/maps/api/staticmap?' . http_build_query( $params );
+	}
+
+	/**
+	 * @param \WP_Post $post
+	 */
+	public function metaboxPersoneCallback( \WP_Post $post ) {
+		global $wpdb;
+		$ricerche = $wpdb->get_results( "
+			SELECT
+			    r.meta_value AS ricerca,
+			    i.meta_value AS interesse
+			FROM {$wpdb->postmeta} AS r
+			    JOIN {$wpdb->postmeta} AS i
+			        ON r.post_id = i.post_id
+			        AND i.meta_key = 'royal_interesse'
+			WHERE r.meta_key = 'royal_ricerca'" );
+		echo '<table>';
+		echo '<thead><tr><th>Persona</th><th>Contatti</th><th>Inserimento</th></tr></thead>';
+		echo '<tbody>';
+		$printed = false;
+		foreach ( $ricerche as $r ) {
+			$interesse = @unserialize( $r->interesse );
+			$ricerca   = @unserialize( $r->ricerca );
+			if ( is_array( $ricerca ) and $interesse instanceof Interesse ) {
+				$query = $this->queryRicerca( $ricerca, $post->ID );
+				if ( $query->have_posts() ) {
+					echo '<tr>';
+					echo '<td>' . $interesse->getName() . '</td>';
+					echo '<td>';
+					echo '<a href="tel:' . $interesse->getPhone() . '">' . $interesse->getPhone() . '</a><br>';
+					echo '<a href="mailto:' . $interesse->getMail() . '">' . $interesse->getMail() . '</a>';
+					echo '</td>';
+					echo '<td>' . $interesse->getSince()->format( 'j/n/Y' ) . '</td>';
+					echo '</tr>';
+					$printed = true;
+				}
+			}
+		}
+		if ( ! $printed ) {
+			echo '<tr><td colspan="3">Nessun contatto è interessato a questo annuncio.</td></tr>';
+		}
+		echo '</tbody></table>';
 	}
 
 	/**
@@ -570,6 +659,20 @@ class Engine {
 				$postId,
 				'royal_ricerca',
 				isset( $_POST['royalsearch'] ) ? $_POST['royalsearch'] : [ ]
+			);
+		}
+		if ( isset( $_POST['royal_ricercapersona_nonce'] )
+		     and wp_verify_nonce( $_POST['royal_ricercapersona_nonce'], 'metaboxRicercaPersonaCallback' )
+		) {
+			$interesse = new Interesse(
+				isset( $_POST['interesse']['nome'] ) ? $_POST['interesse']['nome'] : null,
+				isset( $_POST['interesse']['mail'] ) ? $_POST['interesse']['mail'] : null,
+				isset( $_POST['interesse']['telefono'] ) ? $_POST['interesse']['telefono'] : null
+			);
+			update_post_meta(
+				$postId,
+				'royal_interesse',
+				$interesse
 			);
 		}
 	}
