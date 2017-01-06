@@ -37,7 +37,7 @@ class Engine {
 		foreach ( $fields as $field ) {
 			$this->fields[ $field->getSlug() ] = $field;
 		}
-		register_activation_hook( __FILE__, [ $this, 'activationHook' ] );
+		add_action( 'after_switch_theme', [ $this, 'actionAfterSwitchTheme' ] );
 		add_action( 'init', [ $this, 'actionInit' ] );
 		add_action( 'widgets_init', [ $this, 'actionWidgetsInit' ] );
 		add_action( 'save_post_annuncio', [ $this, 'actionSavePostAnnuncio' ], 10, 2 );
@@ -220,12 +220,46 @@ class Engine {
 		wp_enqueue_style( 'royal-admin', get_template_directory_uri() . '/admin.css' );
 	}
 
-	public function activationHook() {
+	public function actionAfterSwitchTheme() {
 		$this->actionInit();
 		flush_rewrite_rules();
+		wp_insert_term( 'Affitto', 'contratto' );
+		wp_insert_term( 'Vendita', 'contratto' );
+		wp_insert_term( 'Nuda proprietà', 'contratto' );
+
+		wp_insert_term( 'Appartamento', 'tipologia' );
+		wp_insert_term( 'Villa', 'tipologia' );
+		wp_insert_term( 'Box', 'tipologia' );
+		wp_insert_term( 'Terreno', 'tipologia' );
+		wp_insert_term( 'Rustico', 'tipologia' );
+		wp_insert_term( 'Negozio', 'tipologia' );
+		wp_insert_term( 'Ufficio', 'tipologia' );
+		wp_insert_term( 'Capannone', 'tipologia' );
+
+		wp_insert_term( 'Chiavari', 'comune' );
+		wp_insert_term( 'Lavagna', 'comune' );
+		wp_insert_term( 'Zoagli', 'comune' );
+		wp_insert_term( 'Leivi', 'comune' );
+		wp_insert_term( 'Cogorno', 'comune' );
+		wp_insert_term( 'Carasco', 'comune' );
+		wp_insert_term( 'San Colombano Certenoli', 'comune' );
+		wp_insert_term( 'Sestri Levante', 'comune' );
+		wp_insert_term( 'Casarza', 'comune' );
+		wp_insert_term( 'Rapallo', 'comune' );
+		wp_insert_term( 'Santa Margherita Ligure', 'comune' );
+		wp_insert_term( 'Borgotaro', 'comune' );
+		wp_insert_term( 'Recco', 'comune' );
+		wp_insert_term( 'Ne', 'comune' );
+		wp_insert_term( 'Mezzanego', 'comune' );
+		wp_insert_term( 'Castiglione Chiavarese', 'comune' );
 	}
 
 	public function actionInit() {
+		static $init = false;
+		if ( $init ) {
+			return;
+		}
+		$init = true;
 		register_nav_menu( 'menuprincipale', 'Menù principale' );
 		add_rewrite_endpoint( 'ricerca', \EP_ROOT );
 
@@ -356,8 +390,6 @@ class Engine {
 			'publicly_queryable'   => false,
 			'show_in_nav_menus'    => false
 		] );
-
-//		flush_rewrite_rules();
 	}
 
 	public function metaboxCallbackRicerca() {
@@ -675,6 +707,7 @@ class Engine {
 				)
 			);
 		}
+
 		return $postId;
 	}
 
