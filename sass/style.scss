@@ -623,16 +623,18 @@ body {
     }
     .annuncio-price{ font-size: 18px};
 }
-input,
-textarea {
-    display: block;
-    width: 100%;
-    // border: 1px solid #dedede;
-    padding: 10px;
-    border: 0;
-    border-radius: 3px;
-    &:not(:last-child) {
-        margin-bottom: 10px;
+.royalFormInfo {
+    input,
+    textarea {
+        display: block;
+        width: 100%;
+        // border: 1px solid #dedede;
+        padding: 10px;
+        border: 0;
+        border-radius: 3px;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
     }
 }
 
@@ -654,5 +656,33 @@ textarea {
         &:not(:last-child) {
             margin-bottom: 10px;
         }
+    }
+}
+
+table.searchform {
+    border:0;
+    border-collapse: collapse;
+    tr {
+        &:nth-child(even) {
+            background-color: #fafafa;
+        }
+        border-bottom: 1px solid #dedede;
+        th,
+        td {
+            padding: 10px 5px;
+        }
+    }
+    td .range {
+        // display: flex;
+        // align-items: center;
+        // flex-flow: row wrap;
+        input[type="text"], span {
+            // float: left;
+            display: inline-block;
+            width: auto;
+            // border: none;
+            width: 100px;
+        }
+
     }
 }

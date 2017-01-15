@@ -162,7 +162,7 @@ abstract class AbstractField {
 		$fieldNum ++;
 		$max = $this->htmlMetaTag( $fieldNum, $metaQuery, '<=' );
 
-		return "tra $min e $max";
+		return "<span>tra</span> $min <span>e</span> $max";
 	}
 
 	/**

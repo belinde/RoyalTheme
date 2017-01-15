@@ -1070,15 +1070,15 @@ body {
   .annuncio-info .annuncio-price {
     font-size: 18px; }
 
-input,
-textarea {
+.royalFormInfo input,
+.royalFormInfo textarea {
   display: block;
   width: 100%;
   padding: 10px;
   border: 0;
   border-radius: 3px; }
-  input:not(:last-child),
-  textarea:not(:last-child) {
+  .royalFormInfo input:not(:last-child),
+  .royalFormInfo textarea:not(:last-child) {
     margin-bottom: 10px; }
 
 .text {
@@ -1094,5 +1094,20 @@ textarea {
       margin-top: 40px; }
   .text p:not(:last-child) {
     margin-bottom: 10px; }
+
+table.searchform {
+  border: 0;
+  border-collapse: collapse; }
+  table.searchform tr {
+    border-bottom: 1px solid #dedede; }
+    table.searchform tr:nth-child(even) {
+      background-color: #fafafa; }
+    table.searchform tr th,
+    table.searchform tr td {
+      padding: 10px 5px; }
+  table.searchform td .range input[type="text"], table.searchform td .range span {
+    display: inline-block;
+    width: auto;
+    width: 100px; }
 
 /*# sourceMappingURL=style.css.map */
