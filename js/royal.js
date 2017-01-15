@@ -94,7 +94,7 @@ jQuery(function ($) {
 jQuery(window).on('scroll', function () {
     var scrolly = window.scrollY;
     if (scrolly > 150) {
-        jQuery('#header').addClass('fixed');
+        jQuery('#header:not(.isIndex)').addClass('fixed');
     } else {
         jQuery('#header').removeClass('fixed');
     }
