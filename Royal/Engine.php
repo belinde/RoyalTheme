@@ -37,7 +37,7 @@ class Engine {
 		foreach ( $fields as $field ) {
 			$this->fields[ $field->getSlug() ] = $field;
 		}
-		register_activation_hook( __FILE__, [ $this, 'activationHook' ] );
+		add_action( 'after_switch_theme', [ $this, 'actionAfterSwitchTheme' ] );
 		add_action( 'init', [ $this, 'actionInit' ] );
 		add_action( 'widgets_init', [ $this, 'actionWidgetsInit' ] );
 		add_action( 'save_post_annuncio', [ $this, 'actionSavePostAnnuncio' ], 10, 2 );
@@ -206,7 +206,7 @@ class Engine {
 		global $wp_query;
 		if ( is_home() ) {
 			$ricerca = get_query_var( 'ricerca' );
-			if ( in_array( $ricerca, [ 'risultati', 'mappa' ] ) ) {
+			if ( in_array( $ricerca, [ 'risultati', 'mappa', 'avanzata', 'salva' ] ) ) {
 				$wp_query->is_home = false;
 
 				return get_query_template( 'ricerca-' . $ricerca );
@@ -220,12 +220,46 @@ class Engine {
 		wp_enqueue_style( 'royal-admin', get_template_directory_uri() . '/admin.css' );
 	}
 
-	public function activationHook() {
+	public function actionAfterSwitchTheme() {
 		$this->actionInit();
 		flush_rewrite_rules();
+		wp_insert_term( 'Affitto', 'contratto' );
+		wp_insert_term( 'Vendita', 'contratto' );
+		wp_insert_term( 'Nuda proprietà', 'contratto' );
+
+		wp_insert_term( 'Appartamento', 'tipologia' );
+		wp_insert_term( 'Villa', 'tipologia' );
+		wp_insert_term( 'Box', 'tipologia' );
+		wp_insert_term( 'Terreno', 'tipologia' );
+		wp_insert_term( 'Rustico', 'tipologia' );
+		wp_insert_term( 'Negozio', 'tipologia' );
+		wp_insert_term( 'Ufficio', 'tipologia' );
+		wp_insert_term( 'Capannone', 'tipologia' );
+
+		wp_insert_term( 'Chiavari', 'comune' );
+		wp_insert_term( 'Lavagna', 'comune' );
+		wp_insert_term( 'Zoagli', 'comune' );
+		wp_insert_term( 'Leivi', 'comune' );
+		wp_insert_term( 'Cogorno', 'comune' );
+		wp_insert_term( 'Carasco', 'comune' );
+		wp_insert_term( 'San Colombano Certenoli', 'comune' );
+		wp_insert_term( 'Sestri Levante', 'comune' );
+		wp_insert_term( 'Casarza', 'comune' );
+		wp_insert_term( 'Rapallo', 'comune' );
+		wp_insert_term( 'Santa Margherita Ligure', 'comune' );
+		wp_insert_term( 'Borgotaro', 'comune' );
+		wp_insert_term( 'Recco', 'comune' );
+		wp_insert_term( 'Ne', 'comune' );
+		wp_insert_term( 'Mezzanego', 'comune' );
+		wp_insert_term( 'Castiglione Chiavarese', 'comune' );
 	}
 
 	public function actionInit() {
+		static $init = false;
+		if ( $init ) {
+			return;
+		}
+		$init = true;
 		register_nav_menu( 'menuprincipale', 'Menù principale' );
 		add_rewrite_endpoint( 'ricerca', \EP_ROOT );
 
@@ -356,8 +390,6 @@ class Engine {
 			'publicly_queryable'   => false,
 			'show_in_nav_menus'    => false
 		] );
-
-//		flush_rewrite_rules();
 	}
 
 	public function metaboxCallbackRicerca() {
@@ -479,7 +511,7 @@ class Engine {
 			        AND i.meta_key = 'royal_interesse'
 			WHERE r.meta_key = 'royal_ricerca'" );
 		echo '<table>';
-		echo '<thead><tr><th>Persona</th><th>Contatti</th><th>Inserimento</th></tr></thead>';
+		echo '<thead><tr><th>Persona</th><th>Contatti</th></tr></thead>';
 		echo '<tbody>';
 		$printed = false;
 		foreach ( $ricerche as $r ) {
@@ -489,19 +521,18 @@ class Engine {
 				$query = $this->queryRicerca( $ricerca, $post->ID );
 				if ( $query->have_posts() ) {
 					echo '<tr>';
-					echo '<td>' . $interesse->getName() . '</td>';
+					echo '<td>' . $interesse->getName() . '<br>' . $interesse->getSince()->format( 'j/n/Y' ) . '</td>';
 					echo '<td>';
 					echo '<a href="tel:' . $interesse->getPhone() . '">' . $interesse->getPhone() . '</a><br>';
 					echo '<a href="mailto:' . $interesse->getMail() . '">' . $interesse->getMail() . '</a>';
 					echo '</td>';
-					echo '<td>' . $interesse->getSince()->format( 'j/n/Y' ) . '</td>';
 					echo '</tr>';
 					$printed = true;
 				}
 			}
 		}
 		if ( ! $printed ) {
-			echo '<tr><td colspan="3">Nessun contatto è interessato a questo annuncio.</td></tr>';
+			echo '<tr><td colspan="2">Nessun contatto è interessato a questo annuncio.</td></tr>';
 		}
 		echo '</tbody></table>';
 	}
@@ -644,36 +675,54 @@ class Engine {
 	}
 
 	/**
+	 * @param integer|null $postId
+	 *
+	 * @return integer|null
+	 */
+	public function editRicerca( $postId = null ) {
+		if ( ! $postId ) {
+			$postId = wp_insert_post( [
+				'post_title'  => wp_generate_uuid4(),
+				'post_status' => 'publish',
+				'post_type'   => 'ricerca'
+			] );
+		}
+		if ( ! $postId ) {
+			return null;
+		}
+		update_post_meta(
+			$postId,
+			'royal_ricerca',
+			isset( $_POST['royalsearch'] ) ? $_POST['royalsearch'] : [ ]
+		);
+		if ( isset( $_POST['interesse'] ) ) {
+			$int = $_POST['interesse'];
+			update_post_meta(
+				$postId,
+				'royal_interesse',
+				new Interesse(
+					isset( $int['nome'] ) ? $int['nome'] : null,
+					isset( $int['mail'] ) ? $int['mail'] : null,
+					isset( $int['telefono'] ) ? $int['telefono'] : null
+				)
+			);
+		}
+
+		return $postId;
+	}
+
+	/**
 	 * @param integer $postId
 	 * @param \WP_Post $post
 	 */
 	public function actionSavePostRicerca( $postId, \WP_Post $post ) {
 		$postType = get_post_type_object( $post->post_type );
-		if ( ! current_user_can( $postType->cap->edit_post, $postId ) ) {
-			return;
-		}
-		if ( isset( $_POST['royal_ricerca_nonce'] )
-		     and wp_verify_nonce( $_POST['royal_ricerca_nonce'], 'metaboxRicercaCallback' )
+		if ( current_user_can( $postType->cap->edit_post, $postId ) and
+		     isset( $_POST['royal_ricerca_nonce'], $_POST['royal_ricercapersona_nonce'] ) and
+		     wp_verify_nonce( $_POST['royal_ricerca_nonce'], 'metaboxRicercaCallback' ) and
+		     wp_verify_nonce( $_POST['royal_ricercapersona_nonce'], 'metaboxRicercaPersonaCallback' )
 		) {
-			update_post_meta(
-				$postId,
-				'royal_ricerca',
-				isset( $_POST['royalsearch'] ) ? $_POST['royalsearch'] : [ ]
-			);
-		}
-		if ( isset( $_POST['royal_ricercapersona_nonce'] )
-		     and wp_verify_nonce( $_POST['royal_ricercapersona_nonce'], 'metaboxRicercaPersonaCallback' )
-		) {
-			$interesse = new Interesse(
-				isset( $_POST['interesse']['nome'] ) ? $_POST['interesse']['nome'] : null,
-				isset( $_POST['interesse']['mail'] ) ? $_POST['interesse']['mail'] : null,
-				isset( $_POST['interesse']['telefono'] ) ? $_POST['interesse']['telefono'] : null
-			);
-			update_post_meta(
-				$postId,
-				'royal_interesse',
-				$interesse
-			);
+			$this->editRicerca( $postId );
 		}
 	}
 

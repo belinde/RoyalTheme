@@ -51,7 +51,7 @@ class SearchForm {
 		$str = $this->action
 			? '<form method="POST" action="' . esc_attr( $this->action ) . '">'
 			: '';
-		$str .= '<table><tbody>';
+		$str .= '<table class="searchform"><tbody>';
 		$str .= $this->rowTaxonomy( 'contratto' );
 		$str .= $this->rowTaxonomy( 'tipologia' );
 		$str .= $this->rowTaxonomy( 'comune' );
@@ -62,11 +62,13 @@ class SearchForm {
 				$this->meta ++;
 			}
 		}
-		$str .= '</tbody><tfoot>';
+		$str .= '</tbody>';
 		if ( $this->action ) {
+			$str .= '<tfoot>';
 			$str .= $this->row( '&nbsp;', '<input type="submit" value="Cerca immobile">' );
+			$str .= '</tfoot>';
 		}
-		$str .= '</tfoot></table>';
+		$str .= '</table>';
 		if ( $this->action ) {
 			$str .= '</form>';
 		}
