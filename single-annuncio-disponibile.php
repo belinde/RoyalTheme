@@ -6,7 +6,7 @@ $post  = get_post();
 ?>
 <div id="content">
 	<div id="content-inner">
-		<?php the_slideshow_gallery(); ?>
+		<?php the_slideshow_gallery('photos'); ?>
 		<div class="annuncio-info grid">
 			<div class="col lg-8">
 				<h3>Descrizione</h3>
@@ -48,6 +48,8 @@ $post  = get_post();
 			<div class="col lg-4 md-4 sm-12">
 				<h3>Mappa</h3>
 				<?php Engine::getInstance()->theMap(); ?>
+
+				<?php the_slideshow_gallery('planimetries'); ?>
 			</div>
 		</div>
 	</div><!-- end content-inner-->

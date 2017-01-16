@@ -61,14 +61,17 @@ function the_single_info($slug)
     Engine::getInstance()->theSingleInfo($slug);
 }
 
-function the_slideshow_gallery()
+/**
+ * @param string $type photos, planimetries
+ */
+function the_slideshow_gallery($type = 'photos')
 {
     ?>
-    <div class="annuncio-slideshow">
+    <div class="annuncio-slideshow <?php echo $type; ?>">
         <span class="controls slide-prev"><span class="ico ico-keyboard_arrow_left"></span></span>
         <span class="controls slide-next"><span class="ico ico-keyboard_arrow_right"></span></span>
         <div class="annuncio-slideshow-inner">
-            <?php Engine::getInstance()->theGallery(); ?>
+            <?php Engine::getInstance()->theGallery($type); ?>
         </div>
     </div>
     <?php
