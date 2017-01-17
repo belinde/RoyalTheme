@@ -1,0 +1,3 @@
+- aggiungere "/mese" agli annunci degli affitti
+- fare un check se la galleria delle planimetrie è vuota, per non mettere direttamente tutto il blocco
+- aggiungere di default l'immagine di copertina alla slideshow dell'annuncio
