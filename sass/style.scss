@@ -473,6 +473,9 @@ body {
             &.lg-#{$i} {
                 flex: 0 0 (100% / (12/$i) );
             }
+            &.lg-offset-#{$i} {
+                margin-left: (100% / (12/$i) );
+            }
         }
     }
 }
@@ -481,6 +484,9 @@ body {
         @for $i from 1 through 12 {
             &.md-#{$i} {
                 flex: 0 0 (100% / (12/$i) );
+            }
+            &.md-offset-#{$i} {
+                margin-left: (100% / (12/$i) );
             }
         }
     }
@@ -529,6 +535,9 @@ body {
             &.sm-#{$i} {
                 flex: 0 0 (100% / (12/$i) );
             }
+            &.sm-offset-#{$i} {
+                margin-left: (100% / (12/$i) );
+            }
         }
     }
     #menu {
@@ -544,6 +553,9 @@ body {
         @for $i from 1 through 12 {
             &.xs-#{$i} {
                 flex: 0 0 (100% / (12/$i) );
+            }
+            &.xs-offset-#{$i} {
+                margin-left: (100% / (12/$i) );
             }
         }
     }
@@ -623,15 +635,18 @@ body {
     }
     .annuncio-price{ font-size: 18px};
 }
+input[type="text"],
+textarea {
+    display: block;
+    width: 100%;
+    border: 1px solid #dedede;
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+}
 .royalFormInfo {
     input,
     textarea {
-        display: block;
-        width: 100%;
-        // border: 1px solid #dedede;
-        padding: 10px;
-        border: 0;
-        border-radius: 3px;
         &:not(:last-child) {
             margin-bottom: 10px;
         }
@@ -690,6 +705,18 @@ table.searchform {
     }
 }
 
+.searchform {
+    .searchform-row {
+        padding: 10px;
+        border-bottom: 1px solid #dedede;
+        background-color: #fafafa;
+    }
+    .searchform-title {
+        color: $color;
+        margin-bottom: 10px;
+    }
+}
+
 #royalMapSearchForm {
     h3 {
         color: $color;
@@ -716,25 +743,36 @@ table.searchform {
     display: flex;
     align-items: center;
     > div {
-        flex: 1 1 auto;
+        flex: 0 1 auto;
         padding: 3px;
     }
     input[type="text"] {
         border: 1px solid #dedede;
-        width: 100px !important;
+        width: 100% !important;
     }
 }
 
 .salva-ricerca {
     padding: 20px;
     width: 100%;
+    background-color: white;
+    margin-bottom: 20px;
     h3 {
         color: $color;
         margin-bottom: 10px;
+        font-weight: 400;
     }
     form {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
+    }
+    .input-holder {
+        flex: 1 1 auto;
+        padding: 10px;
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
     }
 }
 
@@ -747,5 +785,31 @@ input[type="submit"] {
     &:hover {
         background-color: $color;
         color: white;
+    }
+}
+
+.fake-checkbox {
+    display: inline-block;
+    input {
+        display: none;
+        + label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 3px 7px;
+            border-radius: 3px;
+            margin: 3px;
+            border: 1px dashed mix(#dedede, $color, 80%);
+            background-color: white;
+            &:hover {
+                border-color: $color;
+            }
+        }
+        &:checked {
+            + label {
+                background-color: $color;
+                color: white;
+                border: 1px solid $color;
+            }
+        }
     }
 }

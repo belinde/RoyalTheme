@@ -51,7 +51,7 @@ class SearchForm {
 		$str = $this->action
 			? '<form method="POST" action="' . esc_attr( $this->action ) . '">'
 			: '';
-		$str .= '<table class="searchform"><tbody>';
+		$str .= '<div class="searchform">';
 		$str .= $this->rowTaxonomy( 'contratto' );
 		$str .= $this->rowTaxonomy( 'tipologia' );
 		$str .= $this->rowTaxonomy( 'comune' );
@@ -62,13 +62,12 @@ class SearchForm {
 				$this->meta ++;
 			}
 		}
-		$str .= '</tbody>';
 		if ( $this->action ) {
-			$str .= '<tfoot>';
-			$str .= $this->row( '&nbsp;', '<input type="submit" value="Cerca immobile">' );
-			$str .= '</tfoot>';
+			$str .= '<div>';
+			$str .= '<input type="submit" value="Cerca immobile">';
+			$str .= '</div>';
 		}
-		$str .= '</table>';
+		$str .= '</div>';
 		if ( $this->action ) {
 			$str .= '</form>';
 		}
@@ -83,7 +82,8 @@ class SearchForm {
 	 * @return string
 	 */
 	private function row( $label, $field ) {
-		return sprintf( '<tr><th>%s</th><td>%s</td></tr>', $label, $field );
+		// return sprintf( '<tr><th>%s</th><td>%s</td></tr>', $label, $field );
+		return sprintf( '<div class="searchform-row"><div class="searchform-title">%s</div><div class="searchform-fields">%s</div></div>', $label, $field );
 	}
 
 
@@ -113,16 +113,18 @@ class SearchForm {
 			}
 		}
 		foreach ( $terms as $term ) {
+            $randId = generateRandomString();
 			$current  = $this->htmlTag( 'input', [
 				'type'    => 'checkbox',
+                'id' => $randId,
 				'name'    => 'royalsearch[tax_query][' . $this->tax . '][terms][]',
 				'value'   => $term->term_id,
 				'checked' => in_array( $term->term_id, $values ) ? 'checked' : null
 			] );
-			$fields[] = '<label>' . $current . '&nbsp;' . $term->name . '</label>';
+			$fields[] = '<div class="fake-checkbox">' . $current . '<label for="'.$randId.'">' . $term->name . '</label></div>';
 		}
 
-		$composite = implode( '<br>', $fields );
+		$composite = implode( '', $fields );
 		$composite .= $this->htmlTag( 'input', [
 			'type'  => 'hidden',
 			'name'  => 'royalsearch[tax_query][' . $this->tax . '][field]',
