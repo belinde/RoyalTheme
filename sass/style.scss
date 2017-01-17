@@ -671,6 +671,9 @@ table.searchform {
         td {
             padding: 10px 5px;
         }
+        th {
+            width: 1%;
+        }
     }
     td .range {
         // display: flex;
@@ -681,8 +684,68 @@ table.searchform {
             display: inline-block;
             width: auto;
             // border: none;
-            width: 100px;
+            // width: 100px;
         }
 
+    }
+}
+
+#royalMapSearchForm {
+    h3 {
+        color: $color;
+        font-size: 21px;
+        margin: 20px auto;
+        text-align: center;
+    }
+    h4 {
+        color: $color;
+        text-align: center;
+    }
+}
+
+
+.admin-bar {
+    #header {
+        &.fixed {
+            top: 32px;
+        }
+    }
+}
+
+.input-range {
+    display: flex;
+    align-items: center;
+    > div {
+        flex: 1 1 auto;
+        padding: 3px;
+    }
+    input[type="text"] {
+        border: 1px solid #dedede;
+        width: 100px !important;
+    }
+}
+
+.salva-ricerca {
+    padding: 20px;
+    width: 100%;
+    h3 {
+        color: $color;
+        margin-bottom: 10px;
+    }
+    form {
+        display: flex;
+        align-items: center;
+    }
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dedede;
+    cursor: pointer;
+    background-color: white;
+    &:hover {
+        background-color: $color;
+        color: white;
     }
 }

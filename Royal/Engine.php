@@ -615,7 +615,7 @@ class Engine {
 	public function theMap() {
 		echo $this->htmlTag( 'div', [
 			'id'             => 'royalMap',
-			'style'          => 'height:400px;width:500px;',
+			'style'          => 'height:300px;width:100%',
 			'data-indirizzo' => get_post_meta( get_the_ID(), $this->fields['indirizzo']->metaSlug(), true )
 		], '' );
 	}

@@ -66,13 +66,17 @@
 .ico-view_comfy:before {
   content: "\e42a";
 }
-.ico-land:before {
+.ico-land:before,
+.ico-rustico:before,
+.ico-terreno:before {
   content: "\e900";
 }
-.ico-nude:before {
+.ico-nude:before,
+.ico-negozio:before {
   content: "\e901";
 }
-.ico-office:before {
+.ico-office:before,
+.ico-capannone:before {
   content: "\e902";
 }
 .ico-villa:before {
@@ -81,7 +85,8 @@
 .ico-box:before {
   content: "\e904";
 }
-.ico-flat:before {
+.ico-flat:before,
+.ico-appartamento:before {
   content: "\e905";
 }
 .ico-image:before {

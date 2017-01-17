@@ -162,7 +162,13 @@ abstract class AbstractField {
 		$fieldNum ++;
 		$max = $this->htmlMetaTag( $fieldNum, $metaQuery, '<=' );
 
-		return "<span>tra</span> $min <span>e</span> $max";
+		return "
+        <div class='input-range'>
+            <div>tra</div>
+            <div>$min</div>
+            <div>e</div>
+            <div> $max</div>
+        </div>";
 	}
 
 	/**
