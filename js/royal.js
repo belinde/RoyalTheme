@@ -4,17 +4,24 @@ jQuery(function ($) {
         $('.menu-mobile-inner').toggleClass('visible');
         $('.toggler-bg').toggleClass('visible');
     });
-    $('.immobili_vendite').on('click', function () {
+
+    $('.immobili_contratto.immobili_vendita').on('click', function () {
+        $('.immobili_contratto').removeClass('active');
         $(this).addClass('active');
-        $('.menu_vendite').addClass('visible');
-        $('.immobili_affitti').removeClass('active');
-        $('.menu_affitti').removeClass('visible');
+        $('.immobili_menu .immobili_menu').removeClass('visible');
+        $('.immobili_menu .menu_vendita').addClass('visible');
     });
-    $('.immobili_affitti').on('click', function () {
+    $('.immobili_contratto.immobili_affitto').on('click', function () {
+        $('.immobili_contratto').removeClass('active');
         $(this).addClass('active');
-        $('.menu_affitti').addClass('visible');
-        $('.immobili_vendite').removeClass('active');
-        $('.menu_vendite').removeClass('visible');
+        $('.immobili_menu .immobili_menu').removeClass('visible');
+        $('.immobili_menu .menu_affitto').addClass('visible');
+    });
+    $('.immobili_contratto.immobili_nuda-proprieta').on('click', function () {
+        $('.immobili_contratto').removeClass('active');
+        $(this).addClass('active');
+        $('.immobili_menu .immobili_menu').removeClass('visible');
+        $('.immobili_menu .menu_nuda-proprieta').addClass('visible');
     });
 
     $('.controls').on('click', function () {

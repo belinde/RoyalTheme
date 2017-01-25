@@ -825,53 +825,37 @@ body {
     font-size: 130%;
     color: #999; }
 
-.menu_vendite,
-.menu_affitti {
+.immobili_menu {
   display: none; }
-  .menu_vendite.visible,
-  .menu_affitti.visible {
+  .immobili_menu.visible {
     display: block; }
-  .menu_vendite ul,
-  .menu_affitti ul {
+  .immobili_menu ul {
     list-style-type: none;
     margin: 0;
     padding: 0; }
-    .menu_vendite ul:not(:last-child),
-    .menu_affitti ul:not(:last-child) {
+    .immobili_menu ul:not(:last-child) {
       margin-bottom: 20px; }
-    .menu_vendite ul li,
-    .menu_affitti ul li {
+    .immobili_menu ul li {
       padding: 3px 10px;
       border-left: 2px solid transparent; }
-      .menu_vendite ul li.active,
-      .menu_affitti ul li.active {
+      .immobili_menu ul li.active {
         border-color: #f90a4f; }
-        .menu_vendite ul li.active a,
-        .menu_affitti ul li.active a {
+        .immobili_menu ul li.active a {
           color: #f90a4f; }
-    .menu_vendite ul .immobili_title, .menu_vendite ul .immobili_title a,
-    .menu_affitti ul .immobili_title,
-    .menu_affitti ul .immobili_title a {
+    .immobili_menu ul .immobili_title, .immobili_menu ul .immobili_title a {
       color: #99042f !important;
       font-size: 16px; }
-      .menu_vendite ul .immobili_title [class^="ico-"], .menu_vendite ul .immobili_title [class*=" ico-"], .menu_vendite ul .immobili_title a [class^="ico-"], .menu_vendite ul .immobili_title a [class*=" ico-"],
-      .menu_affitti ul .immobili_title [class^="ico-"],
-      .menu_affitti ul .immobili_title [class*=" ico-"],
-      .menu_affitti ul .immobili_title a [class^="ico-"],
-      .menu_affitti ul .immobili_title a [class*=" ico-"] {
+      .immobili_menu ul .immobili_title [class^="ico-"], .immobili_menu ul .immobili_title [class*=" ico-"], .immobili_menu ul .immobili_title a [class^="ico-"], .immobili_menu ul .immobili_title a [class*=" ico-"] {
         font-size: 18px;
         margin-bottom: 5px; }
-    .menu_vendite ul a,
-    .menu_affitti ul a {
+    .immobili_menu ul a {
       text-decoration: none;
       color: #333;
       display: inline-block;
       margin-right: 5px; }
-      .menu_vendite ul a:hover,
-      .menu_affitti ul a:hover {
+      .immobili_menu ul a:hover {
         color: #f90a4f; }
-    .menu_vendite ul .immobili_quantity,
-    .menu_affitti ul .immobili_quantity {
+    .immobili_menu ul .immobili_quantity {
       color: #999; }
 
 @media (min-width: 1201px) {
