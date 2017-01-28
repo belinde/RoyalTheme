@@ -39,7 +39,6 @@ class Engine {
 		}
 		add_action( 'after_switch_theme', [ $this, 'actionAfterSwitchTheme' ] );
 		add_action( 'init', [ $this, 'actionInit' ] );
-		add_action( 'widgets_init', [ $this, 'actionWidgetsInit' ] );
 		add_action( 'save_post_annuncio', [ $this, 'actionSavePostAnnuncio' ], 10, 2 );
 		add_action( 'save_post_ricerca', [ $this, 'actionSavePostRicerca' ], 10, 2 );
 		add_action( 'admin_print_styles-post.php', [ $this, 'actionAdminPrintStylesPostPhp' ] );
@@ -53,23 +52,29 @@ class Engine {
 		add_filter( 'manage_annuncio_posts_columns', [ $this, 'filterManageAnnuncioPostsColumns' ] );
 	}
 
+	/**
+	 * @param array $errors
+	 * @param string $field
+	 * @param integer $check
+	 * @param string $message
+	 *
+	 * @return mixed
+	 */
+	private function check( &$errors, $field, $check, $message ) {
+		$value = filter_input( INPUT_POST, $field, $check );
+		if ( ! $value ) {
+			$errors[] = $message;
+		}
+
+		return $value;
+	}
 
 	public function actionAjaxMail() {
-		$nome     = filter_input( INPUT_POST, 'nome', FILTER_SANITIZE_STRING );
-		$testo    = filter_input( INPUT_POST, 'testo', FILTER_SANITIZE_STRING );
-		$mail     = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_EMAIL );
-		$annuncio = filter_input( INPUT_POST, 'annuncio', FILTER_SANITIZE_STRING );
 		$errors   = [ ];
-
-		if ( ! $nome ) {
-			$errors[] = "Il nome immesso non valido";
-		}
-		if ( ! $testo ) {
-			$errors[] = "Bisogna scrivere qualcosa nel campo del messaggio";
-		}
-		if ( ! $mail ) {
-			$errors[] = "L'indirizzo email non è valido";
-		}
+		$nome     = $this->check( $errors, 'nome', FILTER_SANITIZE_STRING, "Il nome immesso non valido" );
+		$testo    = $this->check( $errors, 'testo', FILTER_SANITIZE_STRING, "Il messaggio non può essere vuoto" );
+		$mail     = $this->check( $errors, 'email', FILTER_SANITIZE_EMAIL, "L'indirizzo email non è valido" );
+		$annuncio = $this->check( $errors, 'annuncio', FILTER_SANITIZE_STRING, "Annuncio non valido" );
 
 		if ( ! $errors ) {
 			$headers = [
@@ -133,18 +138,6 @@ class Engine {
 		$columns['status'] = $this->fields['status']->getLabel();
 
 		return $columns;
-	}
-
-	public function actionWidgetsInit() {
-		register_sidebar( [
-			'name'          => "Barra laterale",
-			'id'            => 'barralaterale',
-			'before_widget' => '<div id="%1$s" class="widget %2$s">',
-			'after_widget'  => '</div>',
-			'before_title'  => '<h2 class="widgettitle">',
-			'after_title'   => '</h2>',
-		] );
-		register_widget( '\\Royal\\Widgets\\MenuAnnunci' );
 	}
 
 	public function actionAfterSetupTheme() {
@@ -421,6 +414,14 @@ class Engine {
 			'low'
 		);
 		add_meta_box(
+			'royal_maps_annuncio',
+			"Planimetrie",
+			[ $this, 'metaboxMapsCallback' ],
+			'annuncio',
+			'advanced',
+			'low'
+		);
+		add_meta_box(
 			'royal_dati_annuncio',
 			"Informazioni",
 			[ $this, 'metaboxDatiCallback' ],
@@ -612,6 +613,13 @@ class Engine {
 		return null;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function hasMap() {
+		return (bool) trim( get_post_meta( get_the_ID(), $this->fields['indirizzo']->metaSlug(), true ) );
+	}
+
 	public function theMap() {
 		echo $this->htmlTag( 'div', [
 			'id'             => 'royalMap',
@@ -620,9 +628,30 @@ class Engine {
 		], '' );
 	}
 
-	public function theGallery() {
-		$postId    = get_the_ID();
-		$shortcode = strip_tags( get_post_meta( $postId, 'royal_gallery_annuncio', true ) );
+	/**
+	 * @param $type
+	 *
+	 * @return string
+	 */
+	private function galleryShortcode( $type ) {
+		$meta = ( $type == 'photos' ) ? 'royal_gallery_annuncio' : 'royal_maps_annuncio';
+
+		return strip_tags( get_post_meta( get_the_ID(), $meta, true ) );
+	}
+
+	/**
+	 * @param string $type
+	 *
+	 * @return bool
+	 */
+	public function hasGallery( $type = 'photos' ) {
+		return (bool) $this->galleryShortcode( $type );
+	}
+
+	/**
+	 * @param string $type
+	 */
+	public function theGallery( $type = 'photos' ) {
 		add_shortcode( 'gallery', function ( $atts ) {
 			$_attachments = get_posts( [
 				'include'        => $atts['ids'],
@@ -644,7 +673,7 @@ class Engine {
 			return $output;
 		} );
 		add_filter( 'use_default_gallery_style', '__return_false' );
-		echo do_shortcode( $shortcode );
+		echo do_shortcode( $this->galleryShortcode( $type ) );
 		add_shortcode( 'gallery', 'gallery_shortcode' );
 		remove_filter( 'use_default_gallery_style', '__return_false' );
 	}
@@ -661,6 +690,31 @@ class Engine {
 		wp_editor(
 			get_post_meta( $post->ID, 'royal_gallery_annuncio', true ),
 			'royalGalleryEditor',
+			[
+				'wpautop'          => false,
+				'media_buttons'    => true,
+				'drag_drop_upload' => true,
+				'textarea_rows'    => 5,
+				'teeny'            => true,
+				'tinymce'          => true,
+				'quicktags'        => false
+			]
+		);
+		remove_filter( 'teeny_mce_buttons', $nobuttons );
+	}
+
+	/**
+	 * @param \WP_Post $post
+	 */
+	public function metaboxMapsCallback( \WP_Post $post ) {
+		wp_nonce_field( __FUNCTION__, 'royal_maps_nonce' );
+		$nobuttons = function () {
+			return [ [ ] ];
+		};
+		add_filter( 'teeny_mce_buttons', $nobuttons );
+		wp_editor(
+			get_post_meta( $post->ID, 'royal_maps_annuncio', true ),
+			'royalMapsEditor',
 			[
 				'wpautop'          => false,
 				'media_buttons'    => true,
@@ -742,6 +796,15 @@ class Engine {
 				$postId,
 				'royal_gallery_annuncio',
 				isset( $_POST['royalGalleryEditor'] ) ? $_POST['royalGalleryEditor'] : ''
+			);
+		}
+		if ( isset( $_POST['royal_maps_nonce'] )
+		     and wp_verify_nonce( $_POST['royal_maps_nonce'], 'metaboxMapsCallback' )
+		) {
+			update_post_meta(
+				$postId,
+				'royal_maps_annuncio',
+				isset( $_POST['royalMapsEditor'] ) ? $_POST['royalMapsEditor'] : ''
 			);
 		}
 

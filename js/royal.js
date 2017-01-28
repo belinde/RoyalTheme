@@ -1,6 +1,5 @@
 jQuery(function ($) {
     $('.toggler-menu').on('click', function () {
-        console.log('qui');
         $('.menu-mobile-inner').toggleClass('visible');
         $('.toggler-bg').toggleClass('visible');
     });
@@ -25,7 +24,7 @@ jQuery(function ($) {
     });
 
     $('.controls').on('click', function () {
-        var wrapper = $('.annuncio-slideshow-inner');
+        var wrapper = $(this).siblings('.annuncio-slideshow-inner');
         var children = $(wrapper).children();
         var count = children.length;
         var selected;
