@@ -143,6 +143,9 @@ class Engine {
 	public function actionAfterSetupTheme() {
 		add_theme_support( 'post-thumbnails', [ 'annuncio' ] );
 		add_theme_support( 'title-tag' );
+		add_image_size( 'royaltile', 195, 195, true );
+		add_image_size( 'royalslide', 1280, 800, true );
+		add_image_size( 'royalmap', 1280, 800, true );
 	}
 
 	/**
@@ -652,7 +655,7 @@ class Engine {
 	 * @param string $type
 	 */
 	public function theGallery( $type = 'photos' ) {
-		add_shortcode( 'gallery', function ( $atts ) {
+		add_shortcode( 'gallery', function ( $atts ) use ($type) {
 			$_attachments = get_posts( [
 				'include'        => $atts['ids'],
 				'post_status'    => 'inherit',
@@ -663,8 +666,9 @@ class Engine {
 			] );
 
 			$output = '';
+			$size = ( $type=='photos') ? 'royalslide' : 'royalmap';
 			foreach ( $_attachments as $val ) {
-				$url = wp_get_attachment_image_src( $val->ID, 'large' );
+				$url = wp_get_attachment_image_src( $val->ID, $size );
 				if ( $url ) {
 					$output .= '<div style="background-image:url(\'' . $url[0] . '\')"></div>';
 				}
