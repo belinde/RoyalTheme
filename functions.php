@@ -68,7 +68,7 @@ function the_slideshow_gallery($type = 'photos')
 {
     ?>
     <div class="annuncio-slideshow <?php echo $type; ?>">
-        <span class="controls slide-prev"><span class="ico ico-keyboard_arrow_left"></span></span>
+        <span class="controls slide-prev disabled"><span class="ico ico-keyboard_arrow_left"></span></span>
         <span class="controls slide-next"><span class="ico ico-keyboard_arrow_right"></span></span>
         <div class="annuncio-slideshow-inner">
             <?php Engine::getInstance()->theGallery($type); ?>

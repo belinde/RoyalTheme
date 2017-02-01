@@ -10,13 +10,14 @@ $resQuery = $royal->queryRicerca( $ricerca );
 ?>
 	<div id="content">
 		<div id="content-inner">
+            <h2 class="title text-center bft"><span>Ricerca Avanzata</span></h2>
 			<div class="grid">
 				<div class="col lg-3">
 					<?php
 					echo new SearchForm( '/ricerca/avanzata/', $ricerca );
 					?>
 				</div>
-				<div class="col lg-8 lg-offset-1">
+				<div class="col lg-9">
 					<div class="grid">
 						<?php
                             if ( $ricerca ) {

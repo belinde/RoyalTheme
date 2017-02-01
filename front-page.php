@@ -5,7 +5,7 @@ get_header();
 ?>
     <div id="content">
         <div id="content-inner">
-            <h2 class="title text-center">Annunci in evidenza</h2>
+            <h2 class="title text-center bft"><span>Annunci in evidenza</span></h2>
             <div class="grid">
                 <?php
                 $resQuery = Engine::getInstance()->queryRicerca(['posts_per_page' => 12]);
@@ -14,6 +14,9 @@ get_header();
                     get_template_part('annuncio', 'tile');
                 }
                 ?>
+            </div>
+            <div class="text-center">
+                <a class="btn" href='/ricerca/risultati'>Visualizza tutti gli annunci</a>
             </div>
         </div>
     </div>

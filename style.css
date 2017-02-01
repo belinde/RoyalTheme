@@ -3,7 +3,6 @@ Theme Name: Royal Immobiliare
 Author: Luca Raffo, Franco Traversaro
 Author URI: mailto:f.traversaro@gmail.com
 */
-
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
 /**
  * 1. Change the default font family in all browsers (opinionated).
@@ -571,9 +570,26 @@ body {
 .text-center {
   text-align: center; }
 
+.bft {
+  text-transform: uppercase;
+  font-weight: 400;
+  display: flex;
+  align-items: center; }
+  .bft:before, .bft:after {
+    content: '';
+    display: block;
+    flex: 1 1 100%;
+    height: 3px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #ddd; }
+  .bft span {
+    flex: 0 0 auto;
+    padding: 0 30px; }
+
 #logo {
   display: block;
-  width: 140px;
+  width: 175px;
   height: 85px;
   background-image: url("images/logo.png");
   background-size: contain;
@@ -587,7 +603,7 @@ body {
     top: -200px; }
     #header:not(.isIndex) #header-inner {
       padding-bottom: 30px;
-      border-bottom: 1px solid #f90a4f; }
+      border-bottom: 1px solid #cb053e; }
   #header.fixed {
     position: fixed;
     top: 0;
@@ -595,7 +611,7 @@ body {
     left: 0;
     right: 0;
     background-color: white;
-    border-bottom: 1px solid #f90a4f; }
+    border-bottom: 1px solid #cb053e; }
     #header.fixed #header-inner {
       border: 0; }
     #header.fixed + #content {
@@ -643,10 +659,10 @@ body {
     #menu li a, #menu li a:visited {
       color: #999; }
     #menu li a.active {
-      border-color: #f90a4f;
-      color: #f90a4f !important; }
+      border-color: #99042f;
+      color: #99042f !important; }
     #menu li a:hover {
-      color: #f90a4f !important; }
+      color: #99042f !important; }
 
 #menu-mobile {
   display: none; }
@@ -697,14 +713,16 @@ body {
       color: #333; }
       #menu-mobile .menu-mobile-inner li a.active, #menu-mobile .menu-mobile-inner li a:hover {
         background-color: #f1f1f1;
-        color: #f90a4f; }
+        color: #99042f; }
       #menu-mobile .menu-mobile-inner li a.active {
-        box-shadow: inset -3px 0 0 0 #f90a4f; }
+        box-shadow: inset -3px 0 0 0 #99042f; }
 
 .grid {
   display: flex;
   flex-flow: row wrap;
   align-items: flex-start; }
+  .grid:not(:last-child) {
+    margin-bottom: 30px; }
   .grid .col {
     flex: 1 1 100%; }
   .grid .item {
@@ -731,18 +749,22 @@ body {
         pointer-events: none;
         transition: 200ms linear; }
       .grid .item a:hover {
-        box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.35), 0 0 5px #99042f; }
+        box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.35), 0 0 5px #333; }
         .grid .item a:hover:after {
-          background-color: rgba(249, 10, 79, 0.05); }
+          background-color: rgba(51, 51, 51, 0.05); }
+        .grid .item a:hover .item-cover-image {
+          background-size: auto 100%; }
       .grid .item a, .grid .item a:visited {
         color: #555; }
     .grid .item .item-cover-image {
       background-color: #ccc;
-      background-size: cover;
+      background-size: auto 110%;
       background-position: center;
+      overflow: hidden;
       width: 100%;
       padding-bottom: 100%;
-      position: relative; }
+      position: relative;
+      transition: all 150ms ease-in-out; }
       .grid .item .item-cover-image:before {
         content: '';
         display: block;
@@ -776,7 +798,7 @@ body {
   font-size: 24px; }
 
 #footer {
-  background-color: #554a50;
+  background-color: #333;
   margin-top: 50px; }
   #footer #footer-inner {
     padding: 20px;
@@ -784,7 +806,7 @@ body {
     align-items: center;
     font-size: 12px; }
     #footer #footer-inner a, #footer #footer-inner a:visited {
-      color: #f90a4f; }
+      color: #cb053e; }
     #footer #footer-inner a:hover {
       color: white; }
     #footer #footer-inner p:not(:last-child) {
@@ -811,7 +833,7 @@ body {
   cursor: pointer;
   display: none; }
   .immobili-menu-trigger:hover {
-    color: #f90a4f; }
+    color: #cb053e; }
 
 .immobili_menu_header {
   margin: 0 auto 30px;
@@ -824,12 +846,16 @@ body {
     margin: 4px; }
   .immobili_menu_header .immobili_contratto {
     cursor: pointer;
-    font-size: 18px; }
-    .immobili_menu_header .immobili_contratto:hover, .immobili_menu_header .immobili_contratto.active {
-      color: #f90a4f; }
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 3px; }
+    .immobili_menu_header .immobili_contratto:hover {
+      color: #99042f; }
+    .immobili_menu_header .immobili_contratto.active {
+      color: white;
+      background-color: #99042f; }
   .immobili_menu_header .immobili_separatore {
-    font-size: 130%;
-    color: #999; }
+    display: none; }
 
 .immobili_menu {
   display: none; }
@@ -845,9 +871,9 @@ body {
       padding: 3px 10px;
       border-left: 2px solid transparent; }
       .immobili_menu ul li.active {
-        border-color: #f90a4f; }
+        border-color: #99042f; }
         .immobili_menu ul li.active a {
-          color: #f90a4f; }
+          color: #99042f; }
     .immobili_menu ul .immobili_title, .immobili_menu ul .immobili_title a {
       color: #99042f !important;
       font-size: 16px; }
@@ -860,7 +886,7 @@ body {
       display: inline-block;
       margin-right: 5px; }
       .immobili_menu ul a:hover {
-        color: #f90a4f; }
+        color: #99042f; }
     .immobili_menu ul .immobili_quantity {
       color: #999; }
 
@@ -1105,7 +1131,8 @@ body {
   width: 100%;
   padding-bottom: 56.25%;
   position: relative;
-  z-index: 0; }
+  z-index: 0;
+  overflow: hidden; }
   .annuncio-slideshow .controls {
     position: absolute;
     z-index: 2;
@@ -1113,7 +1140,7 @@ body {
     bottom: 0;
     cursor: pointer; }
     .annuncio-slideshow .controls:hover .ico {
-      color: #f90a4f; }
+      color: #cb053e; }
     .annuncio-slideshow .controls .ico {
       position: absolute;
       top: 50%;
@@ -1132,25 +1159,28 @@ body {
       background: linear-gradient(to left, rgba(0, 0, 0, 0.35), transparent); }
       .annuncio-slideshow .controls.slide-next .ico {
         right: 10px; }
+    .annuncio-slideshow .controls.slide-prev.disabled, .annuncio-slideshow .controls.slide-next.disabled {
+      pointer-events: none; }
+      .annuncio-slideshow .controls.slide-prev.disabled .ico, .annuncio-slideshow .controls.slide-next.disabled .ico {
+        display: none; }
   .annuncio-slideshow .annuncio-slideshow-inner {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0; }
+    width: 100%;
+    bottom: 0;
+    transition: all 0.35s linear; }
     .annuncio-slideshow .annuncio-slideshow-inner > div {
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 1; }
+      float: left;
+      width: 1200px;
+      height: 100%; }
 
 .annuncio-info {
-  padding: 10px; }
+  padding: 10px;
+  margin-top: 20px; }
   .annuncio-info h3 {
     color: #99042f;
     margin-bottom: 10px;
@@ -1281,5 +1311,22 @@ input[type="submit"] {
       background-color: #99042f;
       color: white;
       border: 1px solid #99042f; }
+
+.ask-info {
+  background-color: white;
+  box-shadow: 0 2px 3px -1px rgba(0, 0, 0, 0.35);
+  border-radius: 4px; }
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  background-color: #99042f;
+  padding: 15px 10px;
+  line-height: 1;
+  color: white;
+  border-radius: 3px;
+  transition: 180ms linear; }
+  .btn:hover {
+    background-color: #cb053e; }
 
 /*# sourceMappingURL=style.css.map */

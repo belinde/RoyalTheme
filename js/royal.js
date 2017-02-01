@@ -1,4 +1,5 @@
 jQuery(function ($) {
+    royalGallerySlider('photos');
     $('.toggler-menu').on('click', function () {
         $('.menu-mobile-inner').toggleClass('visible');
         $('.toggler-bg').toggleClass('visible');
@@ -23,17 +24,47 @@ jQuery(function ($) {
         $('.immobili_menu .menu_nuda-proprieta').addClass('visible');
     });
 
+    // $('.controls').on('click', function () {
+    //     var wrapper = $(this).siblings('.annuncio-slideshow-inner');
+    //     var children = $(wrapper).children();
+    //     var count = children.length;
+    //     var selected;
+    //     if ($(this).hasClass('slide-prev')) {
+    //         selected = children[count - 1];
+    //         $(selected).prependTo($(wrapper));
+    //     } else {
+    //         selected = children[0];
+    //         $(selected).appendTo($(wrapper));
+    //     }
+    // });
+
     $('.controls').on('click', function () {
         var wrapper = $(this).siblings('.annuncio-slideshow-inner');
         var children = $(wrapper).children();
         var count = children.length;
-        var selected;
+        var width = $(children[0]).outerWidth();
+        var selected = 0;
+        for ( var i = 0; i < count; i++) {
+            selected = $(children[i]).hasClass('selected') ? i : selected;
+        }
+        $(children).removeClass('selected');
         if ($(this).hasClass('slide-prev')) {
-            selected = children[count - 1];
-            $(selected).prependTo($(wrapper));
+            selected--;
+            // selected = children[count - 1];
+            // $(selected).prependTo($(wrapper));
         } else {
-            selected = children[0];
-            $(selected).appendTo($(wrapper));
+            selected++;
+            // selected = children[0];
+            // $(selected).appendTo($(wrapper));
+        }
+        $(wrapper).css({transform: "translateX(-"+(width * selected )+"px)"})
+        $(children[selected]).addClass('selected')
+        console.log(selected, count);
+        $(wrapper).siblings().removeClass('disabled');
+        if (selected === count - 1) {
+            $(this).addClass('disabled');
+        } else if (selected === 0) {
+            $(this).addClass('disabled');
         }
     });
 
@@ -193,4 +224,33 @@ function royalInitMap() {
             }
         }
     }
+}
+
+jQuery(window).on('load', function () {
+    royalGallerySlider();
+});
+
+jQuery(window).on('resize', function() {
+    royalGallerySlider();
+})
+
+
+function royalGallerySlider() {
+    var $ = jQuery;
+    var container = $('.annuncio-slideshow');
+    $(container).each(function() {
+        var inner = $(this).children('.annuncio-slideshow-inner');
+        var photos = $(inner).children();
+        var width = $(this).outerWidth();
+
+        $(inner).css({
+            width: width * photos.length
+        });
+        $(photos).each(function(){
+            $(this).css({
+                width: width
+            });
+        });
+    });
+
 }

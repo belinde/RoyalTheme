@@ -26,11 +26,12 @@ get_header();
 ?>
     <div id="content">
         <div id="content-inner">
+            <h2 class="title text-center bft"><span>Mappa Immobili</span></h2>
             <div id="royalMapSearchData" style="display: none;"><?php echo json_encode($json); ?></div>
-            <div id="royalMapSearch" style="width: 100%;height: 800px;"></div>
+            <div id="royalMapSearch" style="width: 100%;height: 800px; margin-bottom: 30px;"></div>
 
             <div id="royalMapSearchForm" class="row">
-                <h3>Ricerca</h3>
+                <h2 class="title text-center bft"><span>Ricerca</span></h2>
                 <div class="grid">
                     <div class="col lg-4">
                         <h4>Comune</h4>
