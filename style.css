@@ -637,8 +637,7 @@ body {
     #header.isIndex #logo {
       background-image: url("images/logo_white.png"); }
     #header.isIndex #menu li a {
-      color: white;
-      text-transform: uppercase; }
+      color: white; }
     #header.isIndex #menu-mobile .toggler-ico {
       color: white; }
   #header #header-inner {
@@ -656,7 +655,8 @@ body {
     text-decoration: none;
     padding: 10px;
     border-bottom: 2px solid transparent;
-    transition: 180ms linear; }
+    transition: 180ms linear;
+    text-transform: uppercase; }
     #menu li a, #menu li a:visited {
       color: #999; }
     #menu li a.active {

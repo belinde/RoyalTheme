@@ -140,7 +140,6 @@ body {
             li {
                 a {
                     color: white;
-                    text-transform: uppercase;
                 }
             }
         }
@@ -170,6 +169,7 @@ body {
             padding: 10px;
             border-bottom: 2px solid transparent;
             transition: 180ms linear;
+            text-transform: uppercase;
             &,
             &:visited {
                 color: #999;
