@@ -637,7 +637,8 @@ body {
     #header.isIndex #logo {
       background-image: url("images/logo_white.png"); }
     #header.isIndex #menu li a {
-      color: white; }
+      color: white;
+      text-transform: uppercase; }
     #header.isIndex #menu-mobile .toggler-ico {
       color: white; }
   #header #header-inner {
