@@ -667,11 +667,11 @@ class Engine {
 
 			$output = '';
 			$size = ( $type=='photos') ? 'royalslide' : 'royalmap';
-            $count = 1;
+            $count = 0;
 			foreach ( $_attachments as $val ) {
 				$url = wp_get_attachment_image_src( $val->ID, $size );
 				if ( $url ) {
-					$output .= '<div data-slideshowId="'. $count .'" class="'.($count == 1 ? 'selected' : '').'" style="background-image:url(\'' . $url[0] . '\')"></div>';
+					$output .= '<div data-slideshowId="'. $count .'" class="'.($count == 0 ? 'selected' : '').'" style="background-image:url(\'' . $url[0] . '\')"></div>';
                     $count++;
 				}
 			}

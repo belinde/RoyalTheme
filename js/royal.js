@@ -59,7 +59,7 @@ jQuery(function ($) {
         }
         $(wrapper).css({transform: "translateX(-"+(width * selected )+"px)"})
         $(children[selected]).addClass('selected')
-        console.log(selected, count);
+        // console.log(selected, count);
         $(wrapper).siblings().removeClass('disabled');
         if (selected === count - 1) {
             $(this).addClass('disabled');
@@ -69,7 +69,7 @@ jQuery(function ($) {
     });
 
     $('.toggler-flats').on('click', function () {
-        console.log('qui');
+        // console.log('qui');
         $('.immobili_menu_container').toggleClass('open');
     });
     $('.immobili_menu_inner').on('click', function (e) {
@@ -99,8 +99,8 @@ jQuery(function ($) {
         return false;
     });
     $('#royalMapSearchForm').on('change', '.interruttore', function () {
-        console.log(this);
-        console.log(markers);
+        // console.log(this);
+        // console.log(markers);
         var visComune, visTipologia, visContratto, j;
         for (var i = markers.length - 1; i >= 0; i--) {
             visComune = visTipologia = visContratto = false;
@@ -164,7 +164,7 @@ function royalInitMap() {
         container = document.getElementById('royalMapSearch');
         if (container) {
             var data = jQuery.parseJSON(jQuery('#royalMapSearchData').text());
-            console.log(data);
+            // console.log(data);
             geocoder = new google.maps.Geocoder();
             var map = new google.maps.Map(container, {
                 center: {lat: 44.3594345, lng: 9.3540266},
@@ -238,6 +238,7 @@ jQuery(window).on('resize', function() {
 function royalGallerySlider() {
     var $ = jQuery;
     var container = $('.annuncio-slideshow');
+    var id = 0;
     $(container).each(function() {
         var inner = $(this).children('.annuncio-slideshow-inner');
         var photos = $(inner).children();
@@ -247,6 +248,12 @@ function royalGallerySlider() {
             width: width * photos.length
         });
         $(photos).each(function(){
+            if ($(this).hasClass('selected')) {
+                id = $(this).data('slideshowid');
+                $(inner).css({
+                    transform: "translateX(-" + (width * id) + "px)"
+                })
+            }
             $(this).css({
                 width: width
             });
