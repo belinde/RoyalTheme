@@ -4,12 +4,6 @@ namespace Royal\Fields;
 use Royal\Fields\AbstractField as _;
 
 return [
-	( new Integer( 'prezzo' ) )
-		->setAppend( '€' )
-		->setEmpty( 'trattativa riservata' )
-		->setSearch( _::SEARCH_RANGE )
-		->setInternal()
-	,
 	( new Select( 'status' ) )
 		->setValues( [
 			'disponibile' => 'Disponibile sul mercato',
@@ -19,6 +13,15 @@ return [
 		->setHelp( "Determina se l'annuncio è visibile o meno sul sito" )
 		->setInternal()
 	,
+	( new Text( 'proprietario' ) )
+		->setInternal()
+	,
+	( new Integer( 'prezzo' ) )
+		->setAppend( '€' )
+		->setEmpty( 'trattativa riservata' )
+		->setSearch( _::SEARCH_RANGE )
+		->setInternal()
+	,
 	( new Integer( 'vani' ) )
 		->setSearch( _::SEARCH_RANGE )
 	,
@@ -26,7 +29,13 @@ return [
 		->setAppend( 'm&sup2;' )
 		->setSearch( _::SEARCH_RANGE )
 	,
-	( new Text( 'condizione' ) )
+	( new Select( 'condizione' ) )
+		->setValues( [
+			'da_ristrutturare' => 'da ristrutturare',
+			'ristrutturato'    => 'ristrutturato',
+			'buono'            => 'buono',
+			'nuovo'            => 'nuovo'
+		] )
 	,
 	( new Integer( 'bagni', "Numero bagni" ) )
 		->setSearch( _::SEARCH_RANGE )
@@ -54,7 +63,14 @@ return [
 	( new Boolean( 'ascensore' ) )
 		->setSearch( _::SEARCH_EXACT )
 	,
-	( new Text( 'posteggio', "Posto auto" ) )
+	( new Boolean( 'box', "Box auto" ) )
+		->setSearch( _::SEARCH_EXACT )
+	,
+	( new Select( 'posteggio', "Posto auto" ) )
+		->setValues( [
+			'coperto'  => 'Coperto',
+			'scoperto' => 'Scoperto'
+		] )
 	,
 	( new LongText( 'indirizzo', "Indirizzo completo" ) )
 ];

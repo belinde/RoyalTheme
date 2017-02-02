@@ -134,6 +134,7 @@ class Engine {
 	 */
 	public function filterManageAnnuncioPostsColumns( $columns ) {
 		unset( $columns['date'] );
+		$columns['proprietario'] = $this->fields['proprietario']->getLabel();
 		$columns['prezzo'] = $this->fields['prezzo']->getLabel();
 		$columns['status'] = $this->fields['status']->getLabel();
 
@@ -283,7 +284,7 @@ class Engine {
 			'description'          => "Annunci di vendita o affitto immobili",
 			'public'               => true,
 			'menu_icon'            => 'dashicons-admin-multisite',
-			'supports'             => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
+			'supports'             => [ 'title', 'editor', 'thumbnail' ],
 			'register_meta_box_cb' => [ $this, 'metaboxCallbackAnnuncio' ],
 			'taxonomies'           => [ 'contratto', 'tipologia', 'comune' ],
 			'has_archive'          => true
