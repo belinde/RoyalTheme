@@ -6,9 +6,9 @@ use Royal\Fields\AbstractField as _;
 return [
 	( new Select( 'status' ) )
 		->setValues( [
-			'disponibile' => 'Disponibile sul mercato',
-			'trattativa'  => 'In trattativa',
-			'terminato'   => 'Venduto o piazzato'
+			'disponibile' => 'disponibile sul mercato',
+			'trattativa'  => 'in trattativa',
+			'terminato'   => 'venduto o piazzato'
 		] )
 		->setHelp( "Determina se l'annuncio è visibile o meno sul sito" )
 		->setInternal()
@@ -68,8 +68,8 @@ return [
 	,
 	( new Select( 'posteggio', "Posto auto" ) )
 		->setValues( [
-			'coperto'  => 'Coperto',
-			'scoperto' => 'Scoperto'
+			'coperto'  => 'coperto',
+			'scoperto' => 'scoperto'
 		] )
 	,
 	( new LongText( 'indirizzo', "Indirizzo completo" ) )
