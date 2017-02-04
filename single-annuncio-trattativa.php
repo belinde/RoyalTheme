@@ -1,7 +1,11 @@
 <div id="content">
     <div id="content-inner">
         <div class="annuncio-info">
-            <h3>Annuncio terminato</h3>
+	        <div class="watermarked"
+	             style="background-image: url('<?= get_the_post_thumbnail_url( null, 'royalslide' ) ?>');">
+		        <span>Trattativa in corso</span>
+	        </div>
+            <h3>Trattativa in corso</h3>
             <p>Ci dispiace ma questo immobile è in fase di trattativa.</p>
             <div class="grid">
                 <?php

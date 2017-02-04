@@ -117,7 +117,7 @@ body {
         }
     }
     &.isIndex {
-        background-image: url('images/background.jpg');
+        // background-image: url('images/background.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -170,6 +170,8 @@ body {
             border-bottom: 2px solid transparent;
             transition: 180ms linear;
             text-transform: uppercase;
+            border: solid white;
+            border-width: 0 2px 0 0;
             &,
             &:visited {
                 color: #999;
@@ -890,3 +892,19 @@ input[type="submit"] {
         background-color: lighten($color, 10%);
     }
 }
+
+.watermarked {
+    height: 200px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    }
+.watermarked span {
+    display:block;
+    line-height: 200px;
+    text-align: center;
+    font-size: 36px;
+    color: red;
+    font-weight: bold;
+    text-transform: uppercase;
+    opacity: .7;
+ }

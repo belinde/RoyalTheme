@@ -619,7 +619,6 @@ body {
     #header.fixed #logo {
       height: 35px; }
   #header.isIndex {
-    background-image: url("images/background.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -656,7 +655,9 @@ body {
     padding: 10px;
     border-bottom: 2px solid transparent;
     transition: 180ms linear;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    border: solid white;
+    border-width: 0 2px 0 0; }
     #menu li a, #menu li a:visited {
       color: #999; }
     #menu li a.active {
@@ -1329,5 +1330,20 @@ input[type="submit"] {
   transition: 180ms linear; }
   .btn:hover {
     background-color: #cb053e; }
+
+.watermarked {
+  height: 200px;
+  background-position: center center;
+  background-repeat: no-repeat; }
+
+.watermarked span {
+  display: block;
+  line-height: 200px;
+  text-align: center;
+  font-size: 36px;
+  color: red;
+  font-weight: bold;
+  text-transform: uppercase;
+  opacity: .7; }
 
 /*# sourceMappingURL=style.css.map */

@@ -135,8 +135,8 @@ class Engine {
 	public function filterManageAnnuncioPostsColumns( $columns ) {
 		unset( $columns['date'] );
 		$columns['proprietario'] = $this->fields['proprietario']->getLabel();
-		$columns['prezzo'] = $this->fields['prezzo']->getLabel();
-		$columns['status'] = $this->fields['status']->getLabel();
+		$columns['prezzo']       = $this->fields['prezzo']->getLabel();
+		$columns['status']       = $this->fields['status']->getLabel();
 
 		return $columns;
 	}
@@ -147,6 +147,13 @@ class Engine {
 		add_image_size( 'royaltile', 195, 195, true );
 		add_image_size( 'royalslide', 1280, 800, true );
 		add_image_size( 'royalmap', 1280, 800, true );
+		$args = [
+			'width'         => 1920,
+			'height'        => 700,
+			'default-image' => get_template_directory_uri() . '/images/background.jpg',
+			'uploads'       => true,
+		];
+		add_theme_support( 'custom-header', $args );
 	}
 
 	/**
@@ -656,24 +663,32 @@ class Engine {
 	 * @param string $type
 	 */
 	public function theGallery( $type = 'photos' ) {
-		add_shortcode( 'gallery', function ( $atts ) use ($type) {
+		add_shortcode( 'gallery', function ( $atts ) use ( $type ) {
 			$_attachments = get_posts( [
 				'include'        => $atts['ids'],
 				'post_status'    => 'inherit',
 				'post_type'      => 'attachment',
 				'post_mime_type' => 'image',
 				'order'          => 'ASC',
-				'orderby'        => 'menu_order'
+				'orderby'        => 'post__in',
+				'posts_per_page' => - 1
 			] );
 
 			$output = '';
-			$size = ( $type=='photos') ? 'royalslide' : 'royalmap';
-            $count = 0;
+			$size   = ( $type == 'photos' ) ? 'royalslide' : 'royalmap';
+			$count  = 0;
+			if ( $type == 'photos' ) {
+				$url = get_the_post_thumbnail_url( null, 'royalslide' );
+				if ( $url ) {
+					$output .= '<div data-slideshowId="' . $count . '" class="' . ( $count == 0 ? 'selected' : '' ) . '" style="background-image:url(\'' . $url . '\')"></div>';
+					$count ++;
+				}
+			}
 			foreach ( $_attachments as $val ) {
 				$url = wp_get_attachment_image_src( $val->ID, $size );
 				if ( $url ) {
-					$output .= '<div data-slideshowId="'. $count .'" class="'.($count == 0 ? 'selected' : '').'" style="background-image:url(\'' . $url[0] . '\')"></div>';
-                    $count++;
+					$output .= '<div data-slideshowId="' . $count . '" class="' . ( $count == 0 ? 'selected' : '' ) . '" style="background-image:url(\'' . $url[0] . '\')"></div>';
+					$count ++;
 				}
 			}
 
