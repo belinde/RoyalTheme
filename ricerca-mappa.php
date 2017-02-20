@@ -27,26 +27,31 @@ get_header();
     <div id="content">
         <div id="content-inner">
             <h2 class="title text-center bft"><span>Mappa Immobili</span></h2>
-            <div id="royalMapSearchData" style="display: none;"><?php echo json_encode($json); ?></div>
-            <div id="royalMapSearch" style="width: 100%;height: 800px; margin-bottom: 30px;"></div>
-
-            <div id="royalMapSearchForm" class="row">
-                <h2 class="title text-center bft"><span>Ricerca</span></h2>
-                <div class="grid">
-                    <div class="col lg-4">
-                        <h4>Comune</h4>
-                        <ul id="royalMapSearchComune"></ul>
-                    </div>
-                    <div class="col lg-4">
-                        <h4>Tipologia</h4>
-                        <ul id="royalMapSearchTipologia"></ul>
-                    </div>
-                    <div class="col lg-4">
-                        <h4>Contratto</h4>
-                        <ul id="royalMapSearchContratto"></ul>
+            <div class="grid">
+                <div class="col lg-4">
+                    <div id="royalMapSearchForm" class="row">
+                        <div class="grid">
+                            <div class="col lg-12">
+                                <h4>Comune</h4>
+                                <ul id="royalMapSearchComune"></ul>
+                            </div>
+                            <div class="col lg-12">
+                                <h4>Tipologia</h4>
+                                <ul id="royalMapSearchTipologia"></ul>
+                            </div>
+                            <div class="col lg-12">
+                                <h4>Contratto</h4>
+                                <ul id="royalMapSearchContratto"></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="col lg-8">
+                    <div id="royalMapSearchData" style="display: none;"><?php echo json_encode($json); ?></div>
+                    <div id="royalMapSearch" style="width: 100%;height: 500px; margin-bottom: 30px;"></div>
+                </div>
             </div>
+
 
         </div>
     </div>

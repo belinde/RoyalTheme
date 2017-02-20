@@ -39,6 +39,26 @@ spl_autoload_register(function ($class) {
  *
  * @return string
  */
+function recapAnnuncio($postId)
+{
+    ?>
+    <div class="annuncio-recap">
+        <ul>
+            <li><strong>Prezzo:</strong> 750.000$$</li>
+            <li><strong>Prezzo:</strong> 750.000$$</li>
+            <li><strong>Prezzo:</strong> 750.000$$</li>
+            <li><strong>Prezzo:</strong> 750.000$$</li>
+            <li><strong>Prezzo:</strong> 750.000$$</li>
+        </ul>
+    </div>
+    <?php
+}
+
+/**
+ * @param $postId
+ *
+ * @return string
+ */
 function descrizioneAnnuncio($postId)
 {
     $tipologie = get_the_terms($postId, 'tipologia');

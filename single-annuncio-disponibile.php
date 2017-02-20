@@ -8,41 +8,51 @@ $affitto = false;
 <div id="content">
 	<div id="content-inner">
 		<?php
+        recapAnnuncio($post->ID);
 		if ( $royal->hasGallery( 'photos' ) ) {
 			the_slideshow_gallery( 'photos' );
 		}
 		?>
 		<div class="annuncio-info grid">
             <div class="col lg-9 grid">
-                <div class="col lg-4 md-3 sm-12 xs-12">
-                    <h3>Prezzo</h3>
-                    <p class="annuncio-price"><?php $royal->getFields()['prezzo']->printer( $post ); ?><?php echo( $affitto ? '/mese' : '' ); ?></p>
-                </div>
-                <div class="col lg-8 md-9 sm-6 xs-12">
+                <div class="col lg-12">
                     <h3>Descrizione</h3>
                     <?php the_content(); ?>
                 </div>
-                <div class="col lg-4 md-3 sm-6 xs-12">
-                    <h3>Dettagli</h3>
-                    <p>
-                        <?php
-                        the_terms( $post->ID, 'comune', 'Comune:&nbsp;', ', ', '<br>' );
-                        the_terms( $post->ID, 'tipologia', 'Tipologia:&nbsp;', ', ', '<br>' );
-                        the_terms( $post->ID, 'contratto', 'Contratto:&nbsp;', ', ', '<br>' );
-                        $royal->theInformations();
-                        ?>
-                    </p>
-                </div>
-                <?php
-                if ( $royal->hasGallery( 'planimetries' ) ) {
-                    ?>
-                    <div class="col lg-8 md-9 sm-12 xs-12">
-                        <h3>Planimetrie</h3>
-                        <?php the_slideshow_gallery( 'planimetries' ); ?>
+                <div class="annuncio-tab-table col lg-12">
+                    <div class="annuncio-tab active annuncio-caratteristiche">Caratteristiche</div>
+                    <?php if ( $royal->hasGallery( 'planimetries' ) ) { ?> <div class="annuncio-tab annuncio-planimetrie">Planimetrie</div> <?php } ?>
+                    <?php if ( $royal->hasMap() ) { ?> <div class="annuncio-tab annuncio-mappa">Mappa</div> <?php } ?>
+
+                    <div class="annuncio-tab-content caratteristiche active">
+                        <p>
+                            <?php
+                            the_terms( $post->ID, 'comune', 'Comune:&nbsp;', ', ', '<br>' );
+                            the_terms( $post->ID, 'tipologia', 'Tipologia:&nbsp;', ', ', '<br>' );
+                            the_terms( $post->ID, 'contratto', 'Contratto:&nbsp;', ', ', '<br>' );
+                            $royal->theInformations();
+                            ?>
+                        </p>
                     </div>
                     <?php
-                }
-                ?>
+                    if ( $royal->hasGallery( 'planimetries' ) ) {
+                        ?>
+                            <div class="annuncio-tab-content planimetrie">
+                                <?php the_slideshow_gallery( 'planimetries' ); ?>
+                            </div>
+                        <?php
+                    }
+                    ?>
+                    <?php
+                    if ( $royal->hasMap() ) {
+                        ?>
+                        <div class="annuncio-tab-content mappa">
+                            <?php $royal->theMap(); ?>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
             </div>
             <div class="col lg-3 ask-info">
                 <div>
