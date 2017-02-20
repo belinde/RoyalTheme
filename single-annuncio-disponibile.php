@@ -20,9 +20,9 @@ $affitto = false;
                     <?php the_content(); ?>
                 </div>
                 <div class="annuncio-tab-table col lg-12">
-                    <div class="annuncio-tab active annuncio-caratteristiche">Caratteristiche</div>
-                    <?php if ( $royal->hasGallery( 'planimetries' ) ) { ?> <div class="annuncio-tab annuncio-planimetrie">Planimetrie</div> <?php } ?>
-                    <?php if ( $royal->hasMap() ) { ?> <div class="annuncio-tab annuncio-mappa">Mappa</div> <?php } ?>
+                    <div class="annuncio-tab active annuncio-caratteristiche" data-tab="caratteristiche">Caratteristiche</div>
+                    <?php if ( $royal->hasGallery( 'planimetries' ) ) { ?> <div class="annuncio-tab annuncio-planimetrie" data-tab="planimetrie">Planimetrie</div> <?php } ?>
+                    <?php if ( $royal->hasMap() ) { ?> <div class="annuncio-tab annuncio-mappa" data-tab="mappa">Mappa</div> <?php } ?>
 
                     <div class="annuncio-tab-content caratteristiche active">
                         <p>

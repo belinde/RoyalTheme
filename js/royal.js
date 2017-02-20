@@ -76,6 +76,15 @@ jQuery(function ($) {
         e.stopPropagation();
     });
 
+    $('.annuncio-tab').on('click', function() {
+        $('.annuncio-tab').removeClass('active');
+        $(this).addClass('active');
+        var tab = ($(this).data('tab'));
+        $('.annuncio-tab-content').removeClass('active');
+        $('.annuncio-tab-content.' + tab).addClass('active');
+        royalGallerySlider();
+    })
+
     $('.royalFormInfo').submit(function () {
         var form = $(this);
         var dati = {
