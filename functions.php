@@ -34,25 +34,6 @@ spl_autoload_register(function ($class) {
         require_once $file;
     }
 });
-/**
- * @param $postId
- *
- * @return string
- */
-function recapAnnuncio($postId)
-{
-    ?>
-    <div class="annuncio-recap">
-        <ul>
-            <li><strong>Prezzo:</strong> 750.000$$</li>
-            <li><strong>Prezzo:</strong> 750.000$$</li>
-            <li><strong>Prezzo:</strong> 750.000$$</li>
-            <li><strong>Prezzo:</strong> 750.000$$</li>
-            <li><strong>Prezzo:</strong> 750.000$$</li>
-        </ul>
-    </div>
-    <?php
-}
 
 /**
  * @param $postId
