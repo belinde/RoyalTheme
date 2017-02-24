@@ -116,11 +116,12 @@ class MenuAnnunci extends \WP_Widget
                     <h2>
                         <?php
                         $quest = array_keys($structured);
+                        $currentSel = isset($_GET['rs_con']) ? $_GET['rs_con'] : 0;
                         foreach (array_keys($structured) as $row => $contratto) {
                             $label = $this->contratti[ $contratto ]->name;
                             $slug = $this->contratti[ $contratto ]->slug;
-                            $active = $row ? '' : ' active';
-                            echo '<span class="immobili_contratto immobili_' . $slug . $active . '">' . $label . '</span>';
+                            $active = ($this->contratti[ $contratto ]->term_id  == $currentSel) ? ' active' : '';
+                            echo '<a class="immobili_contratto immobili_' . $slug . $active . '" href="?rs_con=' . $this->contratti[ $contratto ]->term_id . '">' . $label . '</a>';
                             if (isset($quest[ $row + 1 ])) {
                                 echo '<span class="immobili_separatore">/</span>';
                             }
@@ -133,7 +134,7 @@ class MenuAnnunci extends \WP_Widget
                     <?php
                     $row = 0;
                     foreach ($structured as $contratto => $listaContratto) {
-                        $active = $row++ ? '' : ' visible';
+                        $active = ($this->contratti[ $contratto ]->term_id  == $currentSel) ? ' visible' : '';
                         printf('<div class="immobili_menu menu_%s">', $this->contratti[ $contratto ]->slug . $active);
 
                         foreach ($listaContratto as $tipologia => $listaTipologia) {
