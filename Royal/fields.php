@@ -4,6 +4,9 @@ namespace Royal\Fields;
 use Royal\Fields\AbstractField as _;
 
 return [
+	( new Boolean( 'evidenza', "In evidenza" ) )
+		->setInternal()
+	,
 	( new Select( 'status' ) )
 		->setValues( [
 			'disponibile' => 'disponibile sul mercato',
