@@ -116,7 +116,7 @@ class MenuAnnunci extends \WP_Widget
                     <h2>
                         <?php
                         $quest = array_keys($structured);
-                        $currentSel = isset($_GET['rs_con']) ? $_GET['rs_con'] : 0;
+                        $currentSel = isset($_GET['rs_con']) ? $_GET['rs_con'] : 3;
                         foreach (array_keys($structured) as $row => $contratto) {
                             $label = $this->contratti[ $contratto ]->name;
                             $slug = $this->contratti[ $contratto ]->slug;
