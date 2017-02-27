@@ -28,25 +28,25 @@ get_header();
         <div id="content-inner">
             <h2 class="title text-center bft"><span>Mappa Immobili</span></h2>
             <div class="grid">
-                <div class="col lg-4">
+                <div class="col lg-3">
                     <div id="royalMapSearchForm" class="row">
-                        <div class="grid">
-                            <div class="col lg-12">
-                                <h4>Comune</h4>
-                                <ul id="royalMapSearchComune"></ul>
+                        <div class="grid searchform">
+                            <div class="col lg-12 searchform-row">
+                                <h4 class="searchform-title">Comune</h4>
+                                <ul id="royalMapSearchComune" class="searchform-fields"></ul>
                             </div>
-                            <div class="col lg-12">
-                                <h4>Tipologia</h4>
-                                <ul id="royalMapSearchTipologia"></ul>
+                            <div class="col lg-12 searchform-row">
+                                <h4 class="searchform-title">Tipologia</h4>
+                                <ul id="royalMapSearchTipologia" class="searchform-fields"></ul>
                             </div>
-                            <div class="col lg-12">
-                                <h4>Contratto</h4>
-                                <ul id="royalMapSearchContratto"></ul>
+                            <div class="col lg-12 searchform-row">
+                                <h4 class="searchform-title">Contratto</h4>
+                                <ul id="royalMapSearchContratto" class="searchform-fields"></ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col lg-8">
+                <div class="col lg-9">
                     <div id="royalMapSearchData" style="display: none;"><?php echo json_encode($json); ?></div>
                     <div id="royalMapSearch" style="width: 100%;height: 500px; margin-bottom: 30px;"></div>
                 </div>

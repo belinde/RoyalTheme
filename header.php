@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -11,7 +12,10 @@
 	if ( is_home() or is_front_page() ) {
 		echo ' class="isIndex"';
 	}
-	?> style="background-image: url('<?php header_image(); ?>');">
+	if ( is_single() ) {
+		echo ' class="isSingle"';
+	}
+	?> style="background-image: url('<?php getHeaderImage(); ?>');">
 		<div id="header-inner">
 			<div id="logo-container">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" id="logo" rel="home"></a>

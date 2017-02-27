@@ -49,7 +49,7 @@ $resQuery = $royal->queryRicerca( $ricerca );
 						if ( $resQuery->have_posts() ) {
 							while ( $resQuery->have_posts() ) {
 								$resQuery->the_post();
-								get_template_part( 'annuncio', 'tile' );
+								get_template_part( 'annuncio', 'rows' );
 							}
 						} else {
 							echo 'nessun risultato';

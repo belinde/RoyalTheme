@@ -40,32 +40,19 @@ jQuery(function ($) {
 
     $('.controls').on('click', function () {
         var wrapper = $(this).siblings('.annuncio-slideshow-inner');
+        var type = $(wrapper).parents('.annuncio-slideshow').attr('class').split(" ")[1];
         var children = $(wrapper).children();
         var count = children.length;
-        var width = $(children[0]).outerWidth();
         var selected = 0;
         for ( var i = 0; i < count; i++) {
             selected = $(children[i]).hasClass('selected') ? i : selected;
         }
-        $(children).removeClass('selected');
         if ($(this).hasClass('slide-prev')) {
             selected--;
-            // selected = children[count - 1];
-            // $(selected).prependTo($(wrapper));
         } else {
             selected++;
-            // selected = children[0];
-            // $(selected).appendTo($(wrapper));
         }
-        $(wrapper).css({transform: "translateX(-"+(width * selected )+"px)"})
-        $(children[selected]).addClass('selected')
-        // console.log(selected, count);
-        $(wrapper).siblings().removeClass('disabled');
-        if (selected === count - 1) {
-            $(this).addClass('disabled');
-        } else if (selected === 0) {
-            $(this).addClass('disabled');
-        }
+        moveGallery(selected, type);
     });
 
     $('.toggler-flats').on('click', function () {
@@ -140,7 +127,7 @@ jQuery(function ($) {
 jQuery(window).on('scroll', function () {
     var scrolly = window.scrollY;
     if (scrolly > 150) {
-        jQuery('#header:not(.isIndex)').addClass('fixed');
+        jQuery('#header:not(.isIndex):not(.isSingle)').addClass('fixed');
     } else {
         jQuery('#header').removeClass('fixed');
     }
@@ -202,21 +189,21 @@ function royalInitMap() {
                                 for (j = info.comune.length - 1; j >= 0; j--) {
                                     if (typeof eleComune[info.comune[j].slug] == 'undefined') {
                                         eleComune[info.comune[j].slug] = true;
-                                        jQuery('<li><label><input type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '">&nbsp;' + info.comune[j].name + '</label></li>').appendTo('#royalMapSearchComune');
+                                        jQuery('<li class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label></li>').appendTo('#royalMapSearchComune');
                                     }
                                     markers[i].comune.push(info.comune[j].slug);
                                 }
                                 for (j = info.contratto.length - 1; j >= 0; j--) {
                                     if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
                                         eleContratto[info.contratto[j].slug] = true;
-                                        jQuery('<li><label><input type="checkbox" checked class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '">&nbsp;' + info.contratto[j].name + '</label></li>').appendTo('#royalMapSearchContratto');
+                                        jQuery('<li class="fake-checkbox"><input id="' + info.contratto[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></li>').appendTo('#royalMapSearchContratto');
                                     }
                                     markers[i].contratto.push(info.contratto[j].slug);
                                 }
                                 for (j = info.tipologia.length - 1; j >= 0; j--) {
                                     if (typeof eleTipologia[info.tipologia[j].slug] == 'undefined') {
                                         eleTipologia[info.tipologia[j].slug] = true;
-                                        jQuery('<li><label><input type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '">&nbsp;' + info.tipologia[j].name + '</label></li>').appendTo('#royalMapSearchTipologia');
+                                        jQuery('<li class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label></li>').appendTo('#royalMapSearchTipologia');
                                     }
                                     markers[i].tipologia.push(info.tipologia[j].slug);
                                 }
@@ -269,4 +256,34 @@ function royalGallerySlider() {
         });
     });
 
+}
+
+
+function moveGallery(id, type) {
+    var $ = jQuery;
+    var container = $('.annuncio-slideshow.' + type);
+    var thumbs = $('.annuncio-slideshow-thumbs.' + type + ' .annuncio-slideshow-thumbs-inner').children();
+    var inner = container.children('.annuncio-slideshow-inner');
+    var photos = $(inner).children();
+    var width = container.outerWidth();
+    $(inner).css({
+        transform: "translateX(-" + (width * id) + "px)"
+    });
+    $(photos).each(function(){
+        $(this).removeClass('selected')
+        if(id === $(this).data('slideshowid')){
+            $(this).addClass('selected');
+        }
+    })
+    var next = (inner.siblings('.slide-next'));
+    var prev = (inner.siblings('.slide-prev'));
+    inner.siblings().removeClass('disabled');
+    if ( id === 0 ) {
+        prev.addClass('disabled')
+    }
+    if ( id === (photos.length - 1)) {
+        next.addClass('disabled')
+    }
+    thumbs.removeClass('selected');
+    $(thumbs[id]).addClass('selected');
 }

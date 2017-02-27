@@ -730,6 +730,47 @@ class Engine
         add_shortcode('gallery', 'gallery_shortcode');
         remove_filter('use_default_gallery_style', '__return_false');
     }
+    /**
+     * @param string $type
+     */
+    public function theGalleryThumbs($type = 'photos')
+    {
+        add_shortcode('gallery', function ($atts) use ($type) {
+            $_attachments = get_posts([
+                'include'        => $atts['ids'],
+                'post_status'    => 'inherit',
+                'post_type'      => 'attachment',
+                'post_mime_type' => 'image',
+                'order'          => 'ASC',
+                'orderby'        => 'post__in',
+                'posts_per_page' => -1
+            ]);
+
+            $output = '';
+            $size = ($type == 'photos') ? 'royalslide' : 'royalmap';
+            $count = 0;
+            if ($type == 'photos') {
+                $url = get_the_post_thumbnail_url(null, 'royalslide');
+                if ($url) {
+                    $output .= '<div onClick="moveGallery('.$count.', \''.$type.'\')" data-slideshowId="' . $count . '" class="selected" style="background-image:url(\'' . $url . '\')"></div>';
+                    $count++;
+                }
+            }
+            foreach ($_attachments as $val) {
+                $url = wp_get_attachment_image_src($val->ID, $size);
+                if ($url) {
+                    $output .= '<div onClick="moveGallery('.$count.', \''.$type.'\')" data-slideshowId="' . $count . '" style="background-image:url(\'' . $url[0] . '\')"></div>';
+                    $count++;
+                }
+            }
+
+            return $output;
+        });
+        add_filter('use_default_gallery_style', '__return_false');
+        echo do_shortcode($this->galleryShortcode($type));
+        add_shortcode('gallery', 'gallery_shortcode');
+        remove_filter('use_default_gallery_style', '__return_false');
+    }
 
     /**
      * @param \WP_Post $post

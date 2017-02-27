@@ -75,6 +75,11 @@ function the_slideshow_gallery($type = 'photos')
             <?php Engine::getInstance()->theGallery($type); ?>
         </div>
     </div>
+    <div class="annuncio-slideshow-thumbs <?php echo $type; ?>">
+        <div class="annuncio-slideshow-thumbs-inner">
+            <?php Engine::getInstance()->theGalleryThumbs($type); ?>
+        </div>
+    </div>
     <?php
 }
 
@@ -92,6 +97,17 @@ function royalQueryOverrider(&$query, $queryPar, $taxonomy)
             'taxonomy' => $taxonomy
         ];
     }
+}
+
+function getHeaderImage() {
+    if (is_home() or is_front_page()){
+        return header_image();
+    }
+    if (is_single()) {
+        print_r(get_the_post_thumbnail_url(null, 'royalslide'));
+        return true;
+    }
+    return false;
 }
 
 /**
