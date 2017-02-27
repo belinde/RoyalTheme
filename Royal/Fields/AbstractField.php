@@ -295,10 +295,10 @@ abstract class AbstractField {
 			$value    = $this->empty;
 			$hasValue = false;
 		}
-		echo $value;
 		if ( $this->append and $hasValue ) {
-			echo '&thinsp;' . $this->append;
+			echo $this->append.'&thinsp;';
 		}
+		echo $value;
 	}
 
 	/**

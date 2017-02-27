@@ -20,7 +20,7 @@ $affitto = false;
             /** @var WP_Term[] $contratti */
             $contratti = get_the_terms(get_the_ID(), "contratto");
             $contratto = isset($contratti[0]) ? $contratti[0]->slug : "undefined";
-            echo "<ul style='float:left;'><li><strong>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
+            echo "<ul style='float:left;'><li><strong style='color:#99042f;font-size:110%;'>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
             ?>
             <ul style="float:right;">
                 <?php
