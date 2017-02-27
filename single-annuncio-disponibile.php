@@ -9,7 +9,20 @@ $affitto = false;
     <div id="content-inner">
 
         <div class="annuncio-recap">
-            <ul>
+            <?php
+            $comuni = get_the_terms(get_the_ID(), "comune");
+            $comune = isset($comuni[0]) ? $comuni[0]->name : "&nbsp;";
+
+            /** @var WP_Term[] $comuni */
+            $tipologie = get_the_terms(get_the_ID(), "tipologia");
+            $tipo = isset($tipologie[0]) ? $tipologie[0]->slug : "undefined";
+
+            /** @var WP_Term[] $contratti */
+            $contratti = get_the_terms(get_the_ID(), "contratto");
+            $contratto = isset($contratti[0]) ? $contratti[0]->slug : "undefined";
+            echo "<ul style='float:left;'><li><strong>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
+            ?>
+            <ul style="float:right;">
                 <?php
                 $fields = $royal->getFields();
                 foreach (['prezzo', 'vani', 'superficie', 'condizione'] as $slug) {
@@ -23,6 +36,7 @@ $affitto = false;
                 }
                 ?>
             </ul>
+            <ul><li>&nbsp;</li></ul>
         </div>
 
         <?php

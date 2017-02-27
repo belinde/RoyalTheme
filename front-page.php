@@ -24,7 +24,7 @@ get_header();
             ?>
         </div>
         <div class="text-center">
-            <a class="btn" href='/ricerca/risultati'>Visualizza tutti gli annunci</a>
+            <a class="btn" href='/ricerca/risultati/?rs_con=3'>Visualizza tutti gli annunci</a>
         </div>
     </div>
 </div>
