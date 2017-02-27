@@ -33,15 +33,15 @@ get_header();
                         <div class="grid searchform">
                             <div class="col lg-12 searchform-row">
                                 <h4 class="searchform-title">Comune</h4>
-                                <ul id="royalMapSearchComune" class="searchform-fields"></ul>
+                                <div id="royalMapSearchComune" class="searchform-fields"></div>
                             </div>
                             <div class="col lg-12 searchform-row">
                                 <h4 class="searchform-title">Tipologia</h4>
-                                <ul id="royalMapSearchTipologia" class="searchform-fields"></ul>
+                                <div id="royalMapSearchTipologia" class="searchform-fields"></div>
                             </div>
                             <div class="col lg-12 searchform-row">
                                 <h4 class="searchform-title">Contratto</h4>
-                                <ul id="royalMapSearchContratto" class="searchform-fields"></ul>
+                                <div id="royalMapSearchContratto" class="searchform-fields"></div>
                             </div>
                         </div>
                     </div>

@@ -189,21 +189,21 @@ function royalInitMap() {
                                 for (j = info.comune.length - 1; j >= 0; j--) {
                                     if (typeof eleComune[info.comune[j].slug] == 'undefined') {
                                         eleComune[info.comune[j].slug] = true;
-                                        jQuery('<li class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label></li>').appendTo('#royalMapSearchComune');
+                                        jQuery('<div class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label></div>').appendTo('#royalMapSearchComune');
                                     }
                                     markers[i].comune.push(info.comune[j].slug);
                                 }
                                 for (j = info.contratto.length - 1; j >= 0; j--) {
                                     if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
                                         eleContratto[info.contratto[j].slug] = true;
-                                        jQuery('<li class="fake-checkbox"><input id="' + info.contratto[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></li>').appendTo('#royalMapSearchContratto');
+                                        jQuery('<div class="fake-checkbox"><input id="' + info.contratto[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
                                     }
                                     markers[i].contratto.push(info.contratto[j].slug);
                                 }
                                 for (j = info.tipologia.length - 1; j >= 0; j--) {
                                     if (typeof eleTipologia[info.tipologia[j].slug] == 'undefined') {
                                         eleTipologia[info.tipologia[j].slug] = true;
-                                        jQuery('<li class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label></li>').appendTo('#royalMapSearchTipologia');
+                                        jQuery('<div class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label></div>').appendTo('#royalMapSearchTipologia');
                                     }
                                     markers[i].tipologia.push(info.tipologia[j].slug);
                                 }

@@ -469,25 +469,31 @@ template {
 
 .ico-land:before,
 .ico-rustico:before,
-.ico-terreno:before {
+.ico-terreno:before,
+.ico-terreni:before,
+.ico-rustici:before {
   content: "\e900"; }
 
 .ico-nude:before,
-.ico-negozio:before {
+.ico-negozio:before,
+.ico-negozi:before {
   content: "\e901"; }
 
 .ico-office:before,
-.ico-capannone:before {
+.ico-capannone:before,
+.ico-capannoni:before {
   content: "\e902"; }
 
-.ico-villa:before {
+.ico-villa:before,
+.ico-ville:before {
   content: "\e903"; }
 
 .ico-box:before {
   content: "\e904"; }
 
 .ico-flat:before,
-.ico-appartamento:before {
+.ico-appartamento:before,
+.ico-appartamenti:before {
   content: "\e905"; }
 
 .ico-image:before {
@@ -571,8 +577,10 @@ body {
 
 article .entry-content {
   font-size: 16px;
-  line-height: 1.4;
+  line-height: 1.6;
   color: #333; }
+  article .entry-content p, article .entry-content ul {
+    margin-bottom: 16px; }
 
 .text-center {
   text-align: center; }
@@ -753,8 +761,8 @@ article .entry-content {
     .grid .item-row > a {
       flex: 0; }
     .grid .item-row .item-row-cover-image {
-      width: 280px;
-      height: 214px;
+      width: 195px;
+      height: 195px;
       background-size: auto 110%;
       background-position: center;
       position: relative;
@@ -1418,7 +1426,10 @@ input[type="submit"] {
     color: white; }
 
 .fake-checkbox {
-  display: inline-block; }
+  display: inline-block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
   .fake-checkbox input {
     display: none; }
     .fake-checkbox input + label {
