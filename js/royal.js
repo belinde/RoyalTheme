@@ -99,6 +99,9 @@ jQuery(function ($) {
         // console.log(markers);
         var visComune, visTipologia, visContratto, j;
         for (var i = markers.length - 1; i >= 0; i--) {
+            if ( typeof markers[i] == 'undefined') {
+                continue;
+            }
             visComune = visTipologia = visContratto = false;
             for (j = markers[i].comune.length - 1; j >= 0; j--) {
                 if ($('.interruttore[data-tipo="comune"][data-valore="' + markers[i].comune[j] + '"]').prop('checked')) {
