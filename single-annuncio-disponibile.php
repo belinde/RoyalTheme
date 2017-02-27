@@ -25,7 +25,7 @@ $affitto = false;
             <ul style="float:right;">
                 <?php
                 $fields = $royal->getFields();
-                foreach (['prezzo', 'vani', 'superficie', 'condizione'] as $slug) {
+                foreach (['prezzo'] as $slug) {
                     if (isset($fields[ $slug ]) and $fields[ $slug ]->hasValue($post)) {
                         echo '<li><strong>';
                         echo $fields[ $slug ]->getLabel();
