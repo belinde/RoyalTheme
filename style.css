@@ -471,7 +471,8 @@ template {
 .ico-rustico:before,
 .ico-terreno:before,
 .ico-terreni:before,
-.ico-rustici:before {
+.ico-rustici:before,
+.ico-terreni-e-rustici {
   content: "\e900"; }
 
 .ico-nude:before,
@@ -561,8 +562,7 @@ html,
 
 body {
   font-family: 'Verdana', 'Geneva', sans-serif;
-  font-size: 16px;
-  background-color: #f1f1f1; }
+  font-size: 16px; }
 
 #header-inner, #content-inner, #quick-contacts #quick-contacts-inner, #footer #footer-inner {
   width: 100%;
@@ -1075,6 +1075,12 @@ article {
   .col.lg-offset-12 {
     margin-left: 100%; } }
 @media (max-width: 1100px) {
+  #menu {
+    display: none; }
+
+  #menu-mobile {
+    display: block; }
+
   .col.md-1 {
     flex: 0 0 8.33333%; }
   .col.md-offset-1 {
@@ -1125,6 +1131,7 @@ article {
     margin-left: 100%; }
 
   .immobili_menu_container {
+    background-color: transparent;
     position: fixed;
     z-index: 5;
     top: 0;
@@ -1144,8 +1151,6 @@ article {
       left: 0;
       width: 100%;
       max-width: 300px;
-      padding: 20px;
-      padding-top: 50px;
       overflow-y: auto;
       transform: translateX(-300px); }
     .immobili_menu_container.open {
@@ -1157,7 +1162,7 @@ article {
   .immobili-menu-trigger {
     display: inline-block;
     padding: 20px; } }
-@media (max-width: 1100px) {
+@media (max-width: 800px) {
   .col.sm-1 {
     flex: 0 0 8.33333%; }
   .col.sm-offset-1 {
@@ -1205,13 +1210,7 @@ article {
   .col.sm-12 {
     flex: 0 0 100%; }
   .col.sm-offset-12 {
-    margin-left: 100%; }
-
-  #menu {
-    display: none; }
-
-  #menu-mobile {
-    display: block; } }
+    margin-left: 100%; } }
 @media (max-width: 600px) {
   .col.xs-1 {
     flex: 0 0 8.33333%; }

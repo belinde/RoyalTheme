@@ -34,10 +34,12 @@ html,
         flex: 1 1 100%;
     }
 }
+
+
 body {
     font-family: 'Verdana', 'Geneva', sans-serif;
     font-size: 16px;
-    background-color: #f1f1f1;
+    // background-color: #f1f1f1;
 }
 
 %inner {
@@ -710,6 +712,12 @@ article {
     }
 }
 @media (max-width: 1100px) {
+    #menu {
+        display: none;
+    }
+    #menu-mobile {
+        display: block;
+    }
     .col {
         @for $i from 1 through 12 {
             &.md-#{$i} {
@@ -721,6 +729,7 @@ article {
         }
     }
     .immobili_menu_container {
+        background-color: transparent;
         position: fixed;
         z-index: 5;
         top: 0;
@@ -740,8 +749,8 @@ article {
             left: 0;
             width: 100%;
             max-width: 300px;
-            padding: 20px;
-            padding-top: 50px;
+            // padding: 20px;
+            // padding-top: 50px;
             overflow-y: auto;
             transform: translateX(-300px);
         }
@@ -759,7 +768,7 @@ article {
         padding: 20px;
     }
 }
-@media (max-width: 1100px) {
+@media (max-width: 800px) {
     .col {
         @for $i from 1 through 12 {
             &.sm-#{$i} {
@@ -770,13 +779,6 @@ article {
             }
         }
     }
-    #menu {
-        display: none;
-    }
-    #menu-mobile {
-        display: block;
-    }
-
 }
 @media (max-width: 600px) {
     .col {
