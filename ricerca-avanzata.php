@@ -12,7 +12,7 @@ $resQuery = $royal->queryRicerca( $ricerca );
 		<div id="content-inner">
             <h2 class="title text-center bft"><span>Ricerca Avanzata</span></h2>
 			<div class="grid">
-				<div class="col lg-3">
+				<div class="col lg-3" style="padding-right: 20px;">
 					<?php
 					echo new SearchForm( '/ricerca/avanzata/', $ricerca );
 					?>

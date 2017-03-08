@@ -122,9 +122,6 @@ class MenuAnnunci extends \WP_Widget
                             $slug = $this->contratti[ $contratto ]->slug;
                             $active = ($this->contratti[ $contratto ]->term_id  == $currentSel) ? ' active' : '';
                             echo '<a class="immobili_contratto immobili_' . $slug . $active . '" href="?rs_con=' . $this->contratti[ $contratto ]->term_id . '">' . $label . '</a>';
-                            if (isset($quest[ $row + 1 ])) {
-                                echo '<span class="immobili_separatore">/</span>';
-                            }
                         }
                         ?>
                     </h2>

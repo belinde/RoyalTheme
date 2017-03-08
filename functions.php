@@ -100,14 +100,15 @@ function royalQueryOverrider(&$query, $queryPar, $taxonomy)
 }
 
 function getHeaderImage() {
-    if (is_home() or is_front_page()){
-        return header_image();
-    }
-    if (is_single()) {
-        print_r(get_the_post_thumbnail_url(null, 'royalslide'));
-        return true;
-    }
-    return false;
+    // if (is_home() or is_front_page()){
+    //     return header_image();
+    // }
+    // if (is_single()) {
+    //     print_r(get_the_post_thumbnail_url(null, 'royalslide'));
+    //     return true;
+    // }
+    // return false;
+    return header_image();
 }
 
 /**

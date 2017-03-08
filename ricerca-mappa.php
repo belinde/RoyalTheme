@@ -28,7 +28,7 @@ get_header();
         <div id="content-inner">
             <h2 class="title text-center bft"><span>Mappa Immobili</span></h2>
             <div class="grid">
-                <div class="col lg-3">
+                <div class="col lg-3" style="padding-right: 20px;">
                     <div id="royalMapSearchForm" class="row">
                         <div class="grid searchform">
                             <div class="col lg-12 searchform-row">

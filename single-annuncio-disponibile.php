@@ -20,9 +20,9 @@ $affitto = false;
             /** @var WP_Term[] $contratti */
             $contratti = get_the_terms(get_the_ID(), "contratto");
             $contratto = isset($contratti[0]) ? $contratti[0]->slug : "undefined";
-            echo "<ul style='float:left;'><li><strong style='font-size:110%;'>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
+            echo "<ul><li><strong>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
             ?>
-            <ul style="float:right;">
+            <ul class="price">
                 <?php
                 $fields = $royal->getFields();
                 foreach (['prezzo'] as $slug) {
@@ -36,7 +36,6 @@ $affitto = false;
                 }
                 ?>
             </ul>
-            <ul><li>&nbsp;</li></ul>
         </div>
 
         <?php
@@ -44,13 +43,13 @@ $affitto = false;
             the_slideshow_gallery('photos');
         }
         ?>
-        <div class="annuncio-info grid">
-            <div class="col lg-9 grid">
-                <div class="col lg-12">
+        <div class="annuncio-info grid flex-start">
+            <div class="col lg-9 grid paddless-left" style="padding-top:0;">
+                <div class="col lg-12" style="padding-left: 0; padding-top:0;">
                     <h3>Descrizione</h3>
                     <?php the_content(); ?>
                 </div>
-                <div class="annuncio-tab-table col lg-12">
+                <div class="annuncio-tab-table col lg-12" style="padding-left: 0;">
                     <div class="annuncio-tab active annuncio-caratteristiche" data-tab="caratteristiche">
                         Caratteristiche
                     </div>
@@ -113,18 +112,6 @@ $affitto = false;
                             prima possibile.
                         </div>
                     </form>
-                </div>
-                <div>
-                    <?php
-                    if ($royal->hasMap()) {
-                        ?>
-                        <div class="col lg-4 md-4 sm-6 xs-12">
-                            <h3>Mappa</h3>
-                            <?php $royal->theMap(); ?>
-                        </div>
-                        <?php
-                    }
-                    ?>
                 </div>
             </div>
         </div>

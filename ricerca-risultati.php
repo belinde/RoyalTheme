@@ -12,7 +12,7 @@ $resQuery = $royal->queryRicerca($ricerca);
         <div id="content-inner">
             <h2 class="title text-center bft"><span>Tutti gli annunci</span></h2>
             <div class="grid">
-                <div class="col lg-3">
+                <div class="col lg-3" style="padding-right: 20px;">
                     <?php (new MenuAnnunci())->printer(); ?>
                 </div>
                 <div class="col lg-9">
