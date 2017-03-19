@@ -1,3 +1,17 @@
-- aggiungere "/mese" agli annunci degli affitti
-- fare un check se la galleria delle planimetrie è vuota, per non mettere direttamente tutto il blocco
-- aggiungere di default l'immagine di copertina alla slideshow dell'annuncio
+1. fatto
+2. fatto
+3. fatto
+4. fatto
+5. in questo caso però, non si tratta di "una scelta, o l'altra". puoi averli attivi anche entrambi. come si comporeterebbe in quel caso?
+6. fatto
+7. fatto
+8. la foto dell'annuncio viene ritagliata automaticamente quadrata per l'anteprima quando la carichi. in questo caso passo la palla a Franco
+9. non avevamo detto che non ci piaceva bordeaux il titolo? fatto comunque
+10. (Franco)
+11. (Franco)
+12. Fatto
+13. non è possibile perchè non è un carattere standard.
+14. fatto
+15. fatto
+16.  In chi siamo e' possibile inserire a lato delle scritte mappa di dove siamo con indirizzo?
+17. ho allungato la banda. non ha senso dirmi la dimensione in cm, perchè dipende dallo schermo da cui la stai guardando. dimmi se così va bene

@@ -241,8 +241,8 @@ class Engine
     {
         $this->actionInit();
         flush_rewrite_rules();
-        wp_insert_term('Affitto', 'contratto');
-        wp_insert_term('Vendita', 'contratto');
+        wp_insert_term('Affitti', 'contratto');
+        wp_insert_term('Vendite', 'contratto');
         wp_insert_term('Nuda proprietà', 'contratto');
 
         wp_insert_term('Appartamento', 'tipologia');

@@ -5,7 +5,7 @@ get_header();
 <div id="content">
     <div id="content-inner">
         <h2 class="title text-center bft"><span>Annunci in evidenza</span></h2>
-        <div class="grid">
+        <div class="grid evidenziata">
             <?php
             $resQuery = new \WP_Query([
                 'post_type'      => 'annuncio',
