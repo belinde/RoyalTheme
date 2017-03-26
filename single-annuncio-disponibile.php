@@ -7,42 +7,43 @@ $affitto = false;
 ?>
 <div id="content">
     <div id="content-inner">
-
-        <div class="annuncio-recap">
-            <?php
-            $comuni = get_the_terms(get_the_ID(), "comune");
-            $comune = isset($comuni[0]) ? $comuni[0]->name : "&nbsp;";
-
-            /** @var WP_Term[] $comuni */
-            $tipologie = get_the_terms(get_the_ID(), "tipologia");
-            $tipo = isset($tipologie[0]) ? $tipologie[0]->slug : "undefined";
-
-            /** @var WP_Term[] $contratti */
-            $contratti = get_the_terms(get_the_ID(), "contratto");
-            $contratto = isset($contratti[0]) ? $contratti[0]->slug : "undefined";
-            echo "<ul><li><strong>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
-            ?>
-            <ul class="price">
+        <div class="annuncio-border">
+            <div class="annuncio-recap">
                 <?php
-                $fields = $royal->getFields();
-                foreach (['prezzo'] as $slug) {
-                    if (isset($fields[ $slug ]) and $fields[ $slug ]->hasValue($post)) {
-                        echo '<li><strong>';
-                        echo $fields[ $slug ]->getLabel();
-                        echo ':</strong>&nbsp;';
-                        $royal->theSingleInfo($slug);
-                        echo '</li>';
-                    }
-                }
-                ?>
-            </ul>
-        </div>
+                $comuni = get_the_terms(get_the_ID(), "comune");
+                $comune = isset($comuni[0]) ? $comuni[0]->name : "&nbsp;";
 
-        <?php
-        if ($royal->hasGallery('photos')) {
-            the_slideshow_gallery('photos');
-        }
-        ?>
+                /** @var WP_Term[] $comuni */
+                $tipologie = get_the_terms(get_the_ID(), "tipologia");
+                $tipo = isset($tipologie[0]) ? $tipologie[0]->slug : "undefined";
+
+                /** @var WP_Term[] $contratti */
+                $contratti = get_the_terms(get_the_ID(), "contratto");
+                $contratto = isset($contratti[0]) ? $contratti[0]->slug : "undefined";
+                echo "<ul><li><strong>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
+                ?>
+                <ul class="price">
+                    <?php
+                    $fields = $royal->getFields();
+                    foreach (['prezzo'] as $slug) {
+                        if (isset($fields[ $slug ]) and $fields[ $slug ]->hasValue($post)) {
+                            echo '<li><strong>';
+                            echo $fields[ $slug ]->getLabel();
+                            echo ':&nbsp;';
+                            $royal->theSingleInfo($slug);
+                            echo '</strong></li>';
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+
+            <?php
+            if ($royal->hasGallery('photos')) {
+                the_slideshow_gallery('photos');
+            }
+            ?>
+        </div> <!-- end annuncio-border-->
         <div class="annuncio-info grid flex-start">
             <div class="col lg-9 grid paddless-left" style="padding-top:0;">
                 <div class="col lg-12" style="padding-left: 0; padding-top:0;">

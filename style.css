@@ -550,7 +550,8 @@ template {
 body,
 html,
 #wrapper {
-  height: 100%; }
+  height: 100%;
+  line-height: 1.5; }
 
 #wrapper {
   display: flex;
@@ -590,7 +591,7 @@ body {
 
 article {
   padding: 30px 50px;
-  border: 1px solid #DEDEDE;
+  border: 1px solid #99042f;
   background-color: #dedede;
   text-align: justify; }
   article .entry-content {
@@ -612,7 +613,7 @@ article {
     content: '';
     display: block;
     flex: 1 1 100%;
-    height: 5px;
+    height: 2px;
     background-color: #99042f; }
   .bft span {
     flex: 0 0 auto;
@@ -629,10 +630,11 @@ article {
 
 #quick-contacts {
   width: 100%;
-  background-color: #333;
   font-size: 14px;
   font-weight: bold;
-  color: white; }
+  color: white;
+  position: absolute;
+  z-index: 10; }
   #quick-contacts #quick-contacts-inner {
     padding: 10px 20px;
     display: flex;
@@ -648,15 +650,17 @@ article {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  height: 240px; }
+  height: 350px;
+  padding-top: 20px;
+  border-bottom: 2px solid #99042f; }
   #header:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 135px;
-    background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.35)); }
+    height: 155px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25)); }
   #header:not(.isIndex) #header-inner {
     padding-bottom: 30px; }
   #header.fixed {
@@ -682,9 +686,7 @@ article {
     #header.fixed + #content {
       margin-top: 140px; }
     #header.fixed #logo {
-      height: 35px; }
-    #header.fixed #menu li {
-      border-color: #ccc; }
+      height: 55px; }
   #header #menu li a {
     color: white; }
   #header #menu-mobile .toggler-ico {
@@ -692,8 +694,7 @@ article {
   #header #logo {
     background-image: url("images/logo_white.png"); }
   #header.isIndex {
-    height: 300px;
-    height: 40vh;
+    height: 350px;
     position: relative; }
     #header.isIndex:before {
       height: 135px; }
@@ -707,25 +708,23 @@ article {
   justify-content: flex-end;
   margin: 0;
   padding: 0; }
-  #menu li a {
-    display: inline-block;
-    text-decoration: none;
-    padding: 0 10px;
-    line-height: 1;
-    border-bottom: 2px solid transparent;
-    transition: 180ms linear;
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: bold; }
-    #menu li a, #menu li a:visited {
-      color: #999; }
-    #menu li a.active {
-      border-color: #99042f;
-      color: #99042f !important; }
-    #menu li a:hover {
-      color: #99042f !important; }
-  #menu li:not(:last-child) {
-    border-right: 1px solid white; }
+  #menu li {
+    border-bottom: 2px solid transparent; }
+    #menu li.active {
+      border-color: #99042f; }
+    #menu li a {
+      display: inline-block;
+      text-decoration: none;
+      padding: 0 10px;
+      line-height: 1;
+      transition: 180ms linear;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: bold; }
+      #menu li a, #menu li a:visited {
+        color: #999; }
+      #menu li a:hover {
+        color: #99042f !important; }
 
 #menu-mobile {
   display: none; }
@@ -785,7 +784,8 @@ article {
   flex-flow: row wrap;
   align-items: stretch; }
   .grid.evidenziata {
-    background-color: #dedede; }
+    background-color: #dedede;
+    border: 2px solid #99042f; }
     .grid.evidenziata .item > a {
       box-shadow: none;
       border: 6px solid white; }
@@ -800,7 +800,8 @@ article {
   .grid .item-row {
     display: flex;
     background-color: #dedede;
-    overflow: hidden; }
+    overflow: hidden;
+    border: 1px solid #99042f; }
     .grid .item-row:not(:last-child) {
       margin-bottom: 10px; }
     .grid .item-row > a,
@@ -815,12 +816,12 @@ article {
     .grid .item-row .item-row-cover-image {
       width: 195px;
       height: 195px;
-      border: 10px solid #dedede;
+      border: 10px solid white;
       background-size: auto 110%;
       background-position: center;
       position: relative;
       transition: all 150ms ease-in-out;
-      box-shadow: inset 0 0 0 1px #bbb; }
+      box-shadow: 0 0 0 3px #fff; }
       .grid .item-row .item-row-cover-image:hover {
         background-size: auto 100%; }
       .grid .item-row .item-row-cover-image .item-row-price {
@@ -882,15 +883,6 @@ article {
       overflow: hidden;
       width: 100%;
       padding-bottom: 100%; }
-      .grid .item .item-cover-image:before {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 25%;
-        background: linear-gradient(to top, black, transparent); }
     .grid .item .item-price {
       position: absolute;
       top: 10px;
@@ -920,10 +912,10 @@ article {
   background-color: #333;
   margin-top: 50px; }
   #footer #footer-inner {
-    padding: 20px;
+    padding: 20px 0;
     display: flex;
     align-items: center;
-    font-size: 12px; }
+    font-size: 14px; }
     #footer #footer-inner a, #footer #footer-inner a:visited {
       color: white; }
     #footer #footer-inner a:hover {
@@ -973,7 +965,9 @@ article {
     text-decoration: none;
     color: #333;
     background-color: #bbb;
-    transition: 180ms linear; }
+    transition: 180ms linear;
+    text-transform: uppercase;
+    font-weight: bold; }
     .immobili_menu_header .immobili_contratto:hover {
       color: #99042f;
       background-color: #ccc; }
@@ -994,6 +988,7 @@ article {
 
 .immobili_menu_container {
   background-color: #dedede;
+  border: 1px solid #99042f;
   height: 100%; }
 
 .immobili_menu {
@@ -1268,6 +1263,9 @@ article {
     flex: 0 0 100%; }
   .col.xs-offset-12 {
     margin-left: 100%; } }
+.annuncio-border {
+  border: 1px solid #99042f; }
+
 .annuncio-recap {
   display: flex;
   color: #99042f; }
@@ -1365,18 +1363,17 @@ article {
   display: inline-block;
   padding: 10px;
   border-radius: 5px 5px 0 0;
-  border: 1px solid #dedede;
-  border-bottom: 0; }
-  .annuncio-tab-table .annuncio-tab:hover {
-    background-color: #dedede;
-    cursor: pointer; }
+  border: 1px solid #99042f;
+  border-bottom: 0;
+  cursor: pointer;
+  background-color: white; }
   .annuncio-tab-table .annuncio-tab.active {
-    background-color: white; }
+    background-color: #dedede; }
 .annuncio-tab-table .annuncio-tab-content {
   display: block;
   background-color: #dedede;
   padding: 10px;
-  border: 1px solid #dedede; }
+  border: 1px solid #99042f; }
   .annuncio-tab-table .annuncio-tab-content:not(.active) {
     display: none; }
   .annuncio-tab-table .annuncio-tab-content a {
@@ -1455,15 +1452,20 @@ table.searchform {
     display: inline-block;
     width: auto; }
 
-.searchform .searchform-row {
-  padding: 10px;
-  border-bottom: 1px solid #bbb;
-  background-color: #dedede; }
-.searchform .searchform-title {
-  color: #99042f;
-  margin-bottom: 10px;
-  font-weight: 400;
-  font-size: 16px; }
+.searchform {
+  border: 1px solid #99042f; }
+  .searchform .searchform-row {
+    padding: 10px;
+    border-bottom: 1px solid #bbb;
+    background-color: #dedede; }
+  .searchform .searchform-title {
+    color: #99042f;
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-size: 16px; }
+
+#royalMapSearch {
+  border: 1px solid #99042f; }
 
 #royalMapSearchForm h3 {
   color: #99042f;
@@ -1538,7 +1540,8 @@ input[type="submit"] {
       border: 1px solid #99042f; }
 
 .ask-info {
-  background-color: #dedede; }
+  background-color: #dedede;
+  border: 1px solid #99042f; }
 
 .btn {
   display: inline-block;
@@ -1566,5 +1569,18 @@ input[type="submit"] {
   font-weight: bold;
   text-transform: uppercase;
   opacity: .7; }
+
+.tel-link:before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("images/phone-receiver.png"); }
+
+.fb-link {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url("images/facebook.png"); }
 
 /*# sourceMappingURL=style.css.map */
