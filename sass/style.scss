@@ -363,7 +363,7 @@ article {
     align-items: stretch;
     &.evidenziata {
         background-color: #dedede;
-        border: 2px solid $color;
+        // border: 2px solid $color;
         .item > a {
             box-shadow: none;
             border: 6px solid white;
@@ -385,7 +385,7 @@ article {
         display: flex;
         background-color: #dedede;
         overflow: hidden;
-        border: 1px solid $color;
+        border: 1px solid #dedede;
         // border-radius:3px;
         &:not(:last-child) { margin-bottom: 10px;}
         > a,
@@ -665,7 +665,7 @@ article {
 
 .immobili_menu_container {
     background-color: #dedede;
-    border: 1px solid $color;
+    // border: 1px solid $color;
     height: 100%;
 }
 
@@ -817,7 +817,7 @@ article {
 }
 
 .annuncio-border {
-    border: 1px solid $color;
+    // border: 1px solid $color;
 }
 
 .annuncio-recap {
@@ -958,7 +958,7 @@ article {
         display: inline-block;
         padding: 10px;
         border-radius: 5px 5px 0 0;
-        border: 1px solid $color;
+        // border: 1px solid $color;
         border-bottom: 0;
         cursor: pointer;
         background-color: white;
@@ -972,7 +972,7 @@ article {
         display: block;
         background-color: #dedede;
         padding: 10px;
-        border: 1px solid $color;
+        // border: 1px solid $color;
         &:not(.active) {
             display: none;
         }
@@ -1091,7 +1091,7 @@ table.searchform {
 }
 
 .searchform {
-    border: 1px solid $color;
+    // border: 1px solid $color;
     .searchform-row {
         padding: 10px;
         border-bottom: 1px solid #bbb;
@@ -1106,7 +1106,7 @@ table.searchform {
 }
 
 #royalMapSearch {
-    border: 1px solid $color;
+    // border: 1px solid $color;
 }
 
 #royalMapSearchForm {
@@ -1211,7 +1211,7 @@ input[type="submit"] {
 
 .ask-info {
     background-color: #dedede;
-    border: 1px solid $color;
+    // border: 1px solid $color;
     // box-shadow: 0 2px 3px -1px rgba(0,0,0,.35);
     // border-radius: 4px;
 }
@@ -1250,8 +1250,11 @@ input[type="submit"] {
     &:before {
         content: '';
         display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
         width: 16px;
         height: 16px;
+        background-size: contain;
         background-image: url('images/phone-receiver.png');
     }
 }

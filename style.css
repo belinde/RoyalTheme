@@ -784,8 +784,7 @@ article {
   flex-flow: row wrap;
   align-items: stretch; }
   .grid.evidenziata {
-    background-color: #dedede;
-    border: 2px solid #99042f; }
+    background-color: #dedede; }
     .grid.evidenziata .item > a {
       box-shadow: none;
       border: 6px solid white; }
@@ -801,7 +800,7 @@ article {
     display: flex;
     background-color: #dedede;
     overflow: hidden;
-    border: 1px solid #99042f; }
+    border: 1px solid #dedede; }
     .grid .item-row:not(:last-child) {
       margin-bottom: 10px; }
     .grid .item-row > a,
@@ -988,7 +987,6 @@ article {
 
 .immobili_menu_container {
   background-color: #dedede;
-  border: 1px solid #99042f;
   height: 100%; }
 
 .immobili_menu {
@@ -1263,9 +1261,6 @@ article {
     flex: 0 0 100%; }
   .col.xs-offset-12 {
     margin-left: 100%; } }
-.annuncio-border {
-  border: 1px solid #99042f; }
-
 .annuncio-recap {
   display: flex;
   color: #99042f; }
@@ -1363,7 +1358,6 @@ article {
   display: inline-block;
   padding: 10px;
   border-radius: 5px 5px 0 0;
-  border: 1px solid #99042f;
   border-bottom: 0;
   cursor: pointer;
   background-color: white; }
@@ -1372,8 +1366,7 @@ article {
 .annuncio-tab-table .annuncio-tab-content {
   display: block;
   background-color: #dedede;
-  padding: 10px;
-  border: 1px solid #99042f; }
+  padding: 10px; }
   .annuncio-tab-table .annuncio-tab-content:not(.active) {
     display: none; }
   .annuncio-tab-table .annuncio-tab-content a {
@@ -1452,20 +1445,15 @@ table.searchform {
     display: inline-block;
     width: auto; }
 
-.searchform {
-  border: 1px solid #99042f; }
-  .searchform .searchform-row {
-    padding: 10px;
-    border-bottom: 1px solid #bbb;
-    background-color: #dedede; }
-  .searchform .searchform-title {
-    color: #99042f;
-    margin-bottom: 10px;
-    font-weight: 400;
-    font-size: 16px; }
-
-#royalMapSearch {
-  border: 1px solid #99042f; }
+.searchform .searchform-row {
+  padding: 10px;
+  border-bottom: 1px solid #bbb;
+  background-color: #dedede; }
+.searchform .searchform-title {
+  color: #99042f;
+  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 16px; }
 
 #royalMapSearchForm h3 {
   color: #99042f;
@@ -1540,8 +1528,7 @@ input[type="submit"] {
       border: 1px solid #99042f; }
 
 .ask-info {
-  background-color: #dedede;
-  border: 1px solid #99042f; }
+  background-color: #dedede; }
 
 .btn {
   display: inline-block;
@@ -1573,8 +1560,11 @@ input[type="submit"] {
 .tel-link:before {
   content: '';
   display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
   width: 16px;
   height: 16px;
+  background-size: contain;
   background-image: url("images/phone-receiver.png"); }
 
 .fb-link {
