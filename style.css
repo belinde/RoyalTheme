@@ -710,7 +710,7 @@ article {
   padding: 0; }
   #menu li {
     border-bottom: 2px solid transparent; }
-    #menu li.active {
+    #menu li.active, #menu li.current-menu-item {
       border-color: #99042f; }
     #menu li a {
       display: inline-block;
