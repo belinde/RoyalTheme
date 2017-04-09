@@ -44,7 +44,7 @@ jQuery(function ($) {
         var children = $(wrapper).children();
         var count = children.length;
         var selected = 0;
-        for ( var i = 0; i < count; i++) {
+        for (var i = 0; i < count; i++) {
             selected = $(children[i]).hasClass('selected') ? i : selected;
         }
         if ($(this).hasClass('slide-prev')) {
@@ -63,7 +63,7 @@ jQuery(function ($) {
         e.stopPropagation();
     });
 
-    $('.annuncio-tab').on('click', function() {
+    $('.annuncio-tab').on('click', function () {
         $('.annuncio-tab').removeClass('active');
         $(this).addClass('active');
         var tab = ($(this).data('tab'));
@@ -84,7 +84,7 @@ jQuery(function ($) {
         $.post(royalconf.ajax, dati, function (res) {
             var errori = form.find('.royalFormErrori');
             errori.html('');
-            if ( res.length) {
+            if (res.length) {
                 for (var i = 0; i < res.length; i++) {
                     $('<li>' + res[i] + '</li>').appendTo(errori);
                 }
@@ -94,42 +94,45 @@ jQuery(function ($) {
         }, 'json');
         return false;
     });
-    $('#royalMapSearchForm').on('change', '.interruttore', function () {
-        // console.log(this);
-        // console.log(markers);
-        var visComune, visTipologia, visContratto, j;
-        for (var i = markers.length - 1; i >= 0; i--) {
-            if ( typeof markers[i] == 'undefined') {
-                continue;
-            }
-            visComune = visTipologia = visContratto = false;
-            for (j = markers[i].comune.length - 1; j >= 0; j--) {
-                if ($('.interruttore[data-tipo="comune"][data-valore="' + markers[i].comune[j] + '"]').prop('checked')) {
-                    visComune = true;
-                    break;
+    $('#royalMapSearchForm')
+        .on('change', '.interruttore', function () {
+            // console.log(this);
+            // console.log(markers);
+            var visComune, visTipologia, visContratto, j;
+            for (var i = markers.length - 1; i >= 0; i--) {
+                if (typeof markers[i] == 'undefined') {
+                    continue;
                 }
-            }
-            for (j = markers[i].tipologia.length - 1; j >= 0; j--) {
-                if ($('.interruttore[data-tipo="tipologia"][data-valore="' + markers[i].tipologia[j] + '"]').prop('checked')) {
-                    visTipologia = true;
-                    break;
+                visComune = visTipologia = visContratto = false;
+                for (j = markers[i].comune.length - 1; j >= 0; j--) {
+                    if ($('.interruttore[data-tipo="comune"][data-valore="' + markers[i].comune[j] + '"]').prop('checked')) {
+                        visComune = true;
+                        break;
+                    }
                 }
-            }
-            for (j = markers[i].contratto.length - 1; j >= 0; j--) {
-                if ($('.interruttore[data-tipo="contratto"][data-valore="' + markers[i].contratto[j] + '"]').prop('checked')) {
-                    visContratto = true;
-                    break;
+                for (j = markers[i].tipologia.length - 1; j >= 0; j--) {
+                    if ($('.interruttore[data-tipo="tipologia"][data-valore="' + markers[i].tipologia[j] + '"]').prop('checked')) {
+                        visTipologia = true;
+                        break;
+                    }
                 }
+                for (j = markers[i].contratto.length - 1; j >= 0; j--) {
+                    if ($('.interruttore[data-tipo="contratto"][data-valore="' + markers[i].contratto[j] + '"]').prop('checked')) {
+                        visContratto = true;
+                        break;
+                    }
+                }
+                markers[i].marker.setVisible(visComune && visTipologia && visContratto);
             }
-            markers[i].marker.setVisible(visComune && visTipologia && visContratto);
-        }
 
-    });
+        });
+
+
 });
 
 jQuery(window).on('scroll', function () {
     var scrolly = window.scrollY;
-    if (scrolly > 150) {
+    if (scrolly > 350) {
         jQuery('#header:not(.isIndex):not(.isSingle)').addClass('fixed');
     } else {
         jQuery('#header').removeClass('fixed');
@@ -199,7 +202,9 @@ function royalInitMap() {
                                 for (j = info.contratto.length - 1; j >= 0; j--) {
                                     if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
                                         eleContratto[info.contratto[j].slug] = true;
-                                        jQuery('<div class="fake-checkbox"><input id="' + info.contratto[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
+                                        var vend = info.contratto[j].slug == "vendita";
+                                        markers[i].marker.setVisible(vend);
+                                        jQuery('<div class="fake-checkbox fake-radio"><input id="' + info.contratto[j].slug + '" type="checkbox"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
                                     }
                                     markers[i].contratto.push(info.contratto[j].slug);
                                 }
@@ -218,9 +223,9 @@ function royalInitMap() {
                         }
                     })
                     (data[i], i)
-                )
-                ;
+                );
             }
+            jQuery('#royalMapSearchForm').find('.interruttore').trigger('change');
         }
     }
 }
@@ -229,7 +234,7 @@ jQuery(window).on('load', function () {
     royalGallerySlider();
 });
 
-jQuery(window).on('resize', function() {
+jQuery(window).on('resize', function () {
     royalGallerySlider();
 })
 
@@ -238,7 +243,7 @@ function royalGallerySlider() {
     var $ = jQuery;
     var container = $('.annuncio-slideshow');
     var id = 0;
-    $(container).each(function() {
+    $(container).each(function () {
         var inner = $(this).children('.annuncio-slideshow-inner');
         var photos = $(inner).children();
         var width = $(this).outerWidth();
@@ -246,7 +251,7 @@ function royalGallerySlider() {
         $(inner).css({
             width: width * photos.length
         });
-        $(photos).each(function(){
+        $(photos).each(function () {
             if ($(this).hasClass('selected')) {
                 id = $(this).data('slideshowid');
                 $(inner).css({
@@ -262,7 +267,7 @@ function royalGallerySlider() {
 }
 
 
-function moveGallery(id, type) {
+function moveGallery(id, type) {
     var $ = jQuery;
     var container = $('.annuncio-slideshow.' + type);
     var thumbs = $('.annuncio-slideshow-thumbs.' + type + ' .annuncio-slideshow-thumbs-inner').children();
@@ -272,19 +277,19 @@ function moveGallery(id, type) {
     $(inner).css({
         transform: "translateX(-" + (width * id) + "px)"
     });
-    $(photos).each(function(){
+    $(photos).each(function () {
         $(this).removeClass('selected')
-        if(id === $(this).data('slideshowid')){
+        if (id === $(this).data('slideshowid')) {
             $(this).addClass('selected');
         }
     })
     var next = (inner.siblings('.slide-next'));
     var prev = (inner.siblings('.slide-prev'));
     inner.siblings().removeClass('disabled');
-    if ( id === 0 ) {
+    if (id === 0) {
         prev.addClass('disabled')
     }
-    if ( id === (photos.length - 1)) {
+    if (id === (photos.length - 1)) {
         next.addClass('disabled')
     }
     thumbs.removeClass('selected');

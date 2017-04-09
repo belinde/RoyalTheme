@@ -5,8 +5,8 @@
         while (have_posts()) {
             the_post();
             ?>
+            <?php the_title('<h2 class="title text-center bft"><span>', '</span></h2>'); ?>
             <article>
-                <?php the_title('<h1 class="entry-title">', '</h1>'); ?>
                 <div class="entry-content"><?php the_content(); ?></div>
             </article>
             <?php

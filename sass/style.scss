@@ -21,6 +21,7 @@ body,
 html,
 #wrapper {
     height: 100%;
+    line-height: 1.5;
 }
 
 
@@ -76,7 +77,7 @@ body {
 
 article {
     padding: 30px 50px;
-    border: 1px solid #DEDEDE;
+    border: 1px solid $color;
     background-color: #dedede;
     text-align: justify;
     .entry-title {
@@ -106,7 +107,7 @@ article {
         content: '';
         display: block;
         flex: 1 1 100%;
-        height: 5px;
+        height: 2px;
         background-color: $color;
         // border-top: 1px solid;
         // border-bottom: 1px solid;
@@ -130,10 +131,12 @@ article {
 }
 #quick-contacts {
     width: 100%;
-    background-color: $secondary;
+    // background-color: $secondary;
     font-size: 14px;
     font-weight: bold;
     color: white;
+    position: absolute;
+    z-index: 10;
     #quick-contacts-inner {
         padding: 10px 20px;
         display: flex;
@@ -153,15 +156,17 @@ article {
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
-    height: 240px;
+    height: 350px;
+    padding-top: 20px;
+    border-bottom: 2px solid $color;
     &:before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        height: 135px;
-        background: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,.35));
+        height: 155px;
+        background: linear-gradient(to bottom, rgba(0,0,0,.6), rgba(0,0,0,.25));
     }
     &:not(.isIndex) {
         // top: -200px;
@@ -205,11 +210,11 @@ article {
             margin-top: 140px;
         }
         #logo {
-            height: 35px;
+            height: 55px;
         }
         #menu {
             li {
-                border-color: #ccc;
+                // border-color: #ccc;
             }
         }
     }
@@ -232,8 +237,8 @@ article {
     }
     &.isIndex {
         // background-image: url('images/background.jpg');
-        height: 300px;
-        height: 40vh;
+        height: 350px;
+        // height: 40vh;
         position: relative;
         &:before {
             height: 135px;
@@ -252,12 +257,16 @@ article {
     margin: 0;
     padding: 0;
     li {
+        border-bottom: 2px solid transparent;
+        &.active,
+        &.current-menu-item {
+            border-color: $color;
+        }
         a {
             display: inline-block;
             text-decoration: none;
             padding: 0 10px;
             line-height: 1;
-            border-bottom: 2px solid transparent;
             transition: 180ms linear;
             text-transform: uppercase;
             font-size: 12px;
@@ -268,16 +277,12 @@ article {
             &:visited {
                 color: #999;
             }
-            &.active {
-                border-color: $color;
-                color: $color !important;
-            }
             &:hover {
                 color: $color !important;
             }
         }
         &:not(:last-child) {
-            border-right: 1px solid white;
+            // border-right: 1px solid white;
             // &:after {
             //     content: '|';
             //     color: white;
@@ -358,6 +363,7 @@ article {
     align-items: stretch;
     &.evidenziata {
         background-color: #dedede;
+        // border: 2px solid $color;
         .item > a {
             box-shadow: none;
             border: 6px solid white;
@@ -379,6 +385,7 @@ article {
         display: flex;
         background-color: #dedede;
         overflow: hidden;
+        border: 1px solid #dedede;
         // border-radius:3px;
         &:not(:last-child) { margin-bottom: 10px;}
         > a,
@@ -397,12 +404,12 @@ article {
             $border-width: 10px;
             width: 195px;
             height: 195px;
-            border: $border-width solid #dedede;
+            border: $border-width solid white;
             background-size: auto 110%;
             background-position: center;
             position: relative;
             transition: all 150ms ease-in-out;
-            box-shadow: inset 0 0 0 1px #bbb;
+            box-shadow: 0 0 0 3px #fff;
             &:hover {
                 background-size: auto 100%;
             }
@@ -481,16 +488,16 @@ article {
             overflow: hidden;
             width: 100%;
             padding-bottom: 100%;
-            &:before {
-                content: '';
-                display: block;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 25%;
-                background: linear-gradient(to top, black, transparent);
-            }
+            // &:before {
+            //     content: '';
+            //     display: block;
+            //     position: absolute;
+            //     bottom: 0;
+            //     left: 0;
+            //     right: 0;
+            //     height: 25%;
+            //     background: linear-gradient(to top, black, transparent);
+            // }
         }
         .item-price {
             position: absolute;
@@ -557,10 +564,10 @@ article {
 
     #footer-inner {
         @extend %inner;
-        padding: 20px;
+        padding: 20px 0;
         display: flex;
         align-items: center;
-        font-size: 12px;
+        font-size: 14px;
         a {
             &,
             &:visited {
@@ -631,6 +638,8 @@ article {
         color: #333;
         background-color: #bbb;
         transition: 180ms linear;
+        text-transform: uppercase;
+        font-weight: bold;
         &:hover{
             color: $color;
             background-color: #ccc;
@@ -656,6 +665,7 @@ article {
 
 .immobili_menu_container {
     background-color: #dedede;
+    // border: 1px solid $color;
     height: 100%;
 }
 
@@ -806,6 +816,10 @@ article {
     }
 }
 
+.annuncio-border {
+    // border: 1px solid $color;
+}
+
 .annuncio-recap {
     display: flex;
     color: $color;
@@ -944,21 +958,21 @@ article {
         display: inline-block;
         padding: 10px;
         border-radius: 5px 5px 0 0;
-        border: 1px solid #dedede;
+        // border: 1px solid $color;
         border-bottom: 0;
+        cursor: pointer;
+        background-color: white;
         &:hover {
-            background-color: #dedede;
-            cursor: pointer;
         }
         &.active {
-            background-color: white;
+            background-color: #dedede;
         }
     }
     .annuncio-tab-content {
         display: block;
         background-color: #dedede;
         padding: 10px;
-        border: 1px solid #dedede;
+        // border: 1px solid $color;
         &:not(.active) {
             display: none;
         }
@@ -1077,6 +1091,7 @@ table.searchform {
 }
 
 .searchform {
+    // border: 1px solid $color;
     .searchform-row {
         padding: 10px;
         border-bottom: 1px solid #bbb;
@@ -1088,6 +1103,10 @@ table.searchform {
         font-weight: 400;
         font-size: 16px;
     }
+}
+
+#royalMapSearch {
+    // border: 1px solid $color;
 }
 
 #royalMapSearchForm {
@@ -1192,6 +1211,7 @@ input[type="submit"] {
 
 .ask-info {
     background-color: #dedede;
+    // border: 1px solid $color;
     // box-shadow: 0 2px 3px -1px rgba(0,0,0,.35);
     // border-radius: 4px;
 }
@@ -1225,3 +1245,22 @@ input[type="submit"] {
     text-transform: uppercase;
     opacity: .7;
  }
+
+.tel-link {
+    &:before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+        width: 16px;
+        height: 16px;
+        background-size: contain;
+        background-image: url('images/phone-receiver.png');
+    }
+}
+.fb-link {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('images/facebook.png');
+}
