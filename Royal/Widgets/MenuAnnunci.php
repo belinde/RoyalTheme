@@ -138,7 +138,6 @@ class MenuAnnunci extends \WP_Widget
                             echo '<ul>';
 
                             echo '<li class="immobili_title">';
-                            echo '<span class="ico-' . $this->tipologie[ $tipologia ]->slug . '"></span>';
                             echo '<span>';
                             $this->linker($contratto, $tipologia);
                             echo '</span>';

@@ -21,7 +21,6 @@ $affitto = (isset($contratti[0]) and $contratti[0]->slug == "affitto");
                 class="item-price"><?php the_single_info("prezzo"); ?><?php echo($affitto ? '/mese' : ''); ?></span>
         </div>
         <div class="item-info">
-            <span class="item-type ico-<?php echo $tipo; ?>"></span>
             <span class="item-location"><?php echo $comune; ?></span>
         </div>
         <div class="item-desc">

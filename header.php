@@ -7,7 +7,42 @@
 </head>
 <body <?php body_class(); ?>>
 <div id="wrapper">
-	<div id="quick-contacts">
+	<div id="header">
+		<div class="logo-container">
+			<a class="logo" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"></a>
+		</div>
+		<div class="upline">
+			<div class="upline-inner">
+				<span class="tel-link">tel/fax +39 0185 303 436</span>
+				<a href="https://www.facebook.com/immobiliareroyalchiavari" class="fb-link" target="_blank"></a>
+			</div>
+		</div>
+		<div class="menu">
+			<div class="menu-inner">
+				<?php
+				wp_nav_menu( [
+					'theme_location' => 'menuprincipale',
+					'container'      => false,
+					'menu_id'        => 'menu'
+					] );
+
+					?>
+			</div>
+		</div>
+		<div class="menu-mobile">
+			<span class="toggler-menu toggler-ico ico-dehaze"></span>
+			<span class="toggler-menu toggler-bg"></span>
+			<?php
+			wp_nav_menu( [
+				'theme_location' => 'menuprincipale',
+				'container'      => false,
+				'menu_class'     => 'menu-mobile-inner'
+			] );
+			?>
+		</div>
+        <div class="header-image <?php echo (is_home() or is_front_page()) ? 'isIndex' : null ?>" style="background-image: url('<?php getHeaderImage(); ?>');"></div>
+	</div>
+	<!-- <div id="quick-contacts">
 		<div id="quick-contacts-inner">
 			<span class="tel-link">tel/fax +39 0185 303 436</span>
 			<span style="text-align: right"><a href="https://www.facebook.com/immobiliareroyalchiavari" class="fb-link"
@@ -47,5 +82,5 @@
 					?>
 				</div>
 			</div>
-		</div>
-	</div>
+		</div> -->
+	<!-- </div> -->

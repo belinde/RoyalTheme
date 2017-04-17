@@ -17,14 +17,13 @@ $affitto = (isset($contratti[0]) and $contratti[0]->slug == "affitto");
 <div class="item-row col lg-12 md-12 sm-12 xs-12">
     <a href="<?php echo esc_url(get_the_permalink()) ?>">
         <div class="item-row-cover-image" style="background-image: url('<?php the_post_thumbnail_url('royaltile') ?>')">
-			<span
-                class="item-row-price"><?php the_single_info("prezzo"); ?><?php echo($affitto ? '/mese' : ''); ?></span>
         </div>
     </a>
     <div>
         <div class="item-row-info">
+            <span
+            class="item-row-price"><?php the_single_info("prezzo"); ?><?php echo($affitto ? '/mese' : ''); ?></span>
             <div>
-                <span class="item-row-type ico-<?php echo $tipo; ?>"></span>
                 <span class="item-row-location"><?php echo $comune; ?></span>
             </div>
             <div>
