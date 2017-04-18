@@ -204,7 +204,7 @@ function royalInitMap() {
                                         eleContratto[info.contratto[j].slug] = true;
                                         var vend = info.contratto[j].slug == "vendita";
                                         markers[i].marker.setVisible(vend);
-                                        jQuery('<div class="fake-checkbox fake-radio"><input id="' + info.contratto[j].slug + '" type="checkbox"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
+                                        jQuery('<div class="fake-radio-menu"><input id="' + info.contratto[j].slug + '" type="radio"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
                                     }
                                     markers[i].contratto.push(info.contratto[j].slug);
                                 }

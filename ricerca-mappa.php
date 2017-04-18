@@ -31,6 +31,9 @@ get_header();
                 <div class="col lg-3" style="padding-right: 20px;">
                     <div id="royalMapSearchForm" class="row">
                         <div class="grid searchform">
+                            <div class="col lg-12">
+                                <div id="royalMapSearchContratto" class="searchform-fields"></div>
+                            </div>
                             <div class="col lg-12 searchform-row">
                                 <h4 class="searchform-title">Comune</h4>
                                 <div id="royalMapSearchComune" class="searchform-fields"></div>
@@ -38,10 +41,6 @@ get_header();
                             <div class="col lg-12 searchform-row">
                                 <h4 class="searchform-title">Tipologia</h4>
                                 <div id="royalMapSearchTipologia" class="searchform-fields"></div>
-                            </div>
-                            <div class="col lg-12 searchform-row">
-                                <h4 class="searchform-title">Contratto</h4>
-                                <div id="royalMapSearchContratto" class="searchform-fields"></div>
                             </div>
                         </div>
                     </div>
