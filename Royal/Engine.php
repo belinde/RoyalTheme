@@ -224,7 +224,7 @@ class Engine {
 	public function actionAfterSetupTheme() {
 		add_theme_support( 'post-thumbnails', [ 'annuncio' ] );
 		add_theme_support( 'title-tag' );
-		add_image_size( 'royaltile', 195, 195, true );
+		add_image_size( 'royaltile', 280, 185, true );
 		add_image_size( 'royalslide', 1280, 800, true );
 		add_image_size( 'royalmap', 1280, 800, true );
 		$args = [
