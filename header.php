@@ -13,7 +13,7 @@
 		</div>
 		<div class="upline">
 			<div class="upline-inner">
-				<span class="tel-link">tel/fax +39 0185 303 436</span>
+				<span class="tel-link"><span>+39 0185 303 436</span></span>
 				<a href="https://www.facebook.com/immobiliareroyalchiavari" class="fb-link" target="_blank"></a>
 			</div>
 		</div>
