@@ -833,11 +833,8 @@ article {
         background-size: auto 100%; }
     .grid .item-row .item-row-price {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      color: #919293;
-      font-size: 14px;
-      font-weight: 300 !important;
+      top: 20px;
+      right: 25px;
       text-transform: uppercase;
       text-align: right;
       font-weight: bold; }
@@ -1538,7 +1535,6 @@ input[type="submit"] {
       color: #515255;
       background-color: transparent; }
     .fake-checkbox input:checked + label {
-      color: #99042f;
       font-weight: bold; }
 
 #royalMapSearchContratto {
