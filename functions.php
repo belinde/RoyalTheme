@@ -126,4 +126,15 @@ function generateRandomString($length = 10) {
     return $randomString;
 }
 
+add_filter("the_excerpt", "plugin_myContentFilter");
+
+function plugin_myContentFilter($excerpt)
+{
+    if (strlen($excerpt) <= 160) {
+        return $excerpt;
+    }
+// Take the existing content and return a subset of it
+return substr($excerpt, 0, 160) . "...";
+}
+
 Royal\Engine::getInstance();
