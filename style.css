@@ -792,10 +792,12 @@ article {
   display: flex;
   flex-flow: row wrap;
   align-items: stretch; }
-  .grid.evidenziata .item > a {
-    box-shadow: none;
-    background-color: #f1f2f3;
-    border: 1px solid #e1e2e3; }
+  .grid.evidenziata {
+    background-color: #f1f2f3; }
+    .grid.evidenziata .item > a {
+      box-shadow: none;
+      background-color: #fff;
+      border: 1px solid #e1e2e3; }
   .grid.flex-start {
     align-items: flex-start; }
   .grid:not(:last-child) {
