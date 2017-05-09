@@ -224,7 +224,7 @@ class Engine {
 	public function actionAfterSetupTheme() {
 		add_theme_support( 'post-thumbnails', [ 'annuncio' ] );
 		add_theme_support( 'title-tag' );
-		add_image_size( 'royaltile', 280, 185, true );
+		add_image_size( 'royaltile', 383, 253, true );
 		add_image_size( 'royalslide', 1280, 800, true );
 		add_image_size( 'royalmap', 1280, 800, true );
 		$args = [
@@ -307,8 +307,8 @@ class Engine {
 	public function actionAfterSwitchTheme() {
 		$this->actionInit();
 		flush_rewrite_rules();
-		wp_insert_term( 'Affitti', 'contratto' );
-		wp_insert_term( 'Vendite', 'contratto' );
+		wp_insert_term( 'Affitto', 'contratto' );
+		wp_insert_term( 'Vendita', 'contratto' );
 		wp_insert_term( 'Nuda proprietà', 'contratto' );
 
 		wp_insert_term( 'Appartamento', 'tipologia' );

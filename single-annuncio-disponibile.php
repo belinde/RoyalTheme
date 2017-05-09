@@ -107,6 +107,12 @@ $affitto = false;
                         <input type="text" placeholder="Nome" class="royalFormNome"/>
                         <input type="text" placeholder="Email" class="royalFormEmail"/>
                         <textarea placeholder="Il tuo messaggio" class="royalFormTesto"></textarea>
+                        <small>
+                            <label>
+                                <input type="checkbox" class="royalFormTerms">
+                                ho letto la <a href="<?php echo site_url('/privacy') ?>">policy sulla privacy</a>
+                            </label>
+                        </small>
                         <input type="submit" value="Invia Messaggio"/>
                         <ul class="royalFormErrori"></ul>
                         <div class="royalFormOk" style="display:none;">Grazie per l'interesse, verrai ricontattato il

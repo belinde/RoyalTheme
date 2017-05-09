@@ -74,27 +74,34 @@ jQuery(function ($) {
 
     $('.royalFormInfo').submit(function () {
         var form = $(this);
-        var dati = {
-            action: 'royalmail',
-            nome: form.find('.royalFormNome').val(),
-            testo: form.find('.royalFormTesto').val(),
-            email: form.find('.royalFormEmail').val(),
-            annuncio: form.find('.royalFormAnnuncio').val(),
-        };
-        $.post(royalconf.ajax, dati, function (res) {
-            var errori = form.find('.royalFormErrori');
-            errori.html('');
-            if (res.length) {
-                for (var i = 0; i < res.length; i++) {
-                    $('<li>' + res[i] + '</li>').appendTo(errori);
+        var errori = form.find('.royalFormErrori');
+        errori.html('');
+        if (form.find('.royalFormTerms').is(':checked')) {
+            var dati = {
+                action: 'royalmail',
+                nome: form.find('.royalFormNome').val(),
+                testo: form.find('.royalFormTesto').val(),
+                email: form.find('.royalFormEmail').val(),
+                annuncio: form.find('.royalFormAnnuncio').val(),
+            };
+            $.post(royalconf.ajax, dati, function (res) {
+                if (res.length) {
+                    for (var i = 0; i < res.length; i++) {
+                        $('<li>' + res[i] + '</li>').appendTo(errori);
+                    }
+                } else {
+                    form.find('.royalFormOk').show();
                 }
-            } else {
-                form.find('.royalFormOk').show();
-            }
-        }, 'json');
+            }, 'json');
+        } else {
+            $('<li>Devi prima approvare la policy sulla privacy</li>').appendTo(errori);
+        }
         return false;
     });
     $('#royalMapSearchForm')
+        .on('click', '.fake-radio-menu', function () {
+            $(this).siblings('.fake-radio-menu').find('input.interruttore').prop('checked', false);
+        })
         .on('change', '.interruttore', function () {
             // console.log(this);
             // console.log(markers);
