@@ -110,7 +110,8 @@ $affitto = false;
                         <small>
                             <label>
                                 <input type="checkbox" class="royalFormTerms">
-                                ho letto la <a href="<?php echo site_url('/privacy') ?>">policy sulla privacy</a>
+                                ho letto la <a href="<?php echo site_url('/privacy') ?>" target="_blank">policy sulla
+                                    privacy</a>
                             </label>
                         </small>
                         <input type="submit" value="Invia Messaggio"/>
