@@ -2,6 +2,10 @@
 use Royal\Engine;
 use Royal\Widgets\MenuAnnunci;
 
+if (!isset($_GET['rs_con'])) {
+    $_GET['rs_con'] = 3;
+}
+
 get_header();
 $royal = Engine::getInstance();
 $ricerca = isset($_POST['royalsearch']) ? $_POST['royalsearch'] : [];
