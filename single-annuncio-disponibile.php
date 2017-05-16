@@ -15,12 +15,12 @@ $affitto = false;
 
                 /** @var WP_Term[] $comuni */
                 $tipologie = get_the_terms(get_the_ID(), "tipologia");
-                $tipo = isset($tipologie[0]) ? $tipologie[0]->slug : "undefined";
+                $tipo = isset($tipologie[0]) ? $tipologie[0]->name : "undefined";
 
                 /** @var WP_Term[] $contratti */
-                $contratti = get_the_terms(get_the_ID(), "contratto");
-                $contratto = isset($contratti[0]) ? $contratti[0]->slug : "undefined";
-                echo "<ul><li><strong>" . ucfirst($tipo) . " in $contratto a $comune</strong></li></ul>";
+//                $contratti = get_the_terms(get_the_ID(), "contratto");
+//                $contratto = isset($contratti[0]) ? $contratti[0]->name : "undefined";
+                echo "<ul><li><strong>$tipo a $comune</strong></li></ul>";
                 ?>
                 <ul class="price">
                     <?php
