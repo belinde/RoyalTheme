@@ -112,7 +112,7 @@ html,
             }
         }
         a {
-            padding: 0 16px;
+            padding: 0 12px;
             transition: 180ms linear;
             &:hover {
                 background-color: rgba(255,255,255,.3);
@@ -993,6 +993,7 @@ article {
     .annuncio-price{ font-size: 18px};
 }
 input[type="text"],
+input[type="email"],
 textarea {
     display: block;
     width: 100%;
@@ -1051,7 +1052,9 @@ table.searchform {
         // display: flex;
         // align-items: center;
         // flex-flow: row wrap;
-        input[type="text"], span {
+        input[type="text"],
+        input[type="email"],
+        span {
             // float: left;
             display: inline-block;
             width: auto;
@@ -1114,7 +1117,8 @@ table.searchform {
         flex: 0 1 auto;
         padding: 3px;
     }
-    input[type="text"] {
+    input[type="text"],
+    input[type="email"] {
         border: 1px solid #e1e2e3;
         width: 100% !important;
     }
@@ -1159,6 +1163,7 @@ input[type="submit"] {
 .fake-checkbox {
     display: block;
     list-style-type:none;
+    position: relative;
     margin: 0;
     padding: 0;
     input {
@@ -1179,8 +1184,17 @@ input[type="submit"] {
         &:checked {
             + label {
                 // background-color: $color;
-                font-weight: bold;
+                // font-weight: bold;
                 // border: 1px solid $color;
+                &:before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    left: -20px;
+                    width: 5px;
+                    height: 23px;
+                    background-color: #d1d2d3;
+                }
             }
         }
     }
@@ -1286,6 +1300,23 @@ input[type="submit"] {
         height: 16px;
         background-size: contain;
         background-image: url('images/phone-receiver.png');
+    }
+    a {
+        text-decoration: none;
+        color: $secondary;
+        &:hover {
+            color: $color;
+        }
+    }
+}
+.-cell {
+    &:before {
+        background-image:url('images/mobile.png')
+    }
+}
+.-mail {
+    &:before {
+        background-image:url('images/mail.png');
     }
 }
 .fb-link {

@@ -617,7 +617,7 @@ html,
     #menu li.current-menu-item a {
       background-color: rgba(255, 255, 255, 0.3); }
     #menu li a {
-      padding: 0 16px;
+      padding: 0 12px;
       transition: 180ms linear;
       color: white;
       text-decoration: none;
@@ -1425,6 +1425,7 @@ article {
     font-size: 18px; }
 
 input[type="text"],
+input[type="email"],
 textarea {
   display: block;
   width: 100%;
@@ -1463,7 +1464,9 @@ table.searchform {
       padding: 10px 5px; }
     table.searchform tr th {
       width: 1%; }
-  table.searchform td .range input[type="text"], table.searchform td .range span {
+  table.searchform td .range input[type="text"],
+  table.searchform td .range input[type="email"],
+  table.searchform td .range span {
     display: inline-block;
     width: auto; }
 
@@ -1496,7 +1499,8 @@ table.searchform {
   .input-range > div {
     flex: 0 1 auto;
     padding: 3px; }
-  .input-range input[type="text"] {
+  .input-range input[type="text"],
+  .input-range input[type="email"] {
     border: 1px solid #e1e2e3;
     width: 100% !important; }
 
@@ -1532,6 +1536,7 @@ input[type="submit"] {
 .fake-checkbox {
   display: block;
   list-style-type: none;
+  position: relative;
   margin: 0;
   padding: 0; }
   .fake-checkbox input {
@@ -1543,8 +1548,14 @@ input[type="submit"] {
       margin: 3px;
       color: #515255;
       background-color: transparent; }
-    .fake-checkbox input:checked + label {
-      font-weight: bold; }
+    .fake-checkbox input:checked + label:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: -20px;
+      width: 5px;
+      height: 23px;
+      background-color: #d1d2d3; }
 
 #royalMapSearchContratto {
   display: flex;
@@ -1628,6 +1639,17 @@ input[type="submit"] {
   height: 16px;
   background-size: contain;
   background-image: url("images/phone-receiver.png"); }
+.tel-link a {
+  text-decoration: none;
+  color: #515255; }
+  .tel-link a:hover {
+    color: #99042f; }
+
+.-cell:before {
+  background-image: url("images/mobile.png"); }
+
+.-mail:before {
+  background-image: url("images/mail.png"); }
 
 .fb-link {
   display: inline-block;

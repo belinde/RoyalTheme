@@ -14,8 +14,8 @@
 		<div class="upline">
 			<div class="upline-inner">
 				<span class="tel-link"><span>+39 0185 303 436</span></span>
-				<span class="tel-link"><span>+39 339 75 19 758</span></span>
-				<span class="mail-link"><span><a href="mailto:info@immobiliareroyal.it">info@immobiliareroyal.it</a></span></span>
+				<span class="tel-link -cell"><span>+39 339 75 19 758</span></span>
+				<span class="tel-link -mail"><span><a href="mailto:info@immobiliareroyal.it">info@immobiliareroyal.it</a></span></span>
 				<a href="https://www.facebook.com/immobiliareroyalchiavari" class="fb-link" target="_blank"></a>
 			</div>
 		</div>
