@@ -209,7 +209,7 @@ function royalInitMap() {
                                 for (j = info.contratto.length - 1; j >= 0; j--) {
                                     if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
                                         eleContratto[info.contratto[j].slug] = true;
-                                        var vend = info.contratto[j].slug == "vendita";
+                                        var vend = info.contratto[j].slug == "vendite";
                                         markers[i].marker.setVisible(vend);
                                         jQuery('<div class="fake-radio-menu"><input id="' + info.contratto[j].slug + '" type="checkbox"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
                                     }
