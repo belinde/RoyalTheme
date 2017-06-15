@@ -89,5 +89,7 @@ return [
         ])
         ->setSearch(_::SEARCH_EXACT)
     ,
-    (new LongText('indirizzo', "Indirizzo completo"))
+    (new LongText('indirizzo', "Indirizzo completo")),
+    (new Boolean('mostraindirizzo', "Mostra indirizzo"))
+        ->setInternal()
 ];

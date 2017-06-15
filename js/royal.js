@@ -1,5 +1,6 @@
 var markers = [];
 var map;
+var lastMarker;
 
 jQuery(function ($) {
     royalGallerySlider('photos');
@@ -52,8 +53,10 @@ jQuery(function ($) {
         }
         if ($(this).hasClass('slide-prev')) {
             selected--;
+            if (selected < 0) selected = 0;
         } else {
             selected++;
+            if (selected > (count - 1)) selected = (count - 1);
         }
         moveGallery(selected, type);
     });
@@ -74,6 +77,7 @@ jQuery(function ($) {
         $('.annuncio-tab-content.' + tab).addClass('active');
         royalGallerySlider();
         google.maps.event.trigger(map, 'resize');
+        map.setCenter(lastMarker.getPosition());
     });
 
     $('.royalFormInfo').submit(function () {
@@ -108,8 +112,8 @@ jQuery(function ($) {
         })
         .on('change', '.interruttore', function () {
             // console.log(this);
-            // console.log(markers);
-            var visComune, visTipologia, visContratto, j;
+            //console.log(markers);
+            var visComune, visTipologia, visContratto, j, quantita = {comune: [], tipologia: []};
             for (var i = markers.length - 1; i >= 0; i--) {
                 if (typeof markers[i] == 'undefined') {
                     continue;
@@ -134,11 +138,40 @@ jQuery(function ($) {
                     }
                 }
                 markers[i].marker.setVisible(visComune && visTipologia && visContratto);
+                if (visComune && visTipologia && visContratto) {
+                    for (j = markers[i].comune.length - 1; j >= 0; j--) {
+                        if ($('.interruttore[data-tipo="comune"][data-valore="' + markers[i].comune[j] + '"]').prop('checked')) {
+                            if ( typeof quantita.comune[markers[i].comune[j]] == 'undefined') {
+                                quantita.comune[markers[i].comune[j]] = 0;
+                            }
+                            quantita.comune[markers[i].comune[j]]++;
+                            break;
+                        }
+                    }
+                    for (j = markers[i].tipologia.length - 1; j >= 0; j--) {
+                        if ($('.interruttore[data-tipo="tipologia"][data-valore="' + markers[i].tipologia[j] + '"]').prop('checked')) {
+                            if ( typeof quantita.tipologia[markers[i].tipologia[j]] == 'undefined') {
+                                quantita.tipologia[markers[i].tipologia[j]] = 0;
+                            }
+                            quantita.tipologia[markers[i].tipologia[j]]++;
+                            break;
+                        }
+                    }
+                }
             }
 
+            var mappo = $('#royalMapSearchForm');
+            mappo.find('.immobili_quantity').html('0');
+            for (var comu in quantita.comune) {
+                mappo.find('.immobili_quantity.' + comu).html(quantita.comune[comu]);
+            }
+            for (var tipo in quantita.tipologia) {
+                mappo.find('.immobili_quantity.' + tipo).html(quantita.tipologia[tipo]);
+            }
         });
 
 
+    jQuery('#royalMapSearchForm').find('.interruttore').first().trigger('change');
 });
 
 jQuery(window).on('scroll', function () {
@@ -164,7 +197,7 @@ function royalInitMap() {
                     center: results[0].geometry.location
                 });
                 /*var marker = */
-                new google.maps.Marker({
+                lastMarker = new google.maps.Marker({
                     map: map,
                     position: results[0].geometry.location
                 });
@@ -204,14 +237,14 @@ function royalInitMap() {
                                 for (j = info.comune.length - 1; j >= 0; j--) {
                                     if (typeof eleComune[info.comune[j].slug] == 'undefined') {
                                         eleComune[info.comune[j].slug] = true;
-                                        jQuery('<div class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label></div>').appendTo('#royalMapSearchComune');
+                                        jQuery('<div class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label><span class="immobili_quantity ' + info.comune[j].slug + '">0</span></div>').appendTo('#royalMapSearchComune');
                                     }
                                     markers[i].comune.push(info.comune[j].slug);
                                 }
                                 for (j = info.contratto.length - 1; j >= 0; j--) {
                                     if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
                                         eleContratto[info.contratto[j].slug] = true;
-                                        var vend = info.contratto[j].slug == "vendite";
+                                        var vend = (info.contratto[j].slug == "vendite" || info.contratto[j].slug == "vendita");
                                         markers[i].marker.setVisible(vend);
                                         jQuery('<div class="fake-radio-menu"><input id="' + info.contratto[j].slug + '" type="checkbox"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
                                     }
@@ -220,7 +253,7 @@ function royalInitMap() {
                                 for (j = info.tipologia.length - 1; j >= 0; j--) {
                                     if (typeof eleTipologia[info.tipologia[j].slug] == 'undefined') {
                                         eleTipologia[info.tipologia[j].slug] = true;
-                                        jQuery('<div class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label></div>').appendTo('#royalMapSearchTipologia');
+                                        jQuery('<div class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label><span class="immobili_quantity ' + info.tipologia[j].slug + '">0</span></div>').appendTo('#royalMapSearchTipologia');
                                     }
                                     markers[i].tipologia.push(info.tipologia[j].slug);
                                 }
@@ -228,6 +261,8 @@ function royalInitMap() {
                                     infowindow.setContent(contentString);
                                     infowindow.open(map, markers[i].marker);
                                 });
+                                jQuery('#royalMapSearchForm').find('.interruttore').first().trigger('change');
+
                             }
                         }
                     })

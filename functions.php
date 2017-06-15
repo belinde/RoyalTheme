@@ -72,7 +72,7 @@ function the_slideshow_gallery($type = 'photos')
         <span class="controls slide-prev disabled"><span class="ico ico-keyboard_arrow_left"></span></span>
         <span class="controls slide-next"><span class="ico ico-keyboard_arrow_right"></span></span>
         <div class="annuncio-slideshow-inner">
-            <?php Engine::getInstance()->theGallery($type); ?>
+            <?php Engine::getInstance()->theGallery($type, $count); ?>
         </div>
     </div>
     <div class="annuncio-slideshow-thumbs <?php echo $type; ?>">
@@ -81,6 +81,15 @@ function the_slideshow_gallery($type = 'photos')
         </div>
     </div>
     <?php
+    if ($count <= 1) {
+        ?>
+        <style type="text/css">
+            .annuncio-slideshow.<?php echo $type; ?> .controls {
+                display: none;
+            }
+        </style>
+        <?php
+    }
 }
 
 /**
@@ -99,7 +108,8 @@ function royalQueryOverrider(&$query, $queryPar, $taxonomy)
     }
 }
 
-function getHeaderImage() {
+function getHeaderImage()
+{
     // if (is_home() or is_front_page()){
     //     return header_image();
     // }
@@ -113,16 +123,20 @@ function getHeaderImage() {
 
 /**
  * [generateRandomString description]
+ *
  * @param  integer $length [description]
+ *
  * @return [type]          [description]
  */
-function generateRandomString($length = 10) {
+function generateRandomString($length = 10)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
+        $randomString .= $characters[ rand(0, $charactersLength - 1) ];
     }
+
     return $randomString;
 }
 
@@ -133,8 +147,9 @@ function plugin_myContentFilter($excerpt)
     if (strlen($excerpt) <= 160) {
         return $excerpt;
     }
+
 // Take the existing content and return a subset of it
-return substr($excerpt, 0, 160) . "...";
+    return substr($excerpt, 0, 160) . "...";
 }
 
 Royal\Engine::getInstance();

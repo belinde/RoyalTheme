@@ -18,8 +18,8 @@ $affitto = false;
                 $tipo = isset($tipologie[0]) ? $tipologie[0]->name : "undefined";
 
                 /** @var WP_Term[] $contratti */
-//                $contratti = get_the_terms(get_the_ID(), "contratto");
-//                $contratto = isset($contratti[0]) ? $contratti[0]->name : "undefined";
+                //                $contratti = get_the_terms(get_the_ID(), "contratto");
+                //                $contratto = isset($contratti[0]) ? $contratti[0]->name : "undefined";
                 echo "<ul><li><strong>$tipo a $comune</strong></li></ul>";
                 ?>
                 <ul class="price">
@@ -70,6 +70,11 @@ $affitto = false;
 
                             foreach ($royal->getFields() as $field) {
                                 if ($field->isPublic() and $field->hasValue($post)) {
+                                    if ($field->getSlug() == 'indirizzo' and !get_post_meta($post->ID,
+                                            $royal->getFields()['mostraindirizzo']->metaSlug(), true)
+                                    ) {
+                                        continue;
+                                    }
                                     echo '<tr><th>' . $field->getLabel() . '</th><td>';
                                     $field->printer($post);
                                     echo '</td></tr>';
