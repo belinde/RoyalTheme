@@ -1,3 +1,6 @@
+var markers = [];
+var map;
+
 jQuery(function ($) {
     royalGallerySlider('photos');
     $('.toggler-menu').on('click', function () {
@@ -70,7 +73,8 @@ jQuery(function ($) {
         $('.annuncio-tab-content').removeClass('active');
         $('.annuncio-tab-content.' + tab).addClass('active');
         royalGallerySlider();
-    })
+        google.maps.event.trigger(map, 'resize');
+    });
 
     $('.royalFormInfo').submit(function () {
         var form = $(this);
@@ -146,8 +150,6 @@ jQuery(window).on('scroll', function () {
     }
 });
 
-var markers = [];
-
 function royalInitMap() {
     var geocoder;
     var container = document.getElementById('royalMap');
@@ -157,7 +159,7 @@ function royalInitMap() {
         geocoder = new google.maps.Geocoder();
         geocoder.geocode({'address': address}, function (results, status) {
             if (status === 'OK') {
-                var map = new google.maps.Map(container, {
+                map = new google.maps.Map(container, {
                     zoom: 14,
                     center: results[0].geometry.location
                 });
@@ -175,7 +177,7 @@ function royalInitMap() {
             var data = jQuery.parseJSON(jQuery('#royalMapSearchData').text());
             // console.log(data);
             geocoder = new google.maps.Geocoder();
-            var map = new google.maps.Map(container, {
+            map = new google.maps.Map(container, {
                 center: {lat: 44.3594345, lng: 9.3540266},
                 zoom: 10
             });
