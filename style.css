@@ -883,12 +883,12 @@ article {
         pointer-events: none;
         transition: 200ms linear; }
       .grid .item a:hover .item-cover-image {
-        background-size: auto 90%; }
+        background-size: auto 253px; }
       .grid .item a, .grid .item a:visited {
         color: #555; }
     .grid .item .item-cover-image {
       background-color: #ccc;
-      background-size: auto 100%;
+      background-size: auto 285px;
       background-position: center;
       position: relative;
       transition: all 150ms ease-in-out;
