@@ -57,35 +57,67 @@ if (false !== strpos($_SERVER['REQUEST_URI'], 'immobili_elenco.php')) {
 if (false !== strpos($_SERVER['REQUEST_URI'], 'immobili_scheda.php')) {
     parse_str(parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY), $params);
     $annunci = [
-        89  => 'a3',
-        228 => 'c28', ////////
-        213 => 'm3', ///////
-        220 => 'i3', ////////
-        232 => 'c7', ///////
-        227 => 'a4', ///////
-        223 => 'g2', //////
-        162 => '???????',
-        158 => 'b4',
-        135 => 'c19',
-        164 => 'm1', ///////
-        205 => '???????',
-        235 => 'f9', //////
-        217 => 'g4',
-        38  => 'g5',
-        108 => '???????',
-        233=>'c4', //////
-        247=>'???????',
-        146=>'14 ******',
-        155 => '???????',
-        245=>'s18', ///////
-        248=>'a1'
+//        89  => 'a3',
+        228 => 'c28',
+        213 => 'm3',
+        220 => 'i3',
+        232 => 'c7',
+        227 => 'a4',
+        223 => 'g2',
+//        162 => '???????',
+//        158 => 'b4',
+//        135 => 'c19',
+        164 => 'm1',
+//        205 => '???????',
+        235 => 'f9',
+//        217 => 'g4',
+//        38  => 'g5',
+//        108 => '???????',
+        233 => 'c4',
+//        247=>'???????',
+//        146=>'14 ******',
+//        155 => '???????',
+        245 => 's18',
+//        248=>'a1'
     ];
 
+    if (isset($params['id'], $annunci[ $params['id'] ])) {
+        wp_redirect(site_url('/annuncio/' . $annunci[ $params['id'] ] . '/'), 301);
+        die();
+    }
+
+    if (isset($params['categoria'])) {
+        $cat = trim(strtolower($params['categoria']));
+        $categorie = [
+            'vendite' => 3,
+            'affitti' => 2
+        ];
+        wp_redirect(site_url(
+            isset($categorie[ $cat ])
+                ? '/ricerca/risultati/?rs_con=' . $categorie[ $cat ]
+                : '/ricerca/risultati/'
+        ), 301);
+
+        die();
+    }
+}
+
+if (false !== strpos($_SERVER['REQUEST_URI'], 'dovesiamo.php')) {
+    wp_redirect(site_url('/chi-siamo/'), 301);
+    die();
+}
+
+if (false !== strpos($_SERVER['REQUEST_URI'], 'clientela.php')) {
+    wp_redirect(site_url('/i-nostri-clienti/'), 301);
+    die();
+}
+
+if (false !== strpos($_SERVER['REQUEST_URI'], 'novita.php')) {
+    wp_redirect(site_url('/novita-legali/'), 301);
+    die();
 }
 
 get_header();
-
-pr($_SERVER);
 ?>
 <div id="content">
     <div id="content-inner">

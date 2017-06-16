@@ -13,8 +13,8 @@
 		</div>
 		<div class="upline">
 			<div class="upline-inner">
-				<span class="tel-link"><span>+39&nbsp;0185&nbsp;30&thinsp;34&thinsp;36</span></span>
-				<span class="tel-link -cell"><span>+39&nbsp;339&nbsp;75&thinsp;19&thinsp;758</span></span>
+				<span class="tel-link"><span><a href="tel:+390185303436">+39&nbsp;0185&nbsp;30&thinsp;34&thinsp;36</a></span></span>
+				<span class="tel-link -cell"><span><a href="tel:+393397519758">+39&nbsp;339&nbsp;75&thinsp;19&thinsp;758</a></span></span>
 				<span class="tel-link -mail"><span><a href="mailto:info@immobiliareroyal.it">info@immobiliareroyal.it</a></span></span>
 				<a href="https://www.facebook.com/immobiliareroyalchiavari" class="fb-link" target="_blank"></a>
 			</div>
