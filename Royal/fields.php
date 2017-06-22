@@ -25,37 +25,6 @@ return [
         ->setSearch(_::SEARCH_RANGE)
         ->setInternal()
     ,
-    (new Select('classeenergetica', "Classe Energetica"))
-        ->setValues([
-            'nonindicata'       => 'non indicata',
-            'dl192'             => 'D.L. 192 del 19/8/2015',
-            'dl_ap'             => 'A+',
-            'dl_a'              => 'A',
-            'dl_b'              => 'B',
-            'dl_c'              => 'C',
-            'dl_d'              => 'D',
-            'dl_e'              => 'E',
-            'dl_f'              => 'F',
-            'dl_g'              => 'G',
-            'dm26_6_2015'       => 'D.M. 26/6/2015',
-            'dm_a4'             => 'A4',
-            'dm_a3'             => 'A3',
-            'dm_a2'             => 'A2',
-            'dm_a1'             => 'A1',
-            'dm_b'              => 'B',
-            'dm_c'              => 'C',
-            'dm_d'              => 'D',
-            'dm_e'              => 'E',
-            'dm_f'              => 'F',
-            'dm_g'              => 'G',
-            'nonclassificabile' => 'Non classificabile',
-            'esente'            => 'Esente',
-            'inrichiesta'       => 'In fase di richiesta',
-        ])
-        ->setSearch(_::SEARCH_EXACT)
-        ->setAppend('kWh/m²')
-    ,
-    (new Text('prestazioneenergetica', "Indice di Prestazione Energetica (IPE)")),
     (new Integer('vani'))
         ->setSearch(_::SEARCH_RANGE)
     ,
@@ -122,5 +91,35 @@ return [
     ,
     (new LongText('indirizzo', "Indirizzo completo")),
     (new Boolean('mostraindirizzo', "Mostra indirizzo"))
-        ->setInternal()
+        ->setInternal(),
+    (new Select('classeenergetica', "Classe Energetica (kWh/m²)"))
+        ->setValues([
+            'nonindicata'       => 'non indicata',
+            'dl192'             => 'D.L. 192 del 19/8/2015',
+            'dl_ap'             => 'A+',
+            'dl_a'              => 'A',
+            'dl_b'              => 'B',
+            'dl_c'              => 'C',
+            'dl_d'              => 'D',
+            'dl_e'              => 'E',
+            'dl_f'              => 'F',
+            'dl_g'              => 'G',
+            'dm26_6_2015'       => 'D.M. 26/6/2015',
+            'dm_a4'             => 'A4',
+            'dm_a3'             => 'A3',
+            'dm_a2'             => 'A2',
+            'dm_a1'             => 'A1',
+            'dm_b'              => 'B',
+            'dm_c'              => 'C',
+            'dm_d'              => 'D',
+            'dm_e'              => 'E',
+            'dm_f'              => 'F',
+            'dm_g'              => 'G',
+            'nonclassificabile' => 'Non classificabile',
+            'esente'            => 'Esente',
+            'inrichiesta'       => 'In fase di richiesta',
+        ])
+        ->setSearch(_::SEARCH_EXACT)
+    ,
+    (new Text('prestazioneenergetica', "Indice di Prestazione Energetica (IPE)")),
 ];
