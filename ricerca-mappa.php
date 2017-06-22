@@ -3,7 +3,7 @@ use Royal\Engine;
 
 $royal = Engine::getInstance();
 
-$resQuery = $royal->queryRicerca([]);
+$resQuery = $royal->queryRicerca(['posts_per_page' => -1]);
 $json = [];
 if ($resQuery->have_posts()) {
     while ($resQuery->have_posts()) {
