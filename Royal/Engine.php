@@ -781,7 +781,7 @@ class Engine
      */
     public function theGallery($type = 'photos', &$count = 0)
     {
-        add_shortcode('gallery', function ($atts) use ($type) {
+        add_shortcode('gallery', function ($atts) use ($type, $count) {
             $_attachments = get_posts([
                 'include'        => $atts['ids'],
                 'post_status'    => 'inherit',
