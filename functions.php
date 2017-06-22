@@ -72,7 +72,7 @@ function the_slideshow_gallery($type = 'photos')
         <span class="controls slide-prev disabled"><span class="ico ico-keyboard_arrow_left"></span></span>
         <span class="controls slide-next"><span class="ico ico-keyboard_arrow_right"></span></span>
         <div class="annuncio-slideshow-inner">
-            <?php Engine::getInstance()->theGallery($type, $count); ?>
+            <?php Engine::getInstance()->theGallery($type); ?>
         </div>
     </div>
     <div class="annuncio-slideshow-thumbs <?php echo $type; ?>">
@@ -81,15 +81,6 @@ function the_slideshow_gallery($type = 'photos')
         </div>
     </div>
     <?php
-    if ($count <= 1) {
-        ?>
-        <style type="text/css">
-            .annuncio-slideshow.<?php echo $type; ?> .controls {
-                display: none;
-            }
-        </style>
-        <?php
-    }
 }
 
 /**
