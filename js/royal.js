@@ -210,8 +210,9 @@ function royalInitMap() {
                 {'address': info.address},
 
                 function (results, status) {
-                    console.log(status, info.address);
+                    console.log(status, info.address );
                     if (status === 'OK') {
+                        console.log(results[0].geometry.location);
                         var j;
                         markers[i] = {
                             marker: new google.maps.Marker({
