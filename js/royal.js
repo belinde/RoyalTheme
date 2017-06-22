@@ -221,6 +221,7 @@ function royalInitMap() {
                     {'address': data[i].address},
                     (function (info, i) {
                         return function (results, status) {
+                            console.log(data[i].address, status, results);
                             if (status === 'OK') {
                                 var j;
                                 markers[i] = {
