@@ -18,6 +18,7 @@ class Engine
 {
     const URL_RISULTATI = '/ricerca/risultati/';
     const GOOGLE_APIKEY = 'AIzaSyDJSI3JyE0TU8DiXQAHHfHUXVt-qo3OZWE';
+    const GOOGLE_APIKEY_S2S = 'AIzaSyBJkM7cCqVXjHAQ-3qil0pfcqSH8eQZmOg';//'AIzaSyAmIxKIMCUdUjSw978tUFCqhlAnjywhno8';
     const MAIL_INFO = 'f.traversaro@gmail.com';
     use Tools;
     /**
@@ -1001,6 +1002,22 @@ class Engine
             foreach ($this->fields as $field) {
                 $field->save($post);
             }
+            $location = false;
+            $response = file_get_contents(
+                'https://maps.googleapis.com/maps/api/geocode/json?'
+                . http_build_query([
+                    'address' => $_POST['royalmeta']['indirizzo'],
+                    'key'     => self::GOOGLE_APIKEY_S2S
+                ])
+            );
+            $json = @json_decode($response, true);
+            if (isset($json['status']) and $json['status'] == 'OK') {
+                foreach ($json['results'] as $result) {
+                    $location = $result['geometry']['location'];
+                    break;
+                }
+            }
+            update_post_meta($postId, 'royal_maps_location', $location);
         }
     }
 
