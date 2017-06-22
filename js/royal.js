@@ -210,6 +210,7 @@ function royalInitMap() {
                 {'address': info.address},
 
                 function (results, status) {
+                    console.log(status, info.address);
                     if (status === 'OK') {
                         var j;
                         markers[i] = {
@@ -271,7 +272,6 @@ function royalInitMap() {
             for (var i = data.length - 1; i >= 0; i--) {
                 setTimeout((function (data, i) {
                     return function () {
-                        console.log('chiamo');
                         pinnatore(data[i], i);
                     }
                 })(data, i), i * 120);
