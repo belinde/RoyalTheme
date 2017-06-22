@@ -55,6 +55,7 @@ return [
         ->setSearch(_::SEARCH_EXACT)
         ->setAppend('kWh/m²')
     ,
+    (new Text('prestazioneenergetica', "Indice di Prestazione Energetica (IPE)")),
     (new Integer('vani'))
         ->setSearch(_::SEARCH_RANGE)
     ,
