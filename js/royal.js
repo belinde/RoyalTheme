@@ -274,7 +274,7 @@ function royalInitMap() {
                     return function () {
                         pinnatore(data[i], i);
                     }
-                })(data, i), i * 200);
+                })(data, i), i * 500);
             }
             jQuery('#royalMapSearchForm').find('.interruttore').trigger('change');
         }
