@@ -205,6 +205,58 @@ function royalInitMap() {
         });
 
     } else {
+        function pinnatore(info, i) {
+            geocoder.geocode(
+                {'address': info.address},
+
+                function (results, status) {
+                    if (status === 'OK') {
+                        var j;
+                        markers[i] = {
+                            marker: new google.maps.Marker({
+                                map: map,
+                                position: results[0].geometry.location,
+                                title: info.title
+                            }),
+                            comune: [],
+                            tipologia: [],
+                            contratto: []
+                        };
+                        var contentString = '<a href="' + info.permalink + '"><img style="float: left; margin:5px;" src="' + info.thumbnail + '"></a><h3>' + info.title + '</h3><p>' + info.address + '</p>';
+                        for (j = info.comune.length - 1; j >= 0; j--) {
+                            if (typeof eleComune[info.comune[j].slug] == 'undefined') {
+                                eleComune[info.comune[j].slug] = true;
+                                jQuery('<div class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label><span class="immobili_quantity ' + info.comune[j].slug + '">0</span></div>').appendTo('#royalMapSearchComune');
+                            }
+                            markers[i].comune.push(info.comune[j].slug);
+                        }
+                        for (j = info.contratto.length - 1; j >= 0; j--) {
+                            if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
+                                eleContratto[info.contratto[j].slug] = true;
+                                var vend = (info.contratto[j].slug == "vendite" || info.contratto[j].slug == "vendita");
+                                markers[i].marker.setVisible(vend);
+                                jQuery('<div class="fake-radio-menu"><input id="' + info.contratto[j].slug + '" type="checkbox"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
+                            }
+                            markers[i].contratto.push(info.contratto[j].slug);
+                        }
+                        for (j = info.tipologia.length - 1; j >= 0; j--) {
+                            if (typeof eleTipologia[info.tipologia[j].slug] == 'undefined') {
+                                eleTipologia[info.tipologia[j].slug] = true;
+                                jQuery('<div class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label><span class="immobili_quantity ' + info.tipologia[j].slug + '">0</span></div>').appendTo('#royalMapSearchTipologia');
+                            }
+                            markers[i].tipologia.push(info.tipologia[j].slug);
+                        }
+                        markers[i].marker.addListener('click', function () {
+                            infowindow.setContent(contentString);
+                            infowindow.open(map, markers[i].marker);
+                        });
+                        jQuery('#royalMapSearchForm').find('.interruttore').first().trigger('change');
+
+                    }
+                }
+            );
+        }
+
         container = document.getElementById('royalMapSearch');
         if (container) {
             var data = jQuery.parseJSON(jQuery('#royalMapSearchData').text());
@@ -217,60 +269,12 @@ function royalInitMap() {
             var eleComune = [], eleTipologia = [], eleContratto = [];
             var infowindow = new google.maps.InfoWindow();
             for (var i = data.length - 1; i >= 0; i--) {
-                setTimeout(function () {
-                    geocoder.geocode(
-                        {'address': data[i].address},
-                        (function (info, i) {
-                            return function (results, status) {
-                                console.log(data[i].address, status, results);
-                                if (status === 'OK') {
-                                    var j;
-                                    markers[i] = {
-                                        marker: new google.maps.Marker({
-                                            map: map,
-                                            position: results[0].geometry.location,
-                                            title: info.title
-                                        }),
-                                        comune: [],
-                                        tipologia: [],
-                                        contratto: []
-                                    };
-                                    var contentString = '<a href="' + info.permalink + '"><img style="float: left; margin:5px;" src="' + info.thumbnail + '"></a><h3>' + info.title + '</h3><p>' + info.address + '</p>';
-                                    for (j = info.comune.length - 1; j >= 0; j--) {
-                                        if (typeof eleComune[info.comune[j].slug] == 'undefined') {
-                                            eleComune[info.comune[j].slug] = true;
-                                            jQuery('<div class="fake-checkbox"><input id="' + info.comune[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="comune" data-valore="' + info.comune[j].slug + '"><label for="' + info.comune[j].slug + '">' + info.comune[j].name + '</label><span class="immobili_quantity ' + info.comune[j].slug + '">0</span></div>').appendTo('#royalMapSearchComune');
-                                        }
-                                        markers[i].comune.push(info.comune[j].slug);
-                                    }
-                                    for (j = info.contratto.length - 1; j >= 0; j--) {
-                                        if (typeof eleContratto[info.contratto[j].slug] == 'undefined') {
-                                            eleContratto[info.contratto[j].slug] = true;
-                                            var vend = (info.contratto[j].slug == "vendite" || info.contratto[j].slug == "vendita");
-                                            markers[i].marker.setVisible(vend);
-                                            jQuery('<div class="fake-radio-menu"><input id="' + info.contratto[j].slug + '" type="checkbox"' + ( vend ? ' checked' : '' ) + ' class="interruttore" data-tipo="contratto" data-valore="' + info.contratto[j].slug + '"><label for="' + info.contratto[j].slug + '">' + info.contratto[j].name + '</label></div>').appendTo('#royalMapSearchContratto');
-                                        }
-                                        markers[i].contratto.push(info.contratto[j].slug);
-                                    }
-                                    for (j = info.tipologia.length - 1; j >= 0; j--) {
-                                        if (typeof eleTipologia[info.tipologia[j].slug] == 'undefined') {
-                                            eleTipologia[info.tipologia[j].slug] = true;
-                                            jQuery('<div class="fake-checkbox"><input id="' + info.tipologia[j].slug + '" type="checkbox" checked class="interruttore" data-tipo="tipologia" data-valore="' + info.tipologia[j].slug + '"><label for="' + info.tipologia[j].slug + '">' + info.tipologia[j].name + '</label><span class="immobili_quantity ' + info.tipologia[j].slug + '">0</span></div>').appendTo('#royalMapSearchTipologia');
-                                        }
-                                        markers[i].tipologia.push(info.tipologia[j].slug);
-                                    }
-                                    markers[i].marker.addListener('click', function () {
-                                        infowindow.setContent(contentString);
-                                        infowindow.open(map, markers[i].marker);
-                                    });
-                                    jQuery('#royalMapSearchForm').find('.interruttore').first().trigger('change');
-
-                                }
-                            }
-                        })
-                        (data[i], i)
-                    );
-                }, i * 120);
+                setTimeout((function (data, i) {
+                    return function () {
+                        console.log('chiamo');
+                        pinnatore(data[i], i);
+                    }
+                })(data, i), i * 120);
             }
             jQuery('#royalMapSearchForm').find('.interruttore').trigger('change');
         }
