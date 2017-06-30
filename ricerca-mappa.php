@@ -1,27 +1,29 @@
 <?php
 use Royal\Engine;
 
-$royal = Engine::getInstance();
-
-$resQuery = $royal->queryRicerca(['posts_per_page' => -1]);
-$json = [];
-if ($resQuery->have_posts()) {
-    while ($resQuery->have_posts()) {
-        $resQuery->the_post();
-        $pid = get_the_ID();
-        $json[] = [
-            'permalink' => get_permalink(),
-            'thumbnail' => get_the_post_thumbnail_url(null, 'thumbnail'),
-            'title'     => descrizioneAnnuncio($pid),
-            'comune'    => get_the_terms($pid, 'comune'),
-            'tipologia' => get_the_terms($pid, 'tipologia'),
-            'contratto' => get_the_terms($pid, 'contratto'),
-            'address'   => get_post_meta($pid, Engine::getInstance()->getFields()['indirizzo']->metaSlug(), true),
-            'location'  => get_post_meta($pid, 'royal_maps_location', true),
-        ];
+$json = wp_cache_get('ricerca-mappa', 'royal');
+if (!$json) {
+    $resQuery = Engine::getInstance()->queryRicerca(['posts_per_page' => -1]);
+    $json = [];
+    if ($resQuery->have_posts()) {
+        while ($resQuery->have_posts()) {
+            $resQuery->the_post();
+            $pid = get_the_ID();
+            $json[] = [
+                'permalink' => get_permalink(),
+                'thumbnail' => get_the_post_thumbnail_url(null, 'thumbnail'),
+                'title'     => descrizioneAnnuncio($pid),
+                'comune'    => get_the_terms($pid, 'comune'),
+                'tipologia' => get_the_terms($pid, 'tipologia'),
+                'contratto' => get_the_terms($pid, 'contratto'),
+                'address'   => get_post_meta($pid, Engine::getInstance()->getFields()['indirizzo']->metaSlug(), true),
+                'location'  => get_post_meta($pid, 'royal_maps_location', true),
+            ];
+        }
     }
+    $json = json_encode($json);
+    wp_cache_set('ricerca-mappa', $json, 'royal');
 }
-
 get_header();
 ?>
     <div id="content">
@@ -46,7 +48,7 @@ get_header();
                     </div>
                 </div>
                 <div class="col lg-9">
-                    <div id="royalMapSearchData" style="display: none;"><?php echo json_encode($json); ?></div>
+                    <div id="royalMapSearchData" style="display: none;"><?php echo $json; ?></div>
                     <div id="royalMapSearch" style="width: 100%;height: 500px; margin-bottom: 30px;"></div>
                 </div>
             </div>

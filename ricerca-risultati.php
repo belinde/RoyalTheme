@@ -2,16 +2,20 @@
 use Royal\Engine;
 use Royal\Widgets\MenuAnnunci;
 
+get_header();
+
 if (!isset($_GET['rs_con'])) {
     $_GET['rs_con'] = 3;
 }
 
-get_header();
-$royal = Engine::getInstance();
-$ricerca = isset($_POST['royalsearch']) ? $_POST['royalsearch'] : [];
-$resQuery = $royal->queryRicerca($ricerca);
-
-?>
+$cacheKey = 'ricerca-risultati-' . sha1(serialize($_GET));
+$html = wp_cache_get($cacheKey, 'royal');
+if (!$html) {
+    $royal = Engine::getInstance();
+    $ricerca = isset($_POST['royalsearch']) ? $_POST['royalsearch'] : [];
+    $resQuery = $royal->queryRicerca($ricerca);
+    ob_start();
+    ?>
     <div id="content">
         <div id="content-inner">
             <h2 class="title text-center bft"><span>Tutti gli annunci</span></h2>
@@ -36,7 +40,10 @@ $resQuery = $royal->queryRicerca($ricerca);
             </div>
         </div>
     </div>
-<?php
-
-//echo new SearchForm(Engine::URL_RISULTATI, $ricerca);
+    <?php
+    // echo new SearchForm(Engine::URL_RISULTATI, $ricerca);
+    $html = ob_get_clean();
+    wp_cache_set($cacheKey, $html, 'royal');
+}
+echo $html;
 get_footer();
