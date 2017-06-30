@@ -314,6 +314,10 @@ class Engine
 
                 return get_query_template('ricerca-' . $ricerca);
             }
+            $sitemap = get_query_var('sitemap_ricerca');
+            if ($sitemap == 'xml') {
+                return get_query_template('sitemap-ricerca');
+            }
         }
 
         return $template;
@@ -402,7 +406,8 @@ class Engine
         }
     }
 
-    private function redirects() {
+    private function redirects()
+    {
         if (false !== strpos($_SERVER['REQUEST_URI'], 'immobili_elenco.php')) {
 
 
@@ -496,6 +501,7 @@ class Engine
 
         register_nav_menu('menuprincipale', 'Menù principale');
         add_rewrite_endpoint('ricerca', \EP_ROOT);
+        add_rewrite_endpoint('sitemap_ricerca', \EP_ROOT);
 
         register_post_type('annuncio', [
             'label'                => 'Annunci',
