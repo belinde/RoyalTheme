@@ -19,7 +19,8 @@ class Engine
     const URL_RISULTATI = '/ricerca/risultati/';
     const GOOGLE_APIKEY = 'AIzaSyDJSI3JyE0TU8DiXQAHHfHUXVt-qo3OZWE';
     const GOOGLE_APIKEY_S2S = 'AIzaSyBJkM7cCqVXjHAQ-3qil0pfcqSH8eQZmOg';//'AIzaSyAmIxKIMCUdUjSw978tUFCqhlAnjywhno8';
-    const MAIL_INFO = 'f.traversaro@gmail.com';
+    // const MAIL_INFO = 'f.traversaro@gmail.com';
+    const MAIL_INFO = 'info@immobiliareroyal.it';
     use Tools;
     /**
      * @var Engine

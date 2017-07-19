@@ -82,6 +82,7 @@ jQuery(function ($) {
 
     $('.royalFormInfo').submit(function () {
         var form = $(this);
+        if (form.hasClass('sending')) return false;
         var errori = form.find('.royalFormErrori');
         errori.html('');
         if (form.find('.royalFormTerms').is(':checked')) {
@@ -92,7 +93,10 @@ jQuery(function ($) {
                 email: form.find('.royalFormEmail').val(),
                 annuncio: form.find('.royalFormAnnuncio').val(),
             };
+            errori.html('<li>Attendere, prego...</li>');
+            form.addClass('sending')
             $.post(royalconf.ajax, dati, function (res) {
+                errori.html('');
                 if (res.length) {
                     for (var i = 0; i < res.length; i++) {
                         $('<li>' + res[i] + '</li>').appendTo(errori);
